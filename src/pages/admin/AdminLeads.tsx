@@ -33,6 +33,7 @@ const formatDateTime = (iso: string) => {
 const typeLabel: Record<LeadType, string> = {
   access_request: "Access Request",
   subscription_inquiry: "Subscription Inquiry",
+  enquiry: "Enquiry",
 };
 
 const AdminLeads = () => {
