@@ -6,6 +6,9 @@ export const mockStats = {
   totalUsers: 1247,
   activeSubscriptions: 384,
   totalDashboards: 56,
+  totalDatasets: 218,
+  formSubmissions30d: 47,
+  activeUsersNow: 23,
 };
 
 // BACKEND INTEGRATION POINT: GET /api/admin/recent-signups?limit=20

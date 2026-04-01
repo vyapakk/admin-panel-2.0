@@ -1,4 +1,4 @@
-import { Users, CreditCard, BarChart3, TrendingUp } from "lucide-react";
+import { Users, CreditCard, BarChart3, TrendingUp, Database, FileText, UserCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -29,7 +29,7 @@ const AdminOverview = () => {
 
       {/* Stat Cards */}
       {/* BACKEND INTEGRATION POINT: GET /api/admin/stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <StatCard
           title="Total Users"
           value={mockStats.totalUsers}
@@ -46,6 +46,22 @@ const AdminOverview = () => {
           title="Total Dashboards"
           value={mockStats.totalDashboards}
           icon={BarChart3}
+        />
+        <StatCard
+          title="Total Datasets"
+          value={mockStats.totalDatasets}
+          icon={Database}
+        />
+        <StatCard
+          title="Form Submissions (30d)"
+          value={mockStats.formSubmissions30d}
+          icon={FileText}
+        />
+        <StatCard
+          title="Active Users Now"
+          value={mockStats.activeUsersNow}
+          icon={UserCheck}
+          trend="Live"
         />
       </div>
 
