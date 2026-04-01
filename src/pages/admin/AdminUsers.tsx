@@ -133,6 +133,15 @@ const AdminUsers = () => {
     setSelectedUser(updatedUser);
   };
 
+  const handleUserDelete = (userId: number) => {
+    setUsers((prev) => prev.filter((u) => u.id !== userId));
+    setSelectedUser(null);
+  };
+
+  const handleUserCreated = (newUser: AdminUser) => {
+    setUsers((prev) => [newUser, ...prev]);
+  };
+
   return (
     <div className="space-y-6 max-w-[1400px] mx-auto" style={{ fontFamily: "'Poppins', sans-serif" }}>
       {/* Header */}
