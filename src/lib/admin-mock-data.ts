@@ -6,10 +6,9 @@ export const mockStats = {
   totalUsers: 1247,
   activeSubscriptions: 384,
   totalDashboards: 56,
-  pendingInquiries: 12,
 };
 
-// BACKEND INTEGRATION POINT: GET /api/admin/recent-signups?limit=10
+// BACKEND INTEGRATION POINT: GET /api/admin/recent-signups?limit=20
 export const mockRecentSignups = [
   { id: 1, name: "Sarah Chen", email: "sarah.chen@techcorp.com", company: "TechCorp Inc.", date: "2026-03-30" },
   { id: 2, name: "Michael Brooks", email: "m.brooks@globalind.com", company: "Global Industries", date: "2026-03-29" },
@@ -21,6 +20,16 @@ export const mockRecentSignups = [
   { id: 8, name: "Raj Patel", email: "raj.patel@datadriven.in", company: "DataDriven", date: "2026-03-23" },
   { id: 9, name: "Lisa Chang", email: "lchang@smartsys.com", company: "SmartSys", date: "2026-03-22" },
   { id: 10, name: "Tom Anderson", email: "tanderson@peak.io", company: "Peak Industries", date: "2026-03-21" },
+  { id: 11, name: "Nina Petrova", email: "nina.p@quantumres.com", company: "Quantum Research", date: "2026-03-20" },
+  { id: 12, name: "Carlos Mendez", email: "cmendez@latamtech.co", company: "LatAm Tech", date: "2026-03-19" },
+  { id: 13, name: "Fatima Al-Hassan", email: "fatima@gulfdata.ae", company: "Gulf Data Systems", date: "2026-03-18" },
+  { id: 14, name: "Ryan O'Brien", email: "robrien@celticind.ie", company: "Celtic Industries", date: "2026-03-17" },
+  { id: 15, name: "Yuki Tanaka", email: "y.tanaka@tokyomat.jp", company: "Tokyo Materials", date: "2026-03-16" },
+  { id: 16, name: "Sophie Laurent", email: "slaurent@euroaero.fr", company: "EuroAero", date: "2026-03-15" },
+  { id: 17, name: "Kevin Zhao", email: "kzhao@shenzhentech.cn", company: "Shenzhen Tech", date: "2026-03-14" },
+  { id: 18, name: "Maria Santos", email: "msantos@brasilcomp.br", company: "Brasil Composites", date: "2026-03-13" },
+  { id: 19, name: "Henrik Johansson", email: "hjohansson@nordmat.se", company: "Nord Materials", date: "2026-03-12" },
+  { id: 20, name: "Aisha Okonkwo", email: "aokonkwo@afritech.ng", company: "AfriTech Solutions", date: "2026-03-11" },
 ];
 
 // BACKEND INTEGRATION POINT: GET /api/admin/popular-dashboards?limit=5

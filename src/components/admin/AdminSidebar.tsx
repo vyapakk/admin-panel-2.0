@@ -3,7 +3,6 @@ import {
   Users,
   CreditCard,
   BarChart3,
-  MessageSquare,
   LogOut,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
@@ -29,7 +28,6 @@ const futureNav = [
   { title: "Users", url: "#", icon: Users },
   { title: "Subscriptions", url: "#", icon: CreditCard },
   { title: "Dashboards", url: "#", icon: BarChart3 },
-  { title: "Inquiries", url: "#", icon: MessageSquare },
 ];
 
 const AdminSidebar = () => {

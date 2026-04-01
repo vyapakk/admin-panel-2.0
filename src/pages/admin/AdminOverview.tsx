@@ -1,7 +1,7 @@
-import { Users, CreditCard, BarChart3, MessageSquare, TrendingUp, UserPlus, Eye } from "lucide-react";
+import { Users, CreditCard, BarChart3, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+
 import StatCard from "@/components/admin/StatCard";
 import { mockStats, mockRecentSignups, mockPopularDashboards } from "@/lib/admin-mock-data";
 
@@ -29,7 +29,7 @@ const AdminOverview = () => {
 
       {/* Stat Cards */}
       {/* BACKEND INTEGRATION POINT: GET /api/admin/stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard
           title="Total Users"
           value={mockStats.totalUsers}
@@ -47,26 +47,16 @@ const AdminOverview = () => {
           value={mockStats.totalDashboards}
           icon={BarChart3}
         />
-        <StatCard
-          title="Pending Inquiries"
-          value={mockStats.pendingInquiries}
-          icon={MessageSquare}
-        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Signups */}
-        {/* BACKEND INTEGRATION POINT: GET /api/admin/recent-signups?limit=10 */}
+        {/* BACKEND INTEGRATION POINT: GET /api/admin/recent-signups?limit=20 */}
         <Card className="lg:col-span-2 border-none shadow-md">
           <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
               <CardTitle className="text-lg font-semibold" style={{ color: "#1b4263" }}>
                 Recent Signups
               </CardTitle>
-              <Button variant="ghost" size="sm" disabled className="text-xs opacity-50">
-                View All →
-              </Button>
-            </div>
           </CardHeader>
           <CardContent>
             <Table>
@@ -96,9 +86,7 @@ const AdminOverview = () => {
           </CardContent>
         </Card>
 
-        {/* Right Column */}
-        <div className="space-y-6">
-          {/* Popular Dashboards */}
+        {/* Popular Dashboards */}
           {/* BACKEND INTEGRATION POINT: GET /api/admin/popular-dashboards?limit=5 */}
           <Card className="border-none shadow-md">
             <CardHeader className="pb-3">
@@ -129,28 +117,6 @@ const AdminOverview = () => {
               ))}
             </CardContent>
           </Card>
-
-          {/* Quick Actions */}
-          <Card className="border-none shadow-md">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg font-semibold" style={{ color: "#1b4263" }}>
-                Quick Actions
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Button variant="outline" className="w-full justify-start" disabled>
-                <UserPlus className="mr-2 h-4 w-4" />
-                Add User
-                <span className="ml-auto text-xs text-muted-foreground">Coming soon</span>
-              </Button>
-              <Button variant="outline" className="w-full justify-start" disabled>
-                <Eye className="mr-2 h-4 w-4" />
-                View Inquiries
-                <span className="ml-auto text-xs text-muted-foreground">Coming soon</span>
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </div>
   );
