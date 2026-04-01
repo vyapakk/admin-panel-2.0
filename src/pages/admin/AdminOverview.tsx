@@ -29,7 +29,7 @@ const AdminOverview = () => {
 
       {/* Stat Cards */}
       {/* BACKEND INTEGRATION POINT: GET /api/admin/stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard
           title="Total Users"
           value={mockStats.totalUsers}
@@ -46,11 +46,6 @@ const AdminOverview = () => {
           title="Total Dashboards"
           value={mockStats.totalDashboards}
           icon={BarChart3}
-        />
-        <StatCard
-          title="Pending Inquiries"
-          value={mockStats.pendingInquiries}
-          icon={MessageSquare}
         />
       </div>
 
