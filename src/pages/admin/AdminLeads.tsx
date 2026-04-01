@@ -70,7 +70,7 @@ const AdminLeads = () => {
   const paginated = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   const handleExportCSV = () => {
-    const headers = ["ID", "Type", "Name", "Email", "Phone", "Company", "Designation", "Dataset/Dashboard", "Message", "Submitted At"];
+    const headers = ["ID", "Type", "Name", "Email", "Phone", "Company", "Designation", "Dataset/Dashboard", "Message/Query", "Submitted At"];
     const rows = filtered.map((l) => [
       l.id,
       typeLabel[l.type],
@@ -79,8 +79,8 @@ const AdminLeads = () => {
       l.phone,
       l.company,
       l.designation,
-      l.datasetName || l.dashboardName || "",
-      l.message || "",
+      l.datasetName || l.dashboardName || l.queryDashboard || "",
+      l.message || l.queryText || "",
       formatDateTime(l.submittedAt),
     ]);
     const csv = [headers, ...rows].map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
