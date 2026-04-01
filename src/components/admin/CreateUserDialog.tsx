@@ -116,7 +116,7 @@ const CreateUserDialog = ({ open, onClose, onUserCreated }: CreateUserDialogProp
         industries: selectedIndustries,
         signupDate: now.toISOString().slice(0, 10),
         signupTime: now.toTimeString().slice(0, 8),
-        status: "active",
+        
         lastLogin: null,
         accessGrants: [],
       };

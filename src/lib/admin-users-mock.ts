@@ -27,7 +27,6 @@ export interface AdminUser {
   industries: string[];
   signupDate: string;
   signupTime: string;
-  status: "active" | "inactive" | "suspended";
   lastLogin: string | null;
   accessGrants: UserAccess[];
 }
@@ -125,7 +124,6 @@ export const mockUsers: AdminUser[] = [
     industries: ["Aerospace & Defense", "Composites"],
     signupDate: "2026-03-30",
     signupTime: "14:23:45",
-    status: "active",
     lastLogin: "2026-04-01 09:15",
     accessGrants: [
       { id: "a1", type: "dashboard", categoryId: "composites", categoryName: "Composites", datasetId: "carbon-fiber", datasetName: "Carbon Fiber Market", dashboardId: "cf-global", dashboardName: "Global Carbon Fiber Market Overview", grantedDate: "2026-03-30", validUntil: "2027-03-30", status: "active" },
@@ -142,7 +140,6 @@ export const mockUsers: AdminUser[] = [
     industries: ["Automotive & Transportation", "Energy & Power"],
     signupDate: "2026-03-29",
     signupTime: "10:05:12",
-    status: "active",
     lastLogin: "2026-03-31 16:42",
     accessGrants: [
       { id: "a3", type: "dataset", categoryId: "automotive", categoryName: "Automotive & Transportation", datasetId: "ev-market", datasetName: "Electric Vehicle Market", grantedDate: "2026-03-29", validUntil: "2027-03-29", status: "active" },
@@ -158,7 +155,6 @@ export const mockUsers: AdminUser[] = [
     industries: ["Chemical & Materials", "Composites"],
     signupDate: "2026-03-28",
     signupTime: "08:30:00",
-    status: "active",
     lastLogin: "2026-04-01 11:20",
     accessGrants: [],
   },
@@ -172,7 +168,6 @@ export const mockUsers: AdminUser[] = [
     industries: ["Aerospace & Defense"],
     signupDate: "2026-03-27",
     signupTime: "16:45:33",
-    status: "inactive",
     lastLogin: "2026-03-28 09:00",
     accessGrants: [
       { id: "a4", type: "dashboard", categoryId: "aerospace-defense", categoryName: "Aerospace & Defense", datasetId: "defense-systems", datasetName: "Defense Systems", dashboardId: "ds-spending", dashboardName: "Global Defense Spending", grantedDate: "2026-03-27", validUntil: "2026-06-27", status: "active" },
@@ -188,7 +183,6 @@ export const mockUsers: AdminUser[] = [
     industries: ["Disruptive Technology", "Information & Communications Technology"],
     signupDate: "2026-03-26",
     signupTime: "12:00:00",
-    status: "active",
     lastLogin: "2026-03-30 14:55",
     accessGrants: [],
   },
@@ -202,7 +196,6 @@ export const mockUsers: AdminUser[] = [
     industries: ["Electrical & Electronics", "Automotive & Transportation"],
     signupDate: "2026-03-25",
     signupTime: "09:15:22",
-    status: "suspended",
     lastLogin: null,
     accessGrants: [],
   },
@@ -216,7 +209,6 @@ export const mockUsers: AdminUser[] = [
     industries: ["Healthcare", "Chemical & Materials"],
     signupDate: "2026-03-24",
     signupTime: "11:30:45",
-    status: "active",
     lastLogin: "2026-04-01 08:00",
     accessGrants: [
       { id: "a5", type: "dataset", categoryId: "composites", categoryName: "Composites", datasetId: "polymer-matrix", datasetName: "Polymer Matrix Composites", grantedDate: "2026-03-25", validUntil: "2027-03-25", status: "active" },
@@ -232,7 +224,6 @@ export const mockUsers: AdminUser[] = [
     industries: ["Mining, Metals & Minerals", "Energy & Power"],
     signupDate: "2026-03-23",
     signupTime: "07:45:10",
-    status: "active",
     lastLogin: "2026-03-29 17:30",
     accessGrants: [],
   },
@@ -246,7 +237,6 @@ export const mockUsers: AdminUser[] = [
     industries: ["Electrical & Electronics", "Packaging"],
     signupDate: "2026-03-22",
     signupTime: "15:20:00",
-    status: "active",
     lastLogin: "2026-03-31 10:15",
     accessGrants: [
       { id: "a6", type: "dashboard", categoryId: "composites", categoryName: "Composites", datasetId: "glass-fiber", datasetName: "Glass Fiber Composites", dashboardId: "gf-market", dashboardName: "Glass Fiber Market Analysis", grantedDate: "2026-03-22", validUntil: "2026-09-22", status: "active" },
@@ -262,7 +252,6 @@ export const mockUsers: AdminUser[] = [
     industries: ["Building & Construction", "Engineering"],
     signupDate: "2026-03-21",
     signupTime: "13:00:30",
-    status: "active",
     lastLogin: "2026-03-28 12:45",
     accessGrants: [
       { id: "a7", type: "dashboard", categoryId: "aerospace-defense", categoryName: "Aerospace & Defense", datasetId: "commercial-aircraft", datasetName: "Commercial Aircraft", dashboardId: "ca-fleet", dashboardName: "Global Fleet Analysis", grantedDate: "2026-03-21", validUntil: "2026-03-21", status: "expired" },
@@ -278,7 +267,6 @@ export const mockUsers: AdminUser[] = [
     industries: ["Aerospace & Defense", "Disruptive Technology"],
     signupDate: "2026-03-20",
     signupTime: "10:10:10",
-    status: "active",
     lastLogin: "2026-04-01 07:30",
     accessGrants: [],
   },
@@ -292,7 +280,6 @@ export const mockUsers: AdminUser[] = [
     industries: ["Automotive & Transportation", "Consumer Goods & Services"],
     signupDate: "2026-03-19",
     signupTime: "18:30:00",
-    status: "active",
     lastLogin: "2026-03-27 11:00",
     accessGrants: [],
   },

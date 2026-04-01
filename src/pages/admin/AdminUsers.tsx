@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Search, Download, Filter, ChevronDown, X, UserPlus } from "lucide-react";
+import { Search, Download, Filter, ChevronDown, X, UserPlus, ChevronLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,11 +28,7 @@ import {
 import { mockUsers, type AdminUser } from "@/lib/admin-users-mock";
 import UserDetailSheet from "@/components/admin/UserDetailSheet";
 
-const statusColors: Record<string, string> = {
-  active: "bg-emerald-100 text-emerald-700",
-  inactive: "bg-amber-100 text-amber-700",
-  suspended: "bg-red-100 text-red-700",
-};
+const ITEMS_PER_PAGE = 10;
 
 const industries = [
   "Aerospace & Defense",
@@ -53,14 +49,14 @@ const industries = [
 
 const AdminUsers = () => {
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [industryFilter, setIndustryFilter] = useState<string>("all");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null);
   const [users, setUsers] = useState<AdminUser[]>(mockUsers);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // BACKEND INTEGRATION POINT: GET /api/admin/users?search=&status=&industry=
+  // BACKEND INTEGRATION POINT: GET /api/admin/users?search=&industry=&page=&limit=
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
       const q = search.toLowerCase();
@@ -72,43 +68,41 @@ const AdminUsers = () => {
         user.phone.includes(q) ||
         user.designation.toLowerCase().includes(q);
 
-      const matchesStatus =
-        statusFilter === "all" || user.status === statusFilter;
-
       const matchesIndustry =
         industryFilter === "all" || user.industries.includes(industryFilter);
 
-      return matchesSearch && matchesStatus && matchesIndustry;
+      return matchesSearch && matchesIndustry;
     });
-  }, [users, search, statusFilter, industryFilter]);
+  }, [users, search, industryFilter]);
 
-  const activeFiltersCount =
-    (statusFilter !== "all" ? 1 : 0) + (industryFilter !== "all" ? 1 : 0);
+  const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
+  const paginatedUsers = filteredUsers.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  // Reset to page 1 when filters change
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setCurrentPage(1);
+  };
+
+  const handleIndustryChange = (val: string) => {
+    setIndustryFilter(val);
+    setCurrentPage(1);
+  };
+
+  const activeFiltersCount = industryFilter !== "all" ? 1 : 0;
 
   const handleExportCSV = () => {
     // BACKEND INTEGRATION POINT: GET /api/admin/users/export?format=csv
     const headers = [
-      "Name",
-      "Email",
-      "Company",
-      "Designation",
-      "Phone",
-      "Industries",
-      "Signup Date",
-      "Signup Time",
-      "Status",
-      "Last Login",
+      "Name", "Email", "Company", "Designation", "Phone",
+      "Industries", "Signup Date", "Signup Time", "Last Login",
     ];
     const rows = filteredUsers.map((u) => [
-      u.name,
-      u.email,
-      u.company,
-      u.designation,
-      u.phone,
-      u.industries.join("; "),
-      u.signupDate,
-      u.signupTime,
-      u.status,
+      u.name, u.email, u.company, u.designation, u.phone,
+      u.industries.join("; "), u.signupDate, u.signupTime,
       u.lastLogin || "Never",
     ]);
     const csv = [headers, ...rows].map((r) => r.map((c) => `"${c}"`).join(",")).join("\n");
@@ -122,8 +116,8 @@ const AdminUsers = () => {
   };
 
   const clearFilters = () => {
-    setStatusFilter("all");
     setIndustryFilter("all");
+    setCurrentPage(1);
   };
 
   const handleUserUpdate = (updatedUser: AdminUser) => {
@@ -140,6 +134,23 @@ const AdminUsers = () => {
 
   const handleUserCreated = (newUser: AdminUser) => {
     setUsers((prev) => [newUser, ...prev]);
+    setCurrentPage(1);
+  };
+
+  const getPageNumbers = () => {
+    const pages: (number | "...")[] = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (currentPage > 3) pages.push("...");
+      for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+        pages.push(i);
+      }
+      if (currentPage < totalPages - 2) pages.push("...");
+      pages.push(totalPages);
+    }
+    return pages;
   };
 
   return (
@@ -151,7 +162,7 @@ const AdminUsers = () => {
             User Management
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {filteredUsers.length} of {users.length} users
+            {filteredUsers.length} user{filteredUsers.length !== 1 ? "s" : ""}
           </p>
         </div>
         <div className="flex gap-3">
@@ -183,7 +194,7 @@ const AdminUsers = () => {
               <Input
                 placeholder="Search by name, email, company, phone, designation..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="pl-10"
               />
             </div>
@@ -211,19 +222,7 @@ const AdminUsers = () => {
           <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
             <CollapsibleContent>
               <div className="flex flex-wrap gap-3 pt-2 border-t">
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-[160px]">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Statuses</SelectItem>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="inactive">Inactive</SelectItem>
-                    <SelectItem value="suspended">Suspended</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select value={industryFilter} onValueChange={setIndustryFilter}>
+                <Select value={industryFilter} onValueChange={handleIndustryChange}>
                   <SelectTrigger className="w-[260px]">
                     <SelectValue placeholder="Industry" />
                   </SelectTrigger>
@@ -259,19 +258,18 @@ const AdminUsers = () => {
                 <TableHead className="hidden lg:table-cell">Designation</TableHead>
                 <TableHead className="hidden md:table-cell">Phone</TableHead>
                 <TableHead className="hidden xl:table-cell">Industries</TableHead>
-                <TableHead>Status</TableHead>
                 <TableHead className="text-right pr-6">Signup Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredUsers.length === 0 ? (
+              {paginatedUsers.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
+                  <TableCell colSpan={6} className="text-center py-12 text-muted-foreground">
                     No users found matching your criteria.
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredUsers.map((user) => (
+                paginatedUsers.map((user) => (
                   <TableRow
                     key={user.id}
                     className="cursor-pointer hover:bg-muted/40 transition-colors"
@@ -315,14 +313,6 @@ const AdminUsers = () => {
                         )}
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="secondary"
-                        className={`text-xs capitalize ${statusColors[user.status]}`}
-                      >
-                        {user.status}
-                      </Badge>
-                    </TableCell>
                     <TableCell className="text-right pr-6">
                       <div>
                         <p className="text-sm">{user.signupDate}</p>
@@ -334,10 +324,54 @@ const AdminUsers = () => {
               )}
             </TableBody>
           </Table>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between px-6 py-4 border-t">
+              <p className="text-sm text-muted-foreground">
+                Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filteredUsers.length)} of {filteredUsers.length}
+              </p>
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                {getPageNumbers().map((page, i) =>
+                  page === "..." ? (
+                    <span key={`ellipsis-${i}`} className="px-2 text-sm text-muted-foreground">…</span>
+                  ) : (
+                    <Button
+                      key={page}
+                      variant={currentPage === page ? "default" : "outline"}
+                      size="icon"
+                      className="h-8 w-8 text-xs"
+                      style={currentPage === page ? { backgroundColor: "#1b4263" } : {}}
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      {page}
+                    </Button>
+                  )
+                )}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 
-      {/* User Detail Sheet */}
       <UserDetailSheet
         user={selectedUser}
         onClose={() => setSelectedUser(null)}
@@ -345,7 +379,6 @@ const AdminUsers = () => {
         onUserDelete={handleUserDelete}
       />
 
-      {/* Create User Dialog */}
       <CreateUserDialog
         open={showCreateDialog}
         onClose={() => setShowCreateDialog(false)}
