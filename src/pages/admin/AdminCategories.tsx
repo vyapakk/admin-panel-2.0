@@ -96,7 +96,8 @@ const AdminCategories = () => {
     setFormName(name);
     if (!editingCategory) {
       setFormSlug(generateSlug(name));
-      setFormId(generateSlug(name));
+      const nextId = String(Math.max(0, ...categories.map((c) => Number(c.id) || 0)) + 1);
+      setFormId(nextId);
     }
   };
 
