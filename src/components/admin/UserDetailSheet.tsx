@@ -189,11 +189,6 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
                   {user.designation} at {user.company}
                 </SheetDescription>
               </SheetHeader>
-              <div className="mt-2 flex items-center gap-2">
-                <Badge className={`text-xs capitalize ${statusColors[user.status]}`}>
-                  {user.status}
-                </Badge>
-              </div>
             </div>
             <AlertDialog>
               <AlertDialogTrigger asChild>
