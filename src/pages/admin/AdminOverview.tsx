@@ -91,9 +91,7 @@ const AdminOverview = () => {
           </CardContent>
         </Card>
 
-        {/* Right Column */}
-        <div className="space-y-6">
-          {/* Popular Dashboards */}
+        {/* Popular Dashboards */}
           {/* BACKEND INTEGRATION POINT: GET /api/admin/popular-dashboards?limit=5 */}
           <Card className="border-none shadow-md">
             <CardHeader className="pb-3">
@@ -124,28 +122,6 @@ const AdminOverview = () => {
               ))}
             </CardContent>
           </Card>
-
-          {/* Quick Actions */}
-          <Card className="border-none shadow-md">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg font-semibold" style={{ color: "#1b4263" }}>
-                Quick Actions
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Button variant="outline" className="w-full justify-start" disabled>
-                <UserPlus className="mr-2 h-4 w-4" />
-                Add User
-                <span className="ml-auto text-xs text-muted-foreground">Coming soon</span>
-              </Button>
-              <Button variant="outline" className="w-full justify-start" disabled>
-                <Eye className="mr-2 h-4 w-4" />
-                View Inquiries
-                <span className="ml-auto text-xs text-muted-foreground">Coming soon</span>
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </div>
   );
