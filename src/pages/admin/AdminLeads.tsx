@@ -58,7 +58,9 @@ const AdminLeads = () => {
           l.phone.includes(q) ||
           l.designation.toLowerCase().includes(q) ||
           (l.datasetName?.toLowerCase().includes(q)) ||
-          (l.dashboardName?.toLowerCase().includes(q))
+          (l.dashboardName?.toLowerCase().includes(q)) ||
+          (l.queryDashboard?.toLowerCase().includes(q)) ||
+          (l.queryText?.toLowerCase().includes(q))
       );
     }
     return result;
