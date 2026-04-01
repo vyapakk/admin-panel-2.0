@@ -21,11 +21,11 @@ import {
 } from "@/components/ui/sidebar";
 
 const mainNav = [
-  { title: "Overview", url: "/admin", icon: LayoutDashboard, active: true },
+  { title: "Overview", url: "/admin", icon: LayoutDashboard },
+  { title: "Users", url: "/admin/users", icon: Users },
 ];
 
 const futureNav = [
-  { title: "Users", url: "#", icon: Users },
   { title: "Subscriptions", url: "#", icon: CreditCard },
   { title: "Dashboards", url: "#", icon: BarChart3 },
 ];
