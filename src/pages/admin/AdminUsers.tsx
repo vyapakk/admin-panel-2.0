@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react";
-import { Search, Download, Filter, ChevronDown, X } from "lucide-react";
+import { Search, Download, Filter, ChevronDown, X, UserPlus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import CreateUserDialog from "@/components/admin/CreateUserDialog";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
