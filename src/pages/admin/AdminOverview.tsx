@@ -54,14 +54,9 @@ const AdminOverview = () => {
         {/* BACKEND INTEGRATION POINT: GET /api/admin/recent-signups?limit=20 */}
         <Card className="lg:col-span-2 border-none shadow-md">
           <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
               <CardTitle className="text-lg font-semibold" style={{ color: "#1b4263" }}>
                 Recent Signups
               </CardTitle>
-              <Button variant="ghost" size="sm" disabled className="text-xs opacity-50">
-                View All →
-              </Button>
-            </div>
           </CardHeader>
           <CardContent>
             <Table>
