@@ -241,9 +241,12 @@ const AdminLeads = () => {
               </SheetHeader>
               <div className="mt-6 space-y-5">
                 <Badge
-                  style={selectedLead.type === "access_request"
-                    ? { backgroundColor: "#0d5a5a", color: "#fff" }
-                    : { backgroundColor: "#1b426315", color: "#1b4263" }
+                  style={
+                    selectedLead.type === "access_request"
+                      ? { backgroundColor: "#0d5a5a", color: "#fff" }
+                      : selectedLead.type === "enquiry"
+                      ? { backgroundColor: "#d97706", color: "#fff" }
+                      : { backgroundColor: "#1b426315", color: "#1b4263" }
                   }
                 >
                   {typeLabel[selectedLead.type]}
@@ -269,6 +272,20 @@ const AdminLeads = () => {
                         <div>
                           <p className="text-xs font-medium text-muted-foreground mb-1">Message</p>
                           <p className="text-sm bg-muted/30 rounded-lg p-3">{selectedLead.message}</p>
+                        </div>
+                      )}
+                    </>
+                  )}
+
+                  {selectedLead.type === "enquiry" && (
+                    <>
+                      {selectedLead.queryDashboard && (
+                        <DetailRow label="Dashboard" value={selectedLead.queryDashboard} />
+                      )}
+                      {selectedLead.queryText && (
+                        <div>
+                          <p className="text-xs font-medium text-muted-foreground mb-1">Query</p>
+                          <p className="text-sm bg-muted/30 rounded-lg p-3">{selectedLead.queryText}</p>
                         </div>
                       )}
                     </>
