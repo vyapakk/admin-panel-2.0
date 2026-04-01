@@ -9,6 +9,7 @@ import AdminLogin from "./pages/admin/AdminLogin.tsx";
 import AdminOverview from "./pages/admin/AdminOverview.tsx";
 import AdminUsers from "./pages/admin/AdminUsers.tsx";
 import AdminCategories from "./pages/admin/AdminCategories.tsx";
+import AdminLeads from "./pages/admin/AdminLeads.tsx";
 import AdminLayout from "./components/admin/AdminLayout.tsx";
 import AdminAuthGuard from "./components/admin/AdminAuthGuard.tsx";
 
