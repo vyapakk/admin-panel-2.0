@@ -78,7 +78,8 @@ const AdminCategories = () => {
     setFormSlug("");
     setFormIcon("layers");
     setFormColor("teal");
-    setFormId("");
+    const nextId = String(Math.max(0, ...categories.map((c) => Number(c.id) || 0)) + 1);
+    setFormId(nextId);
     setDialogOpen(true);
   };
 
