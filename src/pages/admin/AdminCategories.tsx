@@ -183,7 +183,7 @@ const AdminCategories = () => {
           <TableHeader>
             <TableRow className="bg-muted/30">
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Icon</TableHead>
-              <TableHead className="font-semibold" style={{ color: "#1b4263" }}>ID</TableHead>
+              
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Category Name</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Slug</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Color</TableHead>
@@ -193,7 +193,7 @@ const AdminCategories = () => {
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
                   No categories found
                 </TableCell>
               </TableRow>
@@ -207,9 +207,6 @@ const AdminCategories = () => {
                     >
                       <CategoryIconPreview name={cat.icon} className="h-5 w-5" />
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <code className="text-xs bg-muted px-2 py-1 rounded">{cat.id}</code>
                   </TableCell>
                   <TableCell className="font-medium">{cat.name}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{cat.slug}</TableCell>
@@ -279,22 +276,13 @@ const AdminCategories = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label className="text-xs font-medium">ID</Label>
-                <Input
-                  value={formId}
-                  disabled
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-xs font-medium">Slug *</Label>
-                <Input
-                  placeholder="e.g. aerospace-defense"
-                  value={formSlug}
-                  onChange={(e) => setFormSlug(e.target.value)}
-                />
-              </div>
+            <div className="space-y-2">
+              <Label className="text-xs font-medium">Slug *</Label>
+              <Input
+                placeholder="e.g. aerospace-defense"
+                value={formSlug}
+                onChange={(e) => setFormSlug(e.target.value)}
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-4">

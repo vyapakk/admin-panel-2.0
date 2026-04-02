@@ -118,7 +118,7 @@ const AdminDatasets = () => {
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/30">
-              <TableHead className="font-semibold" style={{ color: "#1b4263" }}>ID</TableHead>
+              
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Dataset Name</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Slug</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Category</TableHead>
@@ -129,16 +129,13 @@ const AdminDatasets = () => {
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
                   No datasets found
                 </TableCell>
               </TableRow>
             ) : (
               filtered.map((ds) => (
                 <TableRow key={ds.id} className="group hover:bg-muted/20 transition-colors">
-                  <TableCell>
-                    <code className="text-xs bg-muted px-2 py-1 rounded">{ds.id}</code>
-                  </TableCell>
                   <TableCell className="font-medium flex items-center gap-2">
                     <Database className="h-4 w-4 text-muted-foreground" />
                     {ds.name}
