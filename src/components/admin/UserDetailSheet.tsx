@@ -345,19 +345,28 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
 
                 <div className="space-y-2">
                   <Label className="text-xs">Grant Type</Label>
-                  <Select value={grantType} onValueChange={(v: "dashboard" | "dataset") => {
+                  <Select value={grantType} onValueChange={(v: "dashboard" | "dataset" | "master") => {
                     setGrantType(v);
+                    setSelectedCategory("");
+                    setSelectedDataset("");
                     setSelectedDashboard("");
                   }}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="master">Master Access (All Datasets & Dashboards)</SelectItem>
                       <SelectItem value="dashboard">Single Dashboard</SelectItem>
                       <SelectItem value="dataset">Entire Dataset</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
+
+                {grantType === "master" && (
+                  <div className="rounded-lg p-3 text-xs" style={{ backgroundColor: "rgba(79,201,171,0.1)", color: "#0d5a5a" }}>
+                    Master access grants the user access to <strong>all</strong> datasets and dashboards across all categories.
+                  </div>
+                )}
 
                 <div className="space-y-2">
                   <Label className="text-xs">Category</Label>
