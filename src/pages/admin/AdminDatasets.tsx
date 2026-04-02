@@ -89,12 +89,14 @@ const AdminDatasets = () => {
   };
 
   // BACKEND INTEGRATION POINT: PUT /api/admin/datasets/{id}/status
-  const handleToggleStatus = (id: string) => {
+  const handleToggleStatus = () => {
+    if (!toggleTarget) return;
     setDatasets((prev) =>
       prev.map((d) =>
-        d.id === id ? { ...d, status: d.status === "active" ? "inactive" as const : "active" as const } : d
+        d.id === toggleTarget.id ? { ...d, status: d.status === "active" ? "inactive" as const : "active" as const } : d
       )
     );
+    setToggleTarget(null);
   };
 
   return (
