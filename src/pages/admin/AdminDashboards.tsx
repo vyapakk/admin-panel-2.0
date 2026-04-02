@@ -95,6 +95,15 @@ const AdminDashboards = () => {
     toast.success("Dashboard deleted");
   };
 
+  // BACKEND INTEGRATION POINT: PUT /api/admin/dashboards/{id}/status
+  const handleToggleStatus = (id: string) => {
+    setDashboards((prev) =>
+      prev.map((d) =>
+        d.id === id ? { ...d, status: d.status === "active" ? "inactive" as const : "active" as const } : d
+      )
+    );
+  };
+
   const selectedDataset = datasets.find((d) => d.id === formDatasetId);
 
   return (
