@@ -183,7 +183,7 @@ const AdminCategories = () => {
           <TableHeader>
             <TableRow className="bg-muted/30">
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Icon</TableHead>
-              <TableHead className="font-semibold" style={{ color: "#1b4263" }}>ID</TableHead>
+              
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Category Name</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Slug</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Color</TableHead>
