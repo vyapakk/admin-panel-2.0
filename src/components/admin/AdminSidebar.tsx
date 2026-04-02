@@ -4,6 +4,7 @@ import {
   Users,
   FolderTree,
   FileText,
+  Shield,
   CreditCard,
   BarChart3,
   LogOut,
