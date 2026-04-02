@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/collapsible";
 import { mockUsers, type AdminUser } from "@/lib/admin-users-mock";
 import UserDetailSheet from "@/components/admin/UserDetailSheet";
+import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
 const ITEMS_PER_PAGE = 10;
 
