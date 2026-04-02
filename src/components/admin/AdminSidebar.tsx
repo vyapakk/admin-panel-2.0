@@ -33,7 +33,7 @@ const mainNav = [
   { title: "Leads", url: "/admin/leads", icon: FileText },
   { title: "Admin Management", url: "/admin/management", icon: Shield },
   { title: "Notifications", url: "/admin/notifications", icon: Bell },
-  { title: "Datasets", url: "/admin/datasets", icon: FileText },
+  { title: "Datasets", url: "/admin/datasets", icon: Database },
 ];
 
 const futureNav = [
