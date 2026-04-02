@@ -8,10 +8,10 @@ const AdminLayout = () => {
       <div className="min-h-screen flex w-full" style={{ fontFamily: "'Poppins', sans-serif" }}>
         <AdminSidebar />
         <div className="flex-1 flex flex-col">
-          <header className="h-14 flex items-center border-b px-4 bg-background">
-            <SidebarTrigger className="ml-1" />
-          </header>
           <main className="flex-1 overflow-auto bg-muted/30 p-6">
+            <div className="mb-4 md:hidden">
+              <SidebarTrigger />
+            </div>
             <Outlet />
           </main>
         </div>
