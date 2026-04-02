@@ -1,4 +1,5 @@
 import { useState } from "react";
+import stratviewLogo from "@/assets/stratview-logo.png";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,12 +48,11 @@ const AdminLogin = () => {
       <Card className="w-full max-w-md shadow-2xl border-none">
         <CardHeader className="text-center pb-2">
           <div className="mx-auto mb-4">
-            <div
-              className="h-14 w-14 rounded-2xl flex items-center justify-center mx-auto font-bold text-xl"
-              style={{ backgroundColor: "#4fc9ab", color: "#1b4263" }}
-            >
-              S1
-            </div>
+            <img
+              src={stratviewLogo}
+              alt="Stratview Research"
+              className="h-16 mx-auto object-contain"
+            />
           </div>
           <CardTitle className="text-2xl font-bold" style={{ color: "#1b4263" }}>
             Stratview One
