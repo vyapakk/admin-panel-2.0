@@ -538,7 +538,7 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
                         <AlertDialogHeader>
                           <AlertDialogTitle>Revoke Access</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Are you sure you want to revoke access to <strong>{access.type === "dashboard" ? access.dashboardName : access.datasetName}</strong>? The user will lose access immediately.
+                            Are you sure you want to revoke access to <strong>{access.type === "master" ? "all datasets & dashboards" : access.type === "dashboard" ? access.dashboardName : access.datasetName}</strong>? The user will lose access immediately.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
