@@ -156,6 +156,26 @@ const AdminDatasets = () => {
                     <span className="text-sm">{ds.categoryName}</span>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">{ds.createdDate}</TableCell>
+                  <TableCell>
+                    <button
+                      onClick={() => handleToggleStatus(ds.id)}
+                      className="flex items-center gap-1.5"
+                      title={`Click to ${ds.status === "active" ? "deactivate" : "activate"}`}
+                    >
+                      {ds.status === "active" ? (
+                        <ToggleRight className="h-5 w-5" style={{ color: "#0d9488" }} />
+                      ) : (
+                        <ToggleLeft className="h-5 w-5 text-muted-foreground" />
+                      )}
+                      <Badge
+                        variant={ds.status === "active" ? "default" : "secondary"}
+                        className="text-[10px]"
+                        style={ds.status === "active" ? { backgroundColor: "#0d948820", color: "#0d9488" } : {}}
+                      >
+                        {ds.status === "active" ? "Active" : "Inactive"}
+                      </Badge>
+                    </button>
+                  </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end">
                       <AlertDialog>

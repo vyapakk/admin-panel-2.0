@@ -180,6 +180,26 @@ const AdminDashboards = () => {
                   <TableCell className="text-sm text-muted-foreground">{db.slug}</TableCell>
                   <TableCell className="text-sm">{db.datasetName}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{db.createdDate}</TableCell>
+                  <TableCell>
+                    <button
+                      onClick={() => handleToggleStatus(db.id)}
+                      className="flex items-center gap-1.5"
+                      title={`Click to ${db.status === "active" ? "deactivate" : "activate"}`}
+                    >
+                      {db.status === "active" ? (
+                        <ToggleRight className="h-5 w-5" style={{ color: "#0d9488" }} />
+                      ) : (
+                        <ToggleLeft className="h-5 w-5 text-muted-foreground" />
+                      )}
+                      <Badge
+                        variant={db.status === "active" ? "default" : "secondary"}
+                        className="text-[10px]"
+                        style={db.status === "active" ? { backgroundColor: "#0d948820", color: "#0d9488" } : {}}
+                      >
+                        {db.status === "active" ? "Active" : "Inactive"}
+                      </Badge>
+                    </button>
+                  </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end">
                       <AlertDialog>
