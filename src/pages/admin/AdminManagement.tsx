@@ -40,10 +40,11 @@ interface AdminEntry {
   name: string;
   email: string;
   addedDate: string;
+  status: "active" | "inactive";
 }
 
 const initialAdmins: AdminEntry[] = [
-  { id: 1, name: "Admin", email: "admin@stratviewresearch.com", addedDate: "2026-01-01" },
+  { id: 1, name: "Admin", email: "admin@stratviewresearch.com", addedDate: "2026-01-01", status: "active" },
 ];
 
 const AdminManagement = () => {
