@@ -1,3 +1,4 @@
+import stratviewLogo from "@/assets/stratview-logo.png";
 import {
   LayoutDashboard,
   Users,
@@ -54,12 +55,11 @@ const AdminSidebar = () => {
         className="flex items-center gap-3 px-4 py-5 border-b"
         style={{ borderColor: "rgba(255,255,255,0.1)" }}
       >
-        <div
-          className="h-9 w-9 rounded-lg flex items-center justify-center font-bold text-sm shrink-0"
-          style={{ backgroundColor: "#4fc9ab", color: "#1b4263" }}
-        >
-          S1
-        </div>
+        <img
+          src={stratviewLogo}
+          alt="Stratview Research"
+          className="h-9 w-9 rounded-lg object-contain shrink-0 bg-white p-0.5"
+        />
         {!collapsed && (
           <div className="flex flex-col">
             <span className="font-semibold text-sm" style={{ color: "#1b4263" }}>
