@@ -93,12 +93,14 @@ const AdminManagement = () => {
   };
 
   // BACKEND INTEGRATION POINT: PUT /api/admin/admins/{id}/status
-  const handleToggleStatus = (id: number) => {
+  const handleToggleStatus = () => {
+    if (!toggleTarget) return;
     setAdmins((prev) =>
       prev.map((a) =>
-        a.id === id ? { ...a, status: a.status === "active" ? "inactive" as const : "active" as const } : a
+        a.id === toggleTarget.id ? { ...a, status: a.status === "active" ? "inactive" as const : "active" as const } : a
       )
     );
+    setToggleTarget(null);
   };
 
   return (
