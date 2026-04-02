@@ -37,6 +37,7 @@ const AdminDashboards = () => {
   const [formSlug, setFormSlug] = useState("");
   const [formDatasetId, setFormDatasetId] = useState("");
   const [datasetSearch, setDatasetSearch] = useState("");
+  const [toggleTarget, setToggleTarget] = useState<AdminDashboard | null>(null);
 
   const filtered = dashboards.filter((d) => {
     const matchesSearch = !search ||
