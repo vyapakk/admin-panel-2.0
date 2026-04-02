@@ -28,6 +28,7 @@ const mainNav = [
   { title: "Users", url: "/admin/users", icon: Users },
   { title: "Categories", url: "/admin/categories", icon: FolderTree },
   { title: "Leads", url: "/admin/leads", icon: FileText },
+  { title: "Admin Management", url: "/admin/management", icon: Shield },
 ];
 
 const futureNav = [
