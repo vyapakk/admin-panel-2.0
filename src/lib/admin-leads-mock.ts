@@ -10,6 +10,7 @@ export interface AdminLead {
   phone: string;
   company: string;
   designation: string;
+  resolved: boolean;
   // Access Request specific
   datasetName?: string;
   // Subscription Inquiry specific
