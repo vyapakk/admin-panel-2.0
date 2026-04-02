@@ -230,6 +230,26 @@ const AdminCategories = () => {
                       <span className="text-sm capitalize">{cat.color}</span>
                     </div>
                   </TableCell>
+                  <TableCell>
+                    <button
+                      onClick={() => handleToggleStatus(cat.id)}
+                      className="flex items-center gap-1.5"
+                      title={`Click to ${cat.status === "active" ? "deactivate" : "activate"}`}
+                    >
+                      {cat.status === "active" ? (
+                        <ToggleRight className="h-5 w-5" style={{ color: "#0d9488" }} />
+                      ) : (
+                        <ToggleLeft className="h-5 w-5 text-muted-foreground" />
+                      )}
+                      <Badge
+                        variant={cat.status === "active" ? "default" : "secondary"}
+                        className="text-[10px]"
+                        style={cat.status === "active" ? { backgroundColor: "#0d948820", color: "#0d9488" } : {}}
+                      >
+                        {cat.status === "active" ? "Active" : "Inactive"}
+                      </Badge>
+                    </button>
+                  </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">
                       <Button variant="ghost" size="sm" onClick={() => openEditDialog(cat)}>
