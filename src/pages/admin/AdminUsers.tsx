@@ -436,6 +436,15 @@ const AdminUsers = () => {
         onClose={() => setShowCreateDialog(false)}
         onUserCreated={handleUserCreated}
       />
+
+      <StatusToggleConfirmDialog
+        open={!!toggleTarget}
+        onOpenChange={(o) => !o && setToggleTarget(null)}
+        entityName={toggleTarget?.name || ""}
+        entityType="User"
+        currentStatus={toggleTarget?.status || "active"}
+        onConfirm={handleToggleStatus}
+      />
     </div>
   );
 };

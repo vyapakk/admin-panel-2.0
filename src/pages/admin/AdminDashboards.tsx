@@ -311,6 +311,15 @@ const AdminDashboards = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <StatusToggleConfirmDialog
+        open={!!toggleTarget}
+        onOpenChange={(o) => !o && setToggleTarget(null)}
+        entityName={toggleTarget?.name || ""}
+        entityType="Dashboard"
+        currentStatus={toggleTarget?.status || "active"}
+        onConfirm={handleToggleStatus}
+      />
     </div>
   );
 };

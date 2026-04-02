@@ -233,6 +233,15 @@ const AdminManagement = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <StatusToggleConfirmDialog
+        open={!!toggleTarget}
+        onOpenChange={(o) => !o && setToggleTarget(null)}
+        entityName={toggleTarget?.name || ""}
+        entityType="Admin"
+        currentStatus={toggleTarget?.status || "active"}
+        onConfirm={handleToggleStatus}
+      />
     </div>
   );
 };

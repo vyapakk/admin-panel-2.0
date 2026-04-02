@@ -262,6 +262,15 @@ const AdminDatasets = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <StatusToggleConfirmDialog
+        open={!!toggleTarget}
+        onOpenChange={(o) => !o && setToggleTarget(null)}
+        entityName={toggleTarget?.name || ""}
+        entityType="Dataset"
+        currentStatus={toggleTarget?.status || "active"}
+        onConfirm={handleToggleStatus}
+      />
     </div>
   );
 };
