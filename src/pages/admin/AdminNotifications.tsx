@@ -87,6 +87,7 @@ const AdminNotifications = () => {
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedDatasets, setSelectedDatasets] = useState<string[]>([]);
 
   const resetForm = () => {
     setTitle("");
