@@ -187,7 +187,7 @@ const AdminDashboards = () => {
                   <TableCell className="text-sm text-muted-foreground">{db.createdDate}</TableCell>
                   <TableCell>
                     <button
-                      onClick={() => handleToggleStatus(db.id)}
+                      onClick={() => setToggleTarget(db)}
                       className="flex items-center gap-1.5"
                       title={`Click to ${db.status === "active" ? "deactivate" : "activate"}`}
                     >
