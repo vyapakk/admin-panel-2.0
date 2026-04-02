@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, Plus, Send, Users, User, Building2, FolderTree, Globe, Eye } from "lucide-react";
+import { Bell, Plus, Send, Users, User, Building2, FolderTree, Globe, Eye, Database } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -45,7 +45,9 @@ import {
   industryOptions,
   companyOptions,
   categoryOptions,
+  datasetOptions,
 } from "@/lib/admin-notifications-mock";
+import SearchableCheckboxList from "@/components/admin/SearchableCheckboxList";
 
 const typeColors: Record<NotificationType, string> = {
   update: "bg-blue-100 text-blue-800",
@@ -59,6 +61,7 @@ const audienceLabels: Record<TargetAudience, string> = {
   industry: "By Industry",
   company: "By Company",
   access: "By Access/Category",
+  dataset: "By Dataset",
 };
 
 const audienceIcons: Record<TargetAudience, React.ReactNode> = {
@@ -67,6 +70,7 @@ const audienceIcons: Record<TargetAudience, React.ReactNode> = {
   industry: <Users className="h-3.5 w-3.5" />,
   company: <Building2 className="h-3.5 w-3.5" />,
   access: <FolderTree className="h-3.5 w-3.5" />,
+  dataset: <Database className="h-3.5 w-3.5" />,
 };
 
 const AdminNotifications = () => {
