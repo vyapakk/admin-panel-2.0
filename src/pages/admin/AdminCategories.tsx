@@ -37,16 +37,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Plus, Pencil, Trash2, Search, ToggleLeft, ToggleRight } from "lucide-react";
-import { Icon } from "lucide-react";
 import { toast } from "sonner";
 import {
   type AdminCategory,
   mockCategories,
   availableColors,
-  availableIcons,
 } from "@/lib/admin-categories-mock";
 import CategoryIconPreview from "@/components/admin/CategoryIconPreview";
 import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
+import IconPickerDialog from "@/components/admin/IconPickerDialog";
 
 const generateSlug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -64,6 +63,7 @@ const AdminCategories = () => {
   const [formColor, setFormColor] = useState("teal");
   const [formId, setFormId] = useState("");
   const [toggleTarget, setToggleTarget] = useState<AdminCategory | null>(null);
+  const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
   const filtered = search
     ? categories.filter(
@@ -322,21 +322,20 @@ const AdminCategories = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label className="text-xs font-medium">Icon</Label>
-                <Select value={formIcon} onValueChange={setFormIcon}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableIcons.map((icon) => (
-                      <SelectItem key={icon} value={icon}>
-                        <div className="flex items-center gap-2">
-                          <CategoryIconPreview name={icon} className="h-4 w-4" />
-                          <span className="capitalize">{icon.replace(/-/g, " ")}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <button
+                  type="button"
+                  onClick={() => setIconPickerOpen(true)}
+                  className="flex h-10 w-full items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background hover:bg-accent hover:text-accent-foreground"
+                >
+                  <CategoryIconPreview name={formIcon} className="h-4 w-4" />
+                  <span className="capitalize truncate">{formIcon.replace(/-/g, " ")}</span>
+                </button>
+                <IconPickerDialog
+                  open={iconPickerOpen}
+                  onOpenChange={setIconPickerOpen}
+                  value={formIcon}
+                  onSelect={setFormIcon}
+                />
               </div>
               <div className="space-y-2">
                 <Label className="text-xs font-medium">Color</Label>
