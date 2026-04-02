@@ -26,19 +26,20 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-const mainNav = [
-  { title: "Overview", url: "/admin", icon: LayoutDashboard },
-  { title: "Users", url: "/admin/users", icon: Users },
-  { title: "Categories", url: "/admin/categories", icon: FolderTree },
-  { title: "Leads", url: "/admin/leads", icon: FileText },
+const userNav = [
+  { title: "User Management", url: "/admin/users", icon: Users },
   { title: "Admin Management", url: "/admin/management", icon: Shield },
-  { title: "Notifications", url: "/admin/notifications", icon: Bell },
+];
+
+const contentNav = [
+  { title: "Categories", url: "/admin/categories", icon: FolderTree },
   { title: "Datasets", url: "/admin/datasets", icon: Database },
   { title: "Dashboards", url: "/admin/dashboards", icon: BarChart3 },
 ];
 
-const futureNav = [
-  { title: "Subscriptions", url: "#", icon: CreditCard },
+const engagementNav = [
+  { title: "Leads", url: "/admin/leads", icon: FileText },
+  { title: "Notifications", url: "/admin/notifications", icon: Bell },
 ];
 
 const AdminSidebar = () => {
