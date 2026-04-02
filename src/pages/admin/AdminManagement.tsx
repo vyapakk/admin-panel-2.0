@@ -33,6 +33,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { UserPlus, Trash2, Shield, ToggleLeft, ToggleRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
 // BACKEND INTEGRATION POINT: GET /api/admin/admins
 interface AdminEntry {
