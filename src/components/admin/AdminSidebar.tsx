@@ -7,7 +7,7 @@ import {
   Shield,
   Bell,
   Database,
-  CreditCard,
+  LogOut,
   BarChart3,
   LogOut,
 } from "lucide-react";
