@@ -141,14 +141,15 @@ const AdminCategories = () => {
   };
 
   // BACKEND INTEGRATION POINT: PUT /api/admin/categories/{id}/status
-  const handleToggleStatus = (id: string) => {
+  const handleToggleStatus = () => {
+    if (!toggleTarget) return;
     setCategories((prev) =>
       prev.map((c) =>
-        c.id === id ? { ...c, status: c.status === "active" ? "inactive" as const : "active" as const } : c
+        c.id === toggleTarget.id ? { ...c, status: c.status === "active" ? "inactive" as const : "active" as const } : c
       )
     );
-    const cat = categories.find((c) => c.id === id);
-    toast.success(`Category "${cat?.name}" ${cat?.status === "active" ? "deactivated" : "activated"}`);
+    toast.success(`Category "${toggleTarget.name}" ${toggleTarget.status === "active" ? "deactivated" : "activated"}`);
+    setToggleTarget(null);
   };
 
   const getColorHex = (color: string) =>
