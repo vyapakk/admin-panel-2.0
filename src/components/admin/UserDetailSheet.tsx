@@ -464,6 +464,7 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
                     </Select>
                   </div>
                 )}
+                )}
 
                 <div className="space-y-2">
                   <Label className="text-xs">Valid Until</Label>
