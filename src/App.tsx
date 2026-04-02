@@ -11,6 +11,7 @@ import AdminUsers from "./pages/admin/AdminUsers.tsx";
 import AdminCategories from "./pages/admin/AdminCategories.tsx";
 import AdminLeads from "./pages/admin/AdminLeads.tsx";
 import AdminManagement from "./pages/admin/AdminManagement.tsx";
+import AdminNotifications from "./pages/admin/AdminNotifications.tsx";
 import AdminLayout from "./components/admin/AdminLayout.tsx";
 import AdminAuthGuard from "./components/admin/AdminAuthGuard.tsx";
 
