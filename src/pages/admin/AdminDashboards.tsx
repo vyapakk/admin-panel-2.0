@@ -99,12 +99,14 @@ const AdminDashboards = () => {
   };
 
   // BACKEND INTEGRATION POINT: PUT /api/admin/dashboards/{id}/status
-  const handleToggleStatus = (id: string) => {
+  const handleToggleStatus = () => {
+    if (!toggleTarget) return;
     setDashboards((prev) =>
       prev.map((d) =>
-        d.id === id ? { ...d, status: d.status === "active" ? "inactive" as const : "active" as const } : d
+        d.id === toggleTarget.id ? { ...d, status: d.status === "active" ? "inactive" as const : "active" as const } : d
       )
     );
+    setToggleTarget(null);
   };
 
   const selectedDataset = datasets.find((d) => d.id === formDatasetId);
