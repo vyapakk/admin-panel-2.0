@@ -7,6 +7,7 @@ export interface AdminCategory {
   slug: string;
   icon: string; // Lucide icon name (kebab-case)
   color: string; // teal | navy | amber | rose | violet | emerald | sky | orange
+  status: "active" | "inactive";
 }
 
 // BACKEND INTEGRATION POINT: GET /api/admin/categories

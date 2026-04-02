@@ -28,6 +28,7 @@ export interface AdminUser {
   signupDate: string;
   signupTime: string;
   lastLogin: string | null;
+  status: "active" | "inactive";
   accessGrants: UserAccess[];
 }
 

@@ -7,6 +7,7 @@ export interface AdminDashboard {
   datasetId: string;
   datasetName: string;
   createdDate: string;
+  status: "active" | "inactive";
 }
 
 // BACKEND INTEGRATION POINT: GET /api/admin/dashboards

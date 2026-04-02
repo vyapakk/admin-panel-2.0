@@ -7,6 +7,7 @@ export interface AdminDataset {
   categoryId: string;
   categoryName: string;
   createdDate: string;
+  status: "active" | "inactive";
 }
 
 // BACKEND INTEGRATION POINT: GET /api/admin/datasets
