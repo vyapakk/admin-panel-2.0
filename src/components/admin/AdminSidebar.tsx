@@ -6,6 +6,7 @@ import {
   FileText,
   Shield,
   Bell,
+  Database,
   CreditCard,
   BarChart3,
   LogOut,
