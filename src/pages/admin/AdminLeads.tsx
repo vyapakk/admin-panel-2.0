@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +12,12 @@ import {
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle,
 } from "@/components/ui/sheet";
-import { Search, Download, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Popover, PopoverContent, PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import { Search, Download, Eye, ChevronLeft, ChevronRight, CalendarIcon } from "lucide-react";
 import { toast } from "sonner";
 import { type AdminLead, type LeadType, mockLeads } from "@/lib/admin-leads-mock";
 
@@ -33,7 +39,7 @@ const formatDateTime = (iso: string) => {
 const typeLabel: Record<LeadType, string> = {
   access_request: "Access Request",
   subscription_inquiry: "Subscription Inquiry",
-  enquiry: "Enquiry",
+  enquiry: "Query Form",
 };
 
 const AdminLeads = () => {
@@ -42,6 +48,8 @@ const AdminLeads = () => {
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedLead, setSelectedLead] = useState<AdminLead | null>(null);
+  const [exportFrom, setExportFrom] = useState<Date | undefined>();
+  const [exportTo, setExportTo] = useState<Date | undefined>();
 
   const filtered = useMemo(() => {
     let result = leads;
@@ -70,8 +78,21 @@ const AdminLeads = () => {
   const paginated = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   const handleExportCSV = () => {
+    let exportData = filtered;
+    if (exportFrom) {
+      exportData = exportData.filter((l) => new Date(l.submittedAt) >= exportFrom);
+    }
+    if (exportTo) {
+      const toEnd = new Date(exportTo);
+      toEnd.setHours(23, 59, 59, 999);
+      exportData = exportData.filter((l) => new Date(l.submittedAt) <= toEnd);
+    }
+    if (exportData.length === 0) {
+      toast.error("No leads in the selected date range");
+      return;
+    }
     const headers = ["ID", "Type", "Name", "Email", "Phone", "Company", "Designation", "Dataset/Dashboard", "Message/Query", "Submitted At"];
-    const rows = filtered.map((l) => [
+    const rows = exportData.map((l) => [
       l.id,
       typeLabel[l.type],
       l.name,
@@ -91,7 +112,7 @@ const AdminLeads = () => {
     a.download = `leads_export_${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success(`Exported ${filtered.length} leads`);
+    toast.success(`Exported ${exportData.length} leads`);
   };
 
   return (
@@ -106,10 +127,39 @@ const AdminLeads = () => {
             {filtered.length} lead{filtered.length !== 1 ? "s" : ""} from form submissions
           </p>
         </div>
-        <Button onClick={handleExportCSV} variant="outline" className="gap-2" style={{ borderColor: "#1b4263", color: "#1b4263" }}>
-          <Download className="h-4 w-4" />
-          Export CSV
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" className={cn("w-[160px] justify-start text-left font-normal", !exportFrom && "text-muted-foreground")} style={{ borderColor: "#1b4263" }}>
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {exportFrom ? format(exportFrom, "MMM d, yyyy") : "From date"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar mode="single" selected={exportFrom} onSelect={setExportFrom} initialFocus className={cn("p-3 pointer-events-auto")} />
+            </PopoverContent>
+          </Popover>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" className={cn("w-[160px] justify-start text-left font-normal", !exportTo && "text-muted-foreground")} style={{ borderColor: "#1b4263" }}>
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {exportTo ? format(exportTo, "MMM d, yyyy") : "To date"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar mode="single" selected={exportTo} onSelect={setExportTo} initialFocus className={cn("p-3 pointer-events-auto")} />
+            </PopoverContent>
+          </Popover>
+          {(exportFrom || exportTo) && (
+            <Button variant="ghost" size="sm" onClick={() => { setExportFrom(undefined); setExportTo(undefined); }}>
+              Clear
+            </Button>
+          )}
+          <Button onClick={handleExportCSV} variant="outline" className="gap-2" style={{ borderColor: "#1b4263", color: "#1b4263" }}>
+            <Download className="h-4 w-4" />
+            Export CSV
+          </Button>
+        </div>
       </div>
 
       {/* Filters */}
@@ -131,7 +181,7 @@ const AdminLeads = () => {
             <SelectItem value="all">All Types</SelectItem>
             <SelectItem value="access_request">Access Requests</SelectItem>
             <SelectItem value="subscription_inquiry">Subscription Inquiries</SelectItem>
-            <SelectItem value="enquiry">Enquiries</SelectItem>
+            <SelectItem value="enquiry">Query Form</SelectItem>
           </SelectContent>
         </Select>
       </div>
