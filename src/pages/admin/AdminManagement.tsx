@@ -33,6 +33,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { UserPlus, Trash2, Shield, ToggleLeft, ToggleRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
 // BACKEND INTEGRATION POINT: GET /api/admin/admins
 interface AdminEntry {
@@ -55,6 +56,7 @@ const AdminManagement = () => {
   const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [toggleTarget, setToggleTarget] = useState<AdminEntry | null>(null);
 
   const handleAdd = () => {
     if (!newName.trim() || !newEmail.trim() || !newPassword.trim()) {
@@ -91,12 +93,14 @@ const AdminManagement = () => {
   };
 
   // BACKEND INTEGRATION POINT: PUT /api/admin/admins/{id}/status
-  const handleToggleStatus = (id: number) => {
+  const handleToggleStatus = () => {
+    if (!toggleTarget) return;
     setAdmins((prev) =>
       prev.map((a) =>
-        a.id === id ? { ...a, status: a.status === "active" ? "inactive" as const : "active" as const } : a
+        a.id === toggleTarget.id ? { ...a, status: a.status === "active" ? "inactive" as const : "active" as const } : a
       )
     );
+    setToggleTarget(null);
   };
 
   return (
@@ -173,7 +177,7 @@ const AdminManagement = () => {
                   <TableCell>{admin.addedDate}</TableCell>
                   <TableCell>
                     <button
-                      onClick={() => handleToggleStatus(admin.id)}
+                      onClick={() => setToggleTarget(admin)}
                       className="flex items-center gap-1.5"
                       title={`Click to ${admin.status === "active" ? "deactivate" : "activate"}`}
                     >
@@ -229,6 +233,15 @@ const AdminManagement = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <StatusToggleConfirmDialog
+        open={!!toggleTarget}
+        onOpenChange={(o) => !o && setToggleTarget(null)}
+        entityName={toggleTarget?.name || ""}
+        entityType="Admin"
+        currentStatus={toggleTarget?.status || "active"}
+        onConfirm={handleToggleStatus}
+      />
     </div>
   );
 };

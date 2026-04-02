@@ -46,6 +46,7 @@ import {
   availableIcons,
 } from "@/lib/admin-categories-mock";
 import CategoryIconPreview from "@/components/admin/CategoryIconPreview";
+import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
 const generateSlug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -62,6 +63,7 @@ const AdminCategories = () => {
   const [formIcon, setFormIcon] = useState("layers");
   const [formColor, setFormColor] = useState("teal");
   const [formId, setFormId] = useState("");
+  const [toggleTarget, setToggleTarget] = useState<AdminCategory | null>(null);
 
   const filtered = search
     ? categories.filter(
@@ -139,14 +141,15 @@ const AdminCategories = () => {
   };
 
   // BACKEND INTEGRATION POINT: PUT /api/admin/categories/{id}/status
-  const handleToggleStatus = (id: string) => {
+  const handleToggleStatus = () => {
+    if (!toggleTarget) return;
     setCategories((prev) =>
       prev.map((c) =>
-        c.id === id ? { ...c, status: c.status === "active" ? "inactive" as const : "active" as const } : c
+        c.id === toggleTarget.id ? { ...c, status: c.status === "active" ? "inactive" as const : "active" as const } : c
       )
     );
-    const cat = categories.find((c) => c.id === id);
-    toast.success(`Category "${cat?.name}" ${cat?.status === "active" ? "deactivated" : "activated"}`);
+    toast.success(`Category "${toggleTarget.name}" ${toggleTarget.status === "active" ? "deactivated" : "activated"}`);
+    setToggleTarget(null);
   };
 
   const getColorHex = (color: string) =>
@@ -232,7 +235,7 @@ const AdminCategories = () => {
                   </TableCell>
                   <TableCell>
                     <button
-                      onClick={() => handleToggleStatus(cat.id)}
+                      onClick={() => setToggleTarget(cat)}
                       className="flex items-center gap-1.5"
                       title={`Click to ${cat.status === "active" ? "deactivate" : "activate"}`}
                     >
@@ -389,6 +392,15 @@ const AdminCategories = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <StatusToggleConfirmDialog
+        open={!!toggleTarget}
+        onOpenChange={(o) => !o && setToggleTarget(null)}
+        entityName={toggleTarget?.name || ""}
+        entityType="Category"
+        currentStatus={toggleTarget?.status || "active"}
+        onConfirm={handleToggleStatus}
+      />
     </div>
   );
 };

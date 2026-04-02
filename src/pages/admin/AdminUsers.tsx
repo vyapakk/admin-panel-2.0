@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/collapsible";
 import { mockUsers, type AdminUser } from "@/lib/admin-users-mock";
 import UserDetailSheet from "@/components/admin/UserDetailSheet";
+import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -56,6 +57,7 @@ const AdminUsers = () => {
   const [users, setUsers] = useState<AdminUser[]>(mockUsers);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [toggleTarget, setToggleTarget] = useState<AdminUser | null>(null);
 
   // BACKEND INTEGRATION POINT: GET /api/admin/users?search=&industry=&page=&limit=
   const filteredUsers = useMemo(() => {
@@ -125,15 +127,17 @@ const AdminUsers = () => {
     setCurrentPage(1);
   };
 
-  const handleToggleStatus = (userId: number) => {
+  const handleToggleStatus = () => {
+    if (!toggleTarget) return;
     // BACKEND INTEGRATION POINT: PUT /api/admin/users/{id}/status
     setUsers((prev) =>
       prev.map((u) =>
-        u.id === userId
+        u.id === toggleTarget.id
           ? { ...u, status: u.status === "active" ? "inactive" as const : "active" as const }
           : u
       )
     );
+    setToggleTarget(null);
   };
 
   const handleUserUpdate = (updatedUser: AdminUser) => {
@@ -343,7 +347,7 @@ const AdminUsers = () => {
                     </TableCell>
                     <TableCell>
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleToggleStatus(user.id); }}
+                        onClick={(e) => { e.stopPropagation(); setToggleTarget(user); }}
                         className="flex items-center gap-1.5"
                         title={`Click to ${user.status === "active" ? "deactivate" : "activate"}`}
                       >
@@ -431,6 +435,15 @@ const AdminUsers = () => {
         open={showCreateDialog}
         onClose={() => setShowCreateDialog(false)}
         onUserCreated={handleUserCreated}
+      />
+
+      <StatusToggleConfirmDialog
+        open={!!toggleTarget}
+        onOpenChange={(o) => !o && setToggleTarget(null)}
+        entityName={toggleTarget?.name || ""}
+        entityType="User"
+        currentStatus={toggleTarget?.status || "active"}
+        onConfirm={handleToggleStatus}
       />
     </div>
   );

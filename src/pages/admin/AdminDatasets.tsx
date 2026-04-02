@@ -21,6 +21,7 @@ import { Plus, Trash2, Search, Database, ToggleLeft, ToggleRight } from "lucide-
 import { toast } from "sonner";
 import { type AdminDataset, mockDatasets } from "@/lib/admin-datasets-mock";
 import { mockCategories } from "@/lib/admin-categories-mock";
+import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
 const generateSlug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -34,6 +35,7 @@ const AdminDatasets = () => {
   const [formName, setFormName] = useState("");
   const [formSlug, setFormSlug] = useState("");
   const [formCategoryId, setFormCategoryId] = useState("");
+  const [toggleTarget, setToggleTarget] = useState<AdminDataset | null>(null);
 
   const filtered = search
     ? datasets.filter(
@@ -87,12 +89,14 @@ const AdminDatasets = () => {
   };
 
   // BACKEND INTEGRATION POINT: PUT /api/admin/datasets/{id}/status
-  const handleToggleStatus = (id: string) => {
+  const handleToggleStatus = () => {
+    if (!toggleTarget) return;
     setDatasets((prev) =>
       prev.map((d) =>
-        d.id === id ? { ...d, status: d.status === "active" ? "inactive" as const : "active" as const } : d
+        d.id === toggleTarget.id ? { ...d, status: d.status === "active" ? "inactive" as const : "active" as const } : d
       )
     );
+    setToggleTarget(null);
   };
 
   return (
@@ -159,7 +163,7 @@ const AdminDatasets = () => {
                   <TableCell className="text-sm text-muted-foreground">{ds.createdDate}</TableCell>
                   <TableCell>
                     <button
-                      onClick={() => handleToggleStatus(ds.id)}
+                      onClick={() => setToggleTarget(ds)}
                       className="flex items-center gap-1.5"
                       title={`Click to ${ds.status === "active" ? "deactivate" : "activate"}`}
                     >
@@ -258,6 +262,15 @@ const AdminDatasets = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <StatusToggleConfirmDialog
+        open={!!toggleTarget}
+        onOpenChange={(o) => !o && setToggleTarget(null)}
+        entityName={toggleTarget?.name || ""}
+        entityType="Dataset"
+        currentStatus={toggleTarget?.status || "active"}
+        onConfirm={handleToggleStatus}
+      />
     </div>
   );
 };

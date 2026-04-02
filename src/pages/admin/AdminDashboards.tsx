@@ -21,6 +21,7 @@ import {
 import { toast } from "sonner";
 import { type AdminDashboard, mockDashboards } from "@/lib/admin-dashboards-mock";
 import { mockDatasets } from "@/lib/admin-datasets-mock";
+import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
 const generateSlug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -36,6 +37,7 @@ const AdminDashboards = () => {
   const [formSlug, setFormSlug] = useState("");
   const [formDatasetId, setFormDatasetId] = useState("");
   const [datasetSearch, setDatasetSearch] = useState("");
+  const [toggleTarget, setToggleTarget] = useState<AdminDashboard | null>(null);
 
   const filtered = dashboards.filter((d) => {
     const matchesSearch = !search ||
@@ -97,12 +99,14 @@ const AdminDashboards = () => {
   };
 
   // BACKEND INTEGRATION POINT: PUT /api/admin/dashboards/{id}/status
-  const handleToggleStatus = (id: string) => {
+  const handleToggleStatus = () => {
+    if (!toggleTarget) return;
     setDashboards((prev) =>
       prev.map((d) =>
-        d.id === id ? { ...d, status: d.status === "active" ? "inactive" as const : "active" as const } : d
+        d.id === toggleTarget.id ? { ...d, status: d.status === "active" ? "inactive" as const : "active" as const } : d
       )
     );
+    setToggleTarget(null);
   };
 
   const selectedDataset = datasets.find((d) => d.id === formDatasetId);
@@ -183,7 +187,7 @@ const AdminDashboards = () => {
                   <TableCell className="text-sm text-muted-foreground">{db.createdDate}</TableCell>
                   <TableCell>
                     <button
-                      onClick={() => handleToggleStatus(db.id)}
+                      onClick={() => setToggleTarget(db)}
                       className="flex items-center gap-1.5"
                       title={`Click to ${db.status === "active" ? "deactivate" : "activate"}`}
                     >
@@ -307,6 +311,15 @@ const AdminDashboards = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <StatusToggleConfirmDialog
+        open={!!toggleTarget}
+        onOpenChange={(o) => !o && setToggleTarget(null)}
+        entityName={toggleTarget?.name || ""}
+        entityType="Dashboard"
+        currentStatus={toggleTarget?.status || "active"}
+        onConfirm={handleToggleStatus}
+      />
     </div>
   );
 };
