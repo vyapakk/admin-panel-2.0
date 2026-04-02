@@ -50,6 +50,7 @@ const industries = [
 const AdminUsers = () => {
   const [search, setSearch] = useState("");
   const [industryFilter, setIndustryFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null);
   const [users, setUsers] = useState<AdminUser[]>(mockUsers);
