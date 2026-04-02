@@ -285,6 +285,7 @@ const AdminUsers = () => {
                 <TableHead className="hidden lg:table-cell">Designation</TableHead>
                 <TableHead className="hidden md:table-cell">Phone</TableHead>
                 <TableHead className="hidden xl:table-cell">Industries</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead className="text-right pr-6">Signup Date</TableHead>
               </TableRow>
             </TableHeader>
