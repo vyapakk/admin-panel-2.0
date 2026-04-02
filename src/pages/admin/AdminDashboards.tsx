@@ -116,14 +116,29 @@ const AdminDashboards = () => {
         </Button>
       </div>
 
-      <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search dashboards..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pl-10"
-        />
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative max-w-sm flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search dashboards..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <Select value={datasetFilter} onValueChange={setDatasetFilter}>
+          <SelectTrigger className="w-[220px]">
+            <SelectValue placeholder="Filter by dataset" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Datasets</SelectItem>
+            {[...new Map(dashboards.map((d) => [d.datasetId, d.datasetName])).entries()].map(
+              ([id, name]) => (
+                <SelectItem key={id} value={id}>{name}</SelectItem>
+              )
+            )}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="rounded-xl border bg-card overflow-hidden">
