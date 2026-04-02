@@ -121,7 +121,19 @@ const AdminUsers = () => {
 
   const clearFilters = () => {
     setIndustryFilter("all");
+    setStatusFilter("all");
     setCurrentPage(1);
+  };
+
+  const handleToggleStatus = (userId: number) => {
+    // BACKEND INTEGRATION POINT: PUT /api/admin/users/{id}/status
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === userId
+          ? { ...u, status: u.status === "active" ? "inactive" as const : "active" as const }
+          : u
+      )
+    );
   };
 
   const handleUserUpdate = (updatedUser: AdminUser) => {
