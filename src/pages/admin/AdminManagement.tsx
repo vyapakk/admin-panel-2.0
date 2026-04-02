@@ -90,6 +90,15 @@ const AdminManagement = () => {
     setDeleteTarget(null);
   };
 
+  // BACKEND INTEGRATION POINT: PUT /api/admin/admins/{id}/status
+  const handleToggleStatus = (id: number) => {
+    setAdmins((prev) =>
+      prev.map((a) =>
+        a.id === id ? { ...a, status: a.status === "active" ? "inactive" as const : "active" as const } : a
+      )
+    );
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
