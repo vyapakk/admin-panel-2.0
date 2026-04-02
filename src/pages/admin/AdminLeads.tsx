@@ -78,8 +78,16 @@ const AdminLeads = () => {
           (l.queryText?.toLowerCase().includes(q))
       );
     }
+    if (exportFrom) {
+      result = result.filter((l) => new Date(l.submittedAt) >= exportFrom);
+    }
+    if (exportTo) {
+      const toEnd = new Date(exportTo);
+      toEnd.setHours(23, 59, 59, 999);
+      result = result.filter((l) => new Date(l.submittedAt) <= toEnd);
+    }
     return result;
-  }, [leads, search, typeFilter]);
+  }, [leads, search, typeFilter, exportFrom, exportTo]);
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
   const paginated = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
