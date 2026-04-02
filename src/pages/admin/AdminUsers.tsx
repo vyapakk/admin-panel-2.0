@@ -57,6 +57,7 @@ const AdminUsers = () => {
   const [users, setUsers] = useState<AdminUser[]>(mockUsers);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [toggleTarget, setToggleTarget] = useState<AdminUser | null>(null);
 
   // BACKEND INTEGRATION POINT: GET /api/admin/users?search=&industry=&page=&limit=
   const filteredUsers = useMemo(() => {
