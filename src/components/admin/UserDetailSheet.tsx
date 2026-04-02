@@ -216,10 +216,13 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
                 </SheetDescription>
               </SheetHeader>
             </div>
+          </div>
+          <div className="flex justify-end mt-3">
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-white/60 hover:text-white hover:bg-white/10 shrink-0">
-                  <Trash2 className="h-4 w-4" />
+                <Button variant="ghost" size="sm" className="text-white/60 hover:text-white hover:bg-white/10 gap-1.5 text-xs">
+                  <Trash2 className="h-3.5 w-3.5" />
+                  Delete User
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
