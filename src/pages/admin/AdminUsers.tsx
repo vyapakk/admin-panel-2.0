@@ -360,6 +360,7 @@ const AdminUsers = () => {
                           {user.status === "active" ? "Active" : "Inactive"}
                         </Badge>
                       </button>
+                    </TableCell>
                     <TableCell className="text-right pr-6">
                       <div>
                         <p className="text-sm">{user.signupDate}</p>
