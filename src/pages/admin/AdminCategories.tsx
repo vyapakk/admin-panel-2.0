@@ -37,16 +37,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Plus, Pencil, Trash2, Search, ToggleLeft, ToggleRight } from "lucide-react";
-import { Icon } from "lucide-react";
 import { toast } from "sonner";
 import {
   type AdminCategory,
   mockCategories,
   availableColors,
-  availableIcons,
 } from "@/lib/admin-categories-mock";
 import CategoryIconPreview from "@/components/admin/CategoryIconPreview";
 import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
+import IconPickerDialog from "@/components/admin/IconPickerDialog";
 
 const generateSlug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
