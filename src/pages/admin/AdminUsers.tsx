@@ -292,7 +292,7 @@ const AdminUsers = () => {
             <TableBody>
               {paginatedUsers.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-12 text-muted-foreground">
+                  <TableCell colSpan={8} className="text-center py-12 text-muted-foreground">
                     No users found matching your criteria.
                   </TableCell>
                 </TableRow>
