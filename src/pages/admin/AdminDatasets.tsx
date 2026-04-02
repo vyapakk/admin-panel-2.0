@@ -163,7 +163,7 @@ const AdminDatasets = () => {
                   <TableCell className="text-sm text-muted-foreground">{ds.createdDate}</TableCell>
                   <TableCell>
                     <button
-                      onClick={() => handleToggleStatus(ds.id)}
+                      onClick={() => setToggleTarget(ds)}
                       className="flex items-center gap-1.5"
                       title={`Click to ${ds.status === "active" ? "deactivate" : "activate"}`}
                     >
