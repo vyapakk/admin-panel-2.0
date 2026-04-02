@@ -72,9 +72,12 @@ const AdminUsers = () => {
       const matchesIndustry =
         industryFilter === "all" || user.industries.includes(industryFilter);
 
-      return matchesSearch && matchesIndustry;
+      const matchesStatus =
+        statusFilter === "all" || user.status === statusFilter;
+
+      return matchesSearch && matchesIndustry && matchesStatus;
     });
-  }, [users, search, industryFilter]);
+  }, [users, search, industryFilter, statusFilter]);
 
   const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
   const paginatedUsers = filteredUsers.slice(
