@@ -409,7 +409,7 @@ const AdminNotifications = () => {
               </TableRow>
             ) : (
               displayedNotifications.map((notif) => (
-                <TableRow key={notif.id}>
+                <TableRow key={notif.id} className="cursor-pointer hover:bg-muted/40 transition-colors" onClick={() => setDetailNotif(notif)}>
                   <TableCell className="font-medium max-w-[200px] truncate">{notif.title}</TableCell>
                   <TableCell>
                     <Badge variant="secondary" className={typeColors[notif.type]}>
