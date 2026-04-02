@@ -127,15 +127,17 @@ const AdminUsers = () => {
     setCurrentPage(1);
   };
 
-  const handleToggleStatus = (userId: number) => {
+  const handleToggleStatus = () => {
+    if (!toggleTarget) return;
     // BACKEND INTEGRATION POINT: PUT /api/admin/users/{id}/status
     setUsers((prev) =>
       prev.map((u) =>
-        u.id === userId
+        u.id === toggleTarget.id
           ? { ...u, status: u.status === "active" ? "inactive" as const : "active" as const }
           : u
       )
     );
+    setToggleTarget(null);
   };
 
   const handleUserUpdate = (updatedUser: AdminUser) => {
