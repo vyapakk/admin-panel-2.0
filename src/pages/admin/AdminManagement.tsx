@@ -177,7 +177,7 @@ const AdminManagement = () => {
                   <TableCell>{admin.addedDate}</TableCell>
                   <TableCell>
                     <button
-                      onClick={() => handleToggleStatus(admin.id)}
+                      onClick={() => setToggleTarget(admin)}
                       className="flex items-center gap-1.5"
                       title={`Click to ${admin.status === "active" ? "deactivate" : "activate"}`}
                     >
