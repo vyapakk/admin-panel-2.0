@@ -61,7 +61,7 @@ const statusColors: Record<string, string> = {
 
 const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDetailSheetProps) => {
   const [showGrantForm, setShowGrantForm] = useState(false);
-  const [grantType, setGrantType] = useState<"dashboard" | "dataset">("dashboard");
+  const [grantType, setGrantType] = useState<"dashboard" | "dataset" | "master">("dashboard");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedDataset, setSelectedDataset] = useState("");
   const [selectedDashboard, setSelectedDashboard] = useState("");
@@ -100,6 +100,32 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
 
   // BACKEND INTEGRATION POINT: POST /api/admin/users/{userId}/access
   const handleGrantAccess = () => {
+    if (grantType === "master") {
+      if (!validUntil) {
+        toast.error("Please select a validity date");
+        return;
+      }
+      const newAccess: UserAccess = {
+        id: `a-${Date.now()}`,
+        type: "master",
+        categoryId: "",
+        categoryName: "",
+        datasetId: "",
+        datasetName: "",
+        grantedDate: new Date().toISOString().slice(0, 10),
+        validUntil,
+        status: "active",
+      };
+      const updatedUser = {
+        ...user,
+        accessGrants: [...user.accessGrants, newAccess],
+      };
+      onUserUpdate(updatedUser);
+      resetGrantForm();
+      toast.success("Master access granted — user can access all datasets & dashboards");
+      return;
+    }
+
     if (!selectedCategory || !selectedDataset || !validUntil) {
       toast.error("Please fill all required fields");
       return;
@@ -319,114 +345,127 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
 
                 <div className="space-y-2">
                   <Label className="text-xs">Grant Type</Label>
-                  <Select value={grantType} onValueChange={(v: "dashboard" | "dataset") => {
+                  <Select value={grantType} onValueChange={(v: "dashboard" | "dataset" | "master") => {
                     setGrantType(v);
+                    setSelectedCategory("");
+                    setSelectedDataset("");
                     setSelectedDashboard("");
                   }}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="master">Master Access (All Datasets & Dashboards)</SelectItem>
                       <SelectItem value="dashboard">Single Dashboard</SelectItem>
                       <SelectItem value="dataset">Entire Dataset</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="space-y-2">
-                  <Label className="text-xs">Category</Label>
-                  <Select value={selectedCategory} onValueChange={(v) => {
-                    setSelectedCategory(v);
-                    setSelectedDataset("");
-                    setSelectedDashboard("");
-                    setDatasetSearch("");
-                    setDashboardSearch("");
-                  }}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {mockCatalog.map((cat) => (
-                        <SelectItem key={cat.categoryId} value={cat.categoryId}>
-                          {cat.categoryName}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {selectedCategory && (
-                  <div className="space-y-2">
-                    <Label className="text-xs">Dataset</Label>
-                    <Select value={selectedDataset} onValueChange={(v) => {
-                      setSelectedDataset(v);
-                      setSelectedDashboard("");
-                      setDashboardSearch("");
-                    }}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select dataset" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <div className="px-2 pb-2">
-                          <div className="relative">
-                            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
-                            <Input
-                              placeholder="Search datasets..."
-                              value={datasetSearch}
-                              onChange={(e) => setDatasetSearch(e.target.value)}
-                              className="h-8 pl-7 text-xs"
-                              onClick={(e) => e.stopPropagation()}
-                              onKeyDown={(e) => e.stopPropagation()}
-                            />
-                          </div>
-                        </div>
-                        {filteredDatasets.length === 0 ? (
-                          <p className="text-xs text-muted-foreground text-center py-2">No datasets found</p>
-                        ) : (
-                          filteredDatasets.map((ds) => (
-                            <SelectItem key={ds.datasetId} value={ds.datasetId}>
-                              {ds.datasetName}
-                            </SelectItem>
-                          ))
-                        )}
-                      </SelectContent>
-                    </Select>
+                {grantType === "master" && (
+                  <div className="rounded-lg p-3 text-xs" style={{ backgroundColor: "rgba(79,201,171,0.1)", color: "#0d5a5a" }}>
+                    Master access grants the user access to <strong>all</strong> datasets and dashboards across all categories.
                   </div>
                 )}
 
-                {grantType === "dashboard" && selectedDataset && (
-                  <div className="space-y-2">
-                    <Label className="text-xs">Dashboard</Label>
-                    <Select value={selectedDashboard} onValueChange={setSelectedDashboard}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select dashboard" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <div className="px-2 pb-2">
-                          <div className="relative">
-                            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
-                            <Input
-                              placeholder="Search dashboards..."
-                              value={dashboardSearch}
-                              onChange={(e) => setDashboardSearch(e.target.value)}
-                              className="h-8 pl-7 text-xs"
-                              onClick={(e) => e.stopPropagation()}
-                              onKeyDown={(e) => e.stopPropagation()}
-                            />
-                          </div>
-                        </div>
-                        {filteredDashboards.length === 0 ? (
-                          <p className="text-xs text-muted-foreground text-center py-2">No dashboards found</p>
-                        ) : (
-                          filteredDashboards.map((db) => (
-                            <SelectItem key={db.id} value={db.id}>
-                              {db.name}
+                {grantType !== "master" && (
+                  <>
+                    <div className="space-y-2">
+                      <Label className="text-xs">Category</Label>
+                      <Select value={selectedCategory} onValueChange={(v) => {
+                        setSelectedCategory(v);
+                        setSelectedDataset("");
+                        setSelectedDashboard("");
+                        setDatasetSearch("");
+                        setDashboardSearch("");
+                      }}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {mockCatalog.map((cat) => (
+                            <SelectItem key={cat.categoryId} value={cat.categoryId}>
+                              {cat.categoryName}
                             </SelectItem>
-                          ))
-                        )}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {selectedCategory && (
+                      <div className="space-y-2">
+                        <Label className="text-xs">Dataset</Label>
+                        <Select value={selectedDataset} onValueChange={(v) => {
+                          setSelectedDataset(v);
+                          setSelectedDashboard("");
+                          setDashboardSearch("");
+                        }}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select dataset" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <div className="px-2 pb-2">
+                              <div className="relative">
+                                <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+                                <Input
+                                  placeholder="Search datasets..."
+                                  value={datasetSearch}
+                                  onChange={(e) => setDatasetSearch(e.target.value)}
+                                  className="h-8 pl-7 text-xs"
+                                  onClick={(e) => e.stopPropagation()}
+                                  onKeyDown={(e) => e.stopPropagation()}
+                                />
+                              </div>
+                            </div>
+                            {filteredDatasets.length === 0 ? (
+                              <p className="text-xs text-muted-foreground text-center py-2">No datasets found</p>
+                            ) : (
+                              filteredDatasets.map((ds) => (
+                                <SelectItem key={ds.datasetId} value={ds.datasetId}>
+                                  {ds.datasetName}
+                                </SelectItem>
+                              ))
+                            )}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+
+                    {grantType === "dashboard" && selectedDataset && (
+                      <div className="space-y-2">
+                        <Label className="text-xs">Dashboard</Label>
+                        <Select value={selectedDashboard} onValueChange={setSelectedDashboard}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select dashboard" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <div className="px-2 pb-2">
+                              <div className="relative">
+                                <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+                                <Input
+                                  placeholder="Search dashboards..."
+                                  value={dashboardSearch}
+                                  onChange={(e) => setDashboardSearch(e.target.value)}
+                                  className="h-8 pl-7 text-xs"
+                                  onClick={(e) => e.stopPropagation()}
+                                  onKeyDown={(e) => e.stopPropagation()}
+                                />
+                              </div>
+                            </div>
+                            {filteredDashboards.length === 0 ? (
+                              <p className="text-xs text-muted-foreground text-center py-2">No dashboards found</p>
+                            ) : (
+                              filteredDashboards.map((db) => (
+                                <SelectItem key={db.id} value={db.id}>
+                                  {db.name}
+                                </SelectItem>
+                              ))
+                            )}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                  </>
                 )}
 
                 <div className="space-y-2">
@@ -463,18 +502,20 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
                           variant="secondary"
                           className="text-[10px] capitalize"
                           style={{
-                            backgroundColor: access.type === "dataset" ? "rgba(79,201,171,0.15)" : "rgba(27,66,99,0.1)",
-                            color: access.type === "dataset" ? "#0d5a5a" : "#1b4263",
+                            backgroundColor: access.type === "master" ? "rgba(79,201,171,0.25)" : access.type === "dataset" ? "rgba(79,201,171,0.15)" : "rgba(27,66,99,0.1)",
+                            color: access.type === "master" ? "#0d5a5a" : access.type === "dataset" ? "#0d5a5a" : "#1b4263",
                           }}
                         >
-                          {access.type}
+                          {access.type === "master" ? "Master" : access.type}
                         </Badge>
-                        <span className="text-xs text-muted-foreground">
-                          {access.categoryName}
-                        </span>
+                        {access.type !== "master" && (
+                          <span className="text-xs text-muted-foreground">
+                            {access.categoryName}
+                          </span>
+                        )}
                       </div>
                       <p className="text-sm font-medium mt-1">
-                        {access.type === "dashboard" ? access.dashboardName : access.datasetName}
+                        {access.type === "master" ? "All Datasets & Dashboards" : access.type === "dashboard" ? access.dashboardName : access.datasetName}
                       </p>
                       {access.type === "dashboard" && (
                         <p className="text-xs text-muted-foreground">{access.datasetName}</p>
@@ -497,7 +538,7 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
                         <AlertDialogHeader>
                           <AlertDialogTitle>Revoke Access</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Are you sure you want to revoke access to <strong>{access.type === "dashboard" ? access.dashboardName : access.datasetName}</strong>? The user will lose access immediately.
+                            Are you sure you want to revoke access to <strong>{access.type === "master" ? "all datasets & dashboards" : access.type === "dashboard" ? access.dashboardName : access.datasetName}</strong>? The user will lose access immediately.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
@@ -533,12 +574,14 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
                         <Badge variant="secondary" className={`text-[10px] capitalize ${statusColors[access.status]}`}>
                           {access.status}
                         </Badge>
-                        <span className="text-xs text-muted-foreground">
-                          {access.categoryName}
-                        </span>
+                        {access.type !== "master" && (
+                          <span className="text-xs text-muted-foreground">
+                            {access.categoryName}
+                          </span>
+                        )}
                       </div>
                       <p className="text-sm font-medium mt-1">
-                        {access.type === "dashboard" ? access.dashboardName : access.datasetName}
+                        {access.type === "master" ? "All Datasets & Dashboards" : access.type === "dashboard" ? access.dashboardName : access.datasetName}
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">
                         Was valid until {access.validUntil}
