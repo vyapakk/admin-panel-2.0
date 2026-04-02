@@ -239,7 +239,7 @@ const AdminUsers = () => {
             <CollapsibleContent>
               <div className="flex flex-wrap gap-3 pt-2 border-t">
                 <Select value={industryFilter} onValueChange={handleIndustryChange}>
-                  <SelectTrigger className="w-[260px]">
+226:                   <SelectTrigger className="w-[260px]">
                     <SelectValue placeholder="Industry" />
                   </SelectTrigger>
                   <SelectContent>
@@ -249,6 +249,17 @@ const AdminUsers = () => {
                         {ind}
                       </SelectItem>
                     ))}
+                  </SelectContent>
+                </Select>
+
+                <Select value={statusFilter} onValueChange={(val) => { setStatusFilter(val); setCurrentPage(1); }}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
                   </SelectContent>
                 </Select>
 
