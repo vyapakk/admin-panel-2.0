@@ -1,3 +1,4 @@
+import stratviewLogo from "@/assets/stratview-logo.png";
 import {
   LayoutDashboard,
   Users,
