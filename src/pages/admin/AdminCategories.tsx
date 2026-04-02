@@ -235,7 +235,7 @@ const AdminCategories = () => {
                   </TableCell>
                   <TableCell>
                     <button
-                      onClick={() => handleToggleStatus(cat.id)}
+                      onClick={() => setToggleTarget(cat)}
                       className="flex items-center gap-1.5"
                       title={`Click to ${cat.status === "active" ? "deactivate" : "activate"}`}
                     >
