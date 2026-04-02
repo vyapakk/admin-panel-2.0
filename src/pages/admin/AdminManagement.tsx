@@ -67,6 +67,7 @@ const AdminManagement = () => {
       name: newName.trim(),
       email: newEmail.trim(),
       addedDate: new Date().toISOString().split("T")[0],
+      status: "active",
     };
     setAdmins((prev) => [...prev, newAdmin]);
     setNewName("");
