@@ -347,7 +347,7 @@ const AdminUsers = () => {
                     </TableCell>
                     <TableCell>
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleToggleStatus(user.id); }}
+                        onClick={(e) => { e.stopPropagation(); setToggleTarget(user); }}
                         className="flex items-center gap-1.5"
                         title={`Click to ${user.status === "active" ? "deactivate" : "activate"}`}
                       >
