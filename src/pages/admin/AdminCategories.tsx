@@ -138,6 +138,17 @@ const AdminCategories = () => {
     toast.success("Category deleted");
   };
 
+  // BACKEND INTEGRATION POINT: PUT /api/admin/categories/{id}/status
+  const handleToggleStatus = (id: string) => {
+    setCategories((prev) =>
+      prev.map((c) =>
+        c.id === id ? { ...c, status: c.status === "active" ? "inactive" as const : "active" as const } : c
+      )
+    );
+    const cat = categories.find((c) => c.id === id);
+    toast.success(`Category "${cat?.name}" ${cat?.status === "active" ? "deactivated" : "activated"}`);
+  };
+
   const getColorHex = (color: string) =>
     availableColors.find((c) => c.value === color)?.hex || "#64748b";
 
