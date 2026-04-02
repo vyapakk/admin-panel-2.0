@@ -85,6 +85,15 @@ const AdminDatasets = () => {
     toast.success("Dataset deleted");
   };
 
+  // BACKEND INTEGRATION POINT: PUT /api/admin/datasets/{id}/status
+  const handleToggleStatus = (id: string) => {
+    setDatasets((prev) =>
+      prev.map((d) =>
+        d.id === id ? { ...d, status: d.status === "active" ? "inactive" as const : "active" as const } : d
+      )
+    );
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
