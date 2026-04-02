@@ -51,6 +51,7 @@ const AdminLeads = () => {
   const [leads, setLeads] = useState<AdminLead[]>(mockLeads);
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedLead, setSelectedLead] = useState<AdminLead | null>(null);
   const [exportFrom, setExportFrom] = useState<Date | undefined>();
