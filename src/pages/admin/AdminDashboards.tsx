@@ -14,6 +14,9 @@ import {
   AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Plus, Trash2, Search, BarChart3 } from "lucide-react";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import { type AdminDashboard, mockDashboards } from "@/lib/admin-dashboards-mock";
 import { mockDatasets } from "@/lib/admin-datasets-mock";
@@ -25,6 +28,7 @@ const AdminDashboards = () => {
   const [dashboards, setDashboards] = useState<AdminDashboard[]>(mockDashboards);
   const [datasets] = useState(mockDatasets);
   const [search, setSearch] = useState("");
+  const [datasetFilter, setDatasetFilter] = useState("all");
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const [formName, setFormName] = useState("");
@@ -32,14 +36,14 @@ const AdminDashboards = () => {
   const [formDatasetId, setFormDatasetId] = useState("");
   const [datasetSearch, setDatasetSearch] = useState("");
 
-  const filtered = search
-    ? dashboards.filter(
-        (d) =>
-          d.name.toLowerCase().includes(search.toLowerCase()) ||
-          d.slug.toLowerCase().includes(search.toLowerCase()) ||
-          d.datasetName.toLowerCase().includes(search.toLowerCase())
-      )
-    : dashboards;
+  const filtered = dashboards.filter((d) => {
+    const matchesSearch = !search ||
+      d.name.toLowerCase().includes(search.toLowerCase()) ||
+      d.slug.toLowerCase().includes(search.toLowerCase()) ||
+      d.datasetName.toLowerCase().includes(search.toLowerCase());
+    const matchesDataset = datasetFilter === "all" || d.datasetId === datasetFilter;
+    return matchesSearch && matchesDataset;
+  });
 
   const filteredDatasets = datasetSearch
     ? datasets.filter((ds) =>
@@ -112,14 +116,29 @@ const AdminDashboards = () => {
         </Button>
       </div>
 
-      <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search dashboards..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pl-10"
-        />
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative max-w-sm flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search dashboards..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <Select value={datasetFilter} onValueChange={setDatasetFilter}>
+          <SelectTrigger className="w-[220px]">
+            <SelectValue placeholder="Filter by dataset" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Datasets</SelectItem>
+            {[...new Map(dashboards.map((d) => [d.datasetId, d.datasetName])).entries()].map(
+              ([id, name]) => (
+                <SelectItem key={id} value={id}>{name}</SelectItem>
+              )
+            )}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="rounded-xl border bg-card overflow-hidden">
