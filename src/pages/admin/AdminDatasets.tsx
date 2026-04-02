@@ -35,6 +35,7 @@ const AdminDatasets = () => {
   const [formName, setFormName] = useState("");
   const [formSlug, setFormSlug] = useState("");
   const [formCategoryId, setFormCategoryId] = useState("");
+  const [toggleTarget, setToggleTarget] = useState<AdminDataset | null>(null);
 
   const filtered = search
     ? datasets.filter(
