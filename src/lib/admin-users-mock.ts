@@ -5,7 +5,7 @@
 
 export interface UserAccess {
   id: string;
-  type: "dashboard" | "dataset";
+  type: "dashboard" | "dataset" | "master";
   categoryId: string;
   categoryName: string;
   datasetId: string;
