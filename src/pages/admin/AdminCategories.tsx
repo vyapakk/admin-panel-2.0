@@ -63,6 +63,7 @@ const AdminCategories = () => {
   const [formIcon, setFormIcon] = useState("layers");
   const [formColor, setFormColor] = useState("teal");
   const [formId, setFormId] = useState("");
+  const [toggleTarget, setToggleTarget] = useState<AdminCategory | null>(null);
 
   const filtered = search
     ? categories.filter(
