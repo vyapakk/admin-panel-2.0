@@ -21,6 +21,7 @@ import { Plus, Trash2, Search, Database, ToggleLeft, ToggleRight } from "lucide-
 import { toast } from "sonner";
 import { type AdminDataset, mockDatasets } from "@/lib/admin-datasets-mock";
 import { mockCategories } from "@/lib/admin-categories-mock";
+import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
 const generateSlug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
