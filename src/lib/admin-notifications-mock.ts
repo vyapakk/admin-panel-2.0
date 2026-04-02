@@ -3,7 +3,7 @@
 // Notification types matching the base project's DashboardHeader notification types
 export type NotificationType = "update" | "alert" | "info";
 
-export type TargetAudience = "all" | "individual" | "industry" | "company" | "access";
+export type TargetAudience = "all" | "individual" | "industry" | "company" | "access" | "dataset";
 
 export interface AdminNotification {
   id: string;
@@ -181,4 +181,15 @@ export const categoryOptions = [
   "Composites",
   "Aerospace & Defense",
   "Automotive & Transportation",
+];
+
+// Dataset options for dataset-based targeting
+export const datasetOptions = [
+  "Carbon Fiber Market",
+  "Glass Fiber Composites",
+  "Polymer Matrix Composites",
+  "Aircraft Interiors",
+  "Commercial Aircraft",
+  "Defense Systems",
+  "Electric Vehicle Market",
 ];

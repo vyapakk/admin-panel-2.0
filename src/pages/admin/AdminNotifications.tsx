@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, Plus, Send, Users, User, Building2, FolderTree, Globe, Eye } from "lucide-react";
+import { Bell, Plus, Send, Users, User, Building2, FolderTree, Globe, Eye, Database } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -45,7 +45,9 @@ import {
   industryOptions,
   companyOptions,
   categoryOptions,
+  datasetOptions,
 } from "@/lib/admin-notifications-mock";
+import SearchableCheckboxList from "@/components/admin/SearchableCheckboxList";
 
 const typeColors: Record<NotificationType, string> = {
   update: "bg-blue-100 text-blue-800",
@@ -59,6 +61,7 @@ const audienceLabels: Record<TargetAudience, string> = {
   industry: "By Industry",
   company: "By Company",
   access: "By Access/Category",
+  dataset: "By Dataset",
 };
 
 const audienceIcons: Record<TargetAudience, React.ReactNode> = {
@@ -67,6 +70,7 @@ const audienceIcons: Record<TargetAudience, React.ReactNode> = {
   industry: <Users className="h-3.5 w-3.5" />,
   company: <Building2 className="h-3.5 w-3.5" />,
   access: <FolderTree className="h-3.5 w-3.5" />,
+  dataset: <Database className="h-3.5 w-3.5" />,
 };
 
 const AdminNotifications = () => {
@@ -83,6 +87,7 @@ const AdminNotifications = () => {
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedDatasets, setSelectedDatasets] = useState<string[]>([]);
 
   const resetForm = () => {
     setTitle("");
@@ -93,6 +98,7 @@ const AdminNotifications = () => {
     setSelectedIndustries([]);
     setSelectedCompanies([]);
     setSelectedCategories([]);
+    setSelectedDatasets([]);
   };
 
   const getRecipientCount = (): number => {
@@ -108,6 +114,10 @@ const AdminNotifications = () => {
       case "access":
         return mockUsers.filter((u) =>
           u.accessGrants.some((a) => selectedCategories.includes(a.categoryName))
+        ).length;
+      case "dataset":
+        return mockUsers.filter((u) =>
+          u.accessGrants.some((a) => selectedDatasets.includes(a.datasetName))
         ).length;
       default:
         return 0;
@@ -126,6 +136,8 @@ const AdminNotifications = () => {
         return selectedCompanies.join(", ");
       case "access":
         return selectedCategories.join(", ");
+      case "dataset":
+        return selectedDatasets.join(", ");
       default:
         return "";
     }
@@ -246,17 +258,19 @@ const AdminNotifications = () => {
                     setSelectedIndustries([]);
                     setSelectedCompanies([]);
                     setSelectedCategories([]);
+                    setSelectedDatasets([]);
                   }}
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Users</SelectItem>
+                     <SelectItem value="all">All Users</SelectItem>
                     <SelectItem value="individual">Individual User(s)</SelectItem>
                     <SelectItem value="industry">By Industry</SelectItem>
                     <SelectItem value="company">By Company</SelectItem>
                     <SelectItem value="access">By Category / Access</SelectItem>
+                    <SelectItem value="dataset">By Dataset</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -265,23 +279,12 @@ const AdminNotifications = () => {
               {targetAudience === "individual" && (
                 <div className="space-y-1.5">
                   <Label>Select Users</Label>
-                  <div className="border rounded-md p-2 max-h-40 overflow-y-auto space-y-1">
-                    {mockUsers.map((user) => (
-                      <label
-                        key={user.id}
-                        className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-muted/50 cursor-pointer text-sm"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedEmails.includes(user.email)}
-                          onChange={() => toggleSelection(user.email, selectedEmails, setSelectedEmails)}
-                          className="rounded"
-                        />
-                        <span className="truncate">{user.name}</span>
-                        <span className="text-xs text-muted-foreground ml-auto truncate">{user.email}</span>
-                      </label>
-                    ))}
-                  </div>
+                  <SearchableCheckboxList
+                    items={mockUsers.map((u) => ({ value: u.email, label: u.name, sublabel: u.email }))}
+                    selected={selectedEmails}
+                    onToggle={(v) => toggleSelection(v, selectedEmails, setSelectedEmails)}
+                    placeholder="Search users..."
+                  />
                   {selectedEmails.length > 0 && (
                     <p className="text-xs text-muted-foreground">{selectedEmails.length} user(s) selected</p>
                   )}
@@ -291,26 +294,14 @@ const AdminNotifications = () => {
               {targetAudience === "industry" && (
                 <div className="space-y-1.5">
                   <Label>Select Industries</Label>
-                  <div className="border rounded-md p-2 max-h-40 overflow-y-auto space-y-1">
-                    {industryOptions.map((ind) => (
-                      <label
-                        key={ind}
-                        className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-muted/50 cursor-pointer text-sm"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedIndustries.includes(ind)}
-                          onChange={() => toggleSelection(ind, selectedIndustries, setSelectedIndustries)}
-                          className="rounded"
-                        />
-                        <span>{ind}</span>
-                      </label>
-                    ))}
-                  </div>
+                  <SearchableCheckboxList
+                    items={industryOptions.map((i) => ({ value: i, label: i }))}
+                    selected={selectedIndustries}
+                    onToggle={(v) => toggleSelection(v, selectedIndustries, setSelectedIndustries)}
+                    placeholder="Search industries..."
+                  />
                   {selectedIndustries.length > 0 && (
-                    <p className="text-xs text-muted-foreground">
-                      {getRecipientCount()} matching user(s)
-                    </p>
+                    <p className="text-xs text-muted-foreground">{getRecipientCount()} matching user(s)</p>
                   )}
                 </div>
               )}
@@ -318,26 +309,14 @@ const AdminNotifications = () => {
               {targetAudience === "company" && (
                 <div className="space-y-1.5">
                   <Label>Select Companies</Label>
-                  <div className="border rounded-md p-2 max-h-40 overflow-y-auto space-y-1">
-                    {companyOptions.map((comp) => (
-                      <label
-                        key={comp}
-                        className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-muted/50 cursor-pointer text-sm"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedCompanies.includes(comp)}
-                          onChange={() => toggleSelection(comp, selectedCompanies, setSelectedCompanies)}
-                          className="rounded"
-                        />
-                        <span>{comp}</span>
-                      </label>
-                    ))}
-                  </div>
+                  <SearchableCheckboxList
+                    items={companyOptions.map((c) => ({ value: c, label: c }))}
+                    selected={selectedCompanies}
+                    onToggle={(v) => toggleSelection(v, selectedCompanies, setSelectedCompanies)}
+                    placeholder="Search companies..."
+                  />
                   {selectedCompanies.length > 0 && (
-                    <p className="text-xs text-muted-foreground">
-                      {getRecipientCount()} matching user(s)
-                    </p>
+                    <p className="text-xs text-muted-foreground">{getRecipientCount()} matching user(s)</p>
                   )}
                 </div>
               )}
@@ -345,26 +324,29 @@ const AdminNotifications = () => {
               {targetAudience === "access" && (
                 <div className="space-y-1.5">
                   <Label>Select Categories</Label>
-                  <div className="border rounded-md p-2 max-h-40 overflow-y-auto space-y-1">
-                    {categoryOptions.map((cat) => (
-                      <label
-                        key={cat}
-                        className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-muted/50 cursor-pointer text-sm"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedCategories.includes(cat)}
-                          onChange={() => toggleSelection(cat, selectedCategories, setSelectedCategories)}
-                          className="rounded"
-                        />
-                        <span>{cat}</span>
-                      </label>
-                    ))}
-                  </div>
+                  <SearchableCheckboxList
+                    items={categoryOptions.map((c) => ({ value: c, label: c }))}
+                    selected={selectedCategories}
+                    onToggle={(v) => toggleSelection(v, selectedCategories, setSelectedCategories)}
+                    placeholder="Search categories..."
+                  />
                   {selectedCategories.length > 0 && (
-                    <p className="text-xs text-muted-foreground">
-                      {getRecipientCount()} matching user(s)
-                    </p>
+                    <p className="text-xs text-muted-foreground">{getRecipientCount()} matching user(s)</p>
+                  )}
+                </div>
+              )}
+
+              {targetAudience === "dataset" && (
+                <div className="space-y-1.5">
+                  <Label>Select Datasets</Label>
+                  <SearchableCheckboxList
+                    items={datasetOptions.map((d) => ({ value: d, label: d }))}
+                    selected={selectedDatasets}
+                    onToggle={(v) => toggleSelection(v, selectedDatasets, setSelectedDatasets)}
+                    placeholder="Search datasets..."
+                  />
+                  {selectedDatasets.length > 0 && (
+                    <p className="text-xs text-muted-foreground">{getRecipientCount()} matching user(s)</p>
                   )}
                 </div>
               )}
