@@ -56,6 +56,7 @@ const AdminManagement = () => {
   const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [toggleTarget, setToggleTarget] = useState<AdminEntry | null>(null);
 
   const handleAdd = () => {
     if (!newName.trim() || !newEmail.trim() || !newPassword.trim()) {
