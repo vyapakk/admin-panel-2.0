@@ -31,7 +31,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
-import { UserPlus, Trash2, Shield } from "lucide-react";
+import { UserPlus, Trash2, Shield, ToggleLeft, ToggleRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 // BACKEND INTEGRATION POINT: GET /api/admin/admins
