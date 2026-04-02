@@ -12,9 +12,9 @@ export interface AdminDataset {
 
 // BACKEND INTEGRATION POINT: GET /api/admin/datasets
 export const mockDatasets: AdminDataset[] = [
-  { id: "1", name: "Carbon Fiber Market", slug: "carbon-fiber-market", categoryId: "1", categoryName: "Composites", createdDate: "2025-11-10" },
-  { id: "2", name: "Glass Fiber Market", slug: "glass-fiber-market", categoryId: "1", categoryName: "Composites", createdDate: "2025-12-05" },
-  { id: "3", name: "Commercial Aircraft Market", slug: "commercial-aircraft-market", categoryId: "2", categoryName: "Aerospace & Defense", createdDate: "2026-01-15" },
-  { id: "4", name: "EV Battery Market", slug: "ev-battery-market", categoryId: "3", categoryName: "Automotive & Transportation", createdDate: "2026-02-20" },
-  { id: "5", name: "Defense Composites Market", slug: "defense-composites-market", categoryId: "2", categoryName: "Aerospace & Defense", createdDate: "2026-03-01" },
+  { id: "1", name: "Carbon Fiber Market", slug: "carbon-fiber-market", categoryId: "1", categoryName: "Composites", createdDate: "2025-11-10", status: "active" },
+  { id: "2", name: "Glass Fiber Market", slug: "glass-fiber-market", categoryId: "1", categoryName: "Composites", createdDate: "2025-12-05", status: "active" },
+  { id: "3", name: "Commercial Aircraft Market", slug: "commercial-aircraft-market", categoryId: "2", categoryName: "Aerospace & Defense", createdDate: "2026-01-15", status: "active" },
+  { id: "4", name: "EV Battery Market", slug: "ev-battery-market", categoryId: "3", categoryName: "Automotive & Transportation", createdDate: "2026-02-20", status: "active" },
+  { id: "5", name: "Defense Composites Market", slug: "defense-composites-market", categoryId: "2", categoryName: "Aerospace & Defense", createdDate: "2026-03-01", status: "inactive" },
 ];
