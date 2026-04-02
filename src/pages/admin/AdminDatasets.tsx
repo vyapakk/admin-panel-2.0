@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -16,7 +17,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
   AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Plus, Trash2, Search, Database } from "lucide-react";
+import { Plus, Trash2, Search, Database, ToggleLeft, ToggleRight } from "lucide-react";
 import { toast } from "sonner";
 import { type AdminDataset, mockDatasets } from "@/lib/admin-datasets-mock";
 import { mockCategories } from "@/lib/admin-categories-mock";
@@ -72,6 +73,7 @@ const AdminDatasets = () => {
         categoryId: formCategoryId,
         categoryName: cat?.name || "Unknown",
         createdDate: new Date().toISOString().split("T")[0],
+        status: "active" as const,
       },
     ]);
     toast.success(`Dataset "${formName}" created`);
@@ -82,6 +84,15 @@ const AdminDatasets = () => {
   const handleDelete = (id: string) => {
     setDatasets((prev) => prev.filter((d) => d.id !== id));
     toast.success("Dataset deleted");
+  };
+
+  // BACKEND INTEGRATION POINT: PUT /api/admin/datasets/{id}/status
+  const handleToggleStatus = (id: string) => {
+    setDatasets((prev) =>
+      prev.map((d) =>
+        d.id === id ? { ...d, status: d.status === "active" ? "inactive" as const : "active" as const } : d
+      )
+    );
   };
 
   return (
@@ -123,13 +134,14 @@ const AdminDatasets = () => {
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Slug</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Category</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Created</TableHead>
+              <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Status</TableHead>
               <TableHead className="font-semibold text-right" style={{ color: "#1b4263" }}>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
+                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
                   No datasets found
                 </TableCell>
               </TableRow>
@@ -145,6 +157,26 @@ const AdminDatasets = () => {
                     <span className="text-sm">{ds.categoryName}</span>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">{ds.createdDate}</TableCell>
+                  <TableCell>
+                    <button
+                      onClick={() => handleToggleStatus(ds.id)}
+                      className="flex items-center gap-1.5"
+                      title={`Click to ${ds.status === "active" ? "deactivate" : "activate"}`}
+                    >
+                      {ds.status === "active" ? (
+                        <ToggleRight className="h-5 w-5" style={{ color: "#0d9488" }} />
+                      ) : (
+                        <ToggleLeft className="h-5 w-5 text-muted-foreground" />
+                      )}
+                      <Badge
+                        variant={ds.status === "active" ? "default" : "secondary"}
+                        className="text-[10px]"
+                        style={ds.status === "active" ? { backgroundColor: "#0d948820", color: "#0d9488" } : {}}
+                      >
+                        {ds.status === "active" ? "Active" : "Inactive"}
+                      </Badge>
+                    </button>
+                  </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end">
                       <AlertDialog>

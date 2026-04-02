@@ -36,7 +36,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, ToggleLeft, ToggleRight } from "lucide-react";
 import { Icon } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -113,7 +113,7 @@ const AdminCategories = () => {
       setCategories((prev) =>
         prev.map((c) =>
           c.id === editingCategory.id
-            ? { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor }
+            ? { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor, status: c.status }
             : c
         )
       );
@@ -125,7 +125,7 @@ const AdminCategories = () => {
       }
       setCategories((prev) => [
         ...prev,
-        { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor },
+        { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor, status: "active" as const },
       ]);
       toast.success(`Category "${formName}" created`);
     }
@@ -136,6 +136,17 @@ const AdminCategories = () => {
   const handleDelete = (id: string) => {
     setCategories((prev) => prev.filter((c) => c.id !== id));
     toast.success("Category deleted");
+  };
+
+  // BACKEND INTEGRATION POINT: PUT /api/admin/categories/{id}/status
+  const handleToggleStatus = (id: string) => {
+    setCategories((prev) =>
+      prev.map((c) =>
+        c.id === id ? { ...c, status: c.status === "active" ? "inactive" as const : "active" as const } : c
+      )
+    );
+    const cat = categories.find((c) => c.id === id);
+    toast.success(`Category "${cat?.name}" ${cat?.status === "active" ? "deactivated" : "activated"}`);
   };
 
   const getColorHex = (color: string) =>
@@ -183,17 +194,17 @@ const AdminCategories = () => {
           <TableHeader>
             <TableRow className="bg-muted/30">
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Icon</TableHead>
-              
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Category Name</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Slug</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Color</TableHead>
+              <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Status</TableHead>
               <TableHead className="font-semibold text-right" style={{ color: "#1b4263" }}>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
+                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
                   No categories found
                 </TableCell>
               </TableRow>
@@ -218,6 +229,26 @@ const AdminCategories = () => {
                       />
                       <span className="text-sm capitalize">{cat.color}</span>
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    <button
+                      onClick={() => handleToggleStatus(cat.id)}
+                      className="flex items-center gap-1.5"
+                      title={`Click to ${cat.status === "active" ? "deactivate" : "activate"}`}
+                    >
+                      {cat.status === "active" ? (
+                        <ToggleRight className="h-5 w-5" style={{ color: "#0d9488" }} />
+                      ) : (
+                        <ToggleLeft className="h-5 w-5 text-muted-foreground" />
+                      )}
+                      <Badge
+                        variant={cat.status === "active" ? "default" : "secondary"}
+                        className="text-[10px]"
+                        style={cat.status === "active" ? { backgroundColor: "#0d948820", color: "#0d9488" } : {}}
+                      >
+                        {cat.status === "active" ? "Active" : "Inactive"}
+                      </Badge>
+                    </button>
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">

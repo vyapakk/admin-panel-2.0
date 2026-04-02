@@ -118,6 +118,7 @@ const CreateUserDialog = ({ open, onClose, onUserCreated }: CreateUserDialogProp
         signupTime: now.toTimeString().slice(0, 8),
         
         lastLogin: null,
+        status: "active",
         accessGrants: [],
       };
 

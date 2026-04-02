@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Search, Download, Filter, ChevronDown, X, UserPlus, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Download, Filter, ChevronDown, X, UserPlus, ChevronLeft, ChevronRight, ToggleLeft, ToggleRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -50,6 +50,7 @@ const industries = [
 const AdminUsers = () => {
   const [search, setSearch] = useState("");
   const [industryFilter, setIndustryFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null);
   const [users, setUsers] = useState<AdminUser[]>(mockUsers);
@@ -71,9 +72,12 @@ const AdminUsers = () => {
       const matchesIndustry =
         industryFilter === "all" || user.industries.includes(industryFilter);
 
-      return matchesSearch && matchesIndustry;
+      const matchesStatus =
+        statusFilter === "all" || user.status === statusFilter;
+
+      return matchesSearch && matchesIndustry && matchesStatus;
     });
-  }, [users, search, industryFilter]);
+  }, [users, search, industryFilter, statusFilter]);
 
   const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
   const paginatedUsers = filteredUsers.slice(
@@ -92,7 +96,7 @@ const AdminUsers = () => {
     setCurrentPage(1);
   };
 
-  const activeFiltersCount = industryFilter !== "all" ? 1 : 0;
+  const activeFiltersCount = (industryFilter !== "all" ? 1 : 0) + (statusFilter !== "all" ? 1 : 0);
 
   const handleExportCSV = () => {
     // BACKEND INTEGRATION POINT: GET /api/admin/users/export?format=csv
@@ -117,7 +121,19 @@ const AdminUsers = () => {
 
   const clearFilters = () => {
     setIndustryFilter("all");
+    setStatusFilter("all");
     setCurrentPage(1);
+  };
+
+  const handleToggleStatus = (userId: number) => {
+    // BACKEND INTEGRATION POINT: PUT /api/admin/users/{id}/status
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === userId
+          ? { ...u, status: u.status === "active" ? "inactive" as const : "active" as const }
+          : u
+      )
+    );
   };
 
   const handleUserUpdate = (updatedUser: AdminUser) => {
@@ -223,7 +239,7 @@ const AdminUsers = () => {
             <CollapsibleContent>
               <div className="flex flex-wrap gap-3 pt-2 border-t">
                 <Select value={industryFilter} onValueChange={handleIndustryChange}>
-                  <SelectTrigger className="w-[260px]">
+226:                   <SelectTrigger className="w-[260px]">
                     <SelectValue placeholder="Industry" />
                   </SelectTrigger>
                   <SelectContent>
@@ -233,6 +249,17 @@ const AdminUsers = () => {
                         {ind}
                       </SelectItem>
                     ))}
+                  </SelectContent>
+                </Select>
+
+                <Select value={statusFilter} onValueChange={(val) => { setStatusFilter(val); setCurrentPage(1); }}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -258,13 +285,14 @@ const AdminUsers = () => {
                 <TableHead className="hidden lg:table-cell">Designation</TableHead>
                 <TableHead className="hidden md:table-cell">Phone</TableHead>
                 <TableHead className="hidden xl:table-cell">Industries</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead className="text-right pr-6">Signup Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {paginatedUsers.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-12 text-muted-foreground">
+                  <TableCell colSpan={8} className="text-center py-12 text-muted-foreground">
                     No users found matching your criteria.
                   </TableCell>
                 </TableRow>
@@ -312,6 +340,26 @@ const AdminUsers = () => {
                           </Badge>
                         )}
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleToggleStatus(user.id); }}
+                        className="flex items-center gap-1.5"
+                        title={`Click to ${user.status === "active" ? "deactivate" : "activate"}`}
+                      >
+                        {user.status === "active" ? (
+                          <ToggleRight className="h-5 w-5" style={{ color: "#0d9488" }} />
+                        ) : (
+                          <ToggleLeft className="h-5 w-5 text-muted-foreground" />
+                        )}
+                        <Badge
+                          variant={user.status === "active" ? "default" : "secondary"}
+                          className="text-[10px]"
+                          style={user.status === "active" ? { backgroundColor: "#0d948820", color: "#0d9488" } : {}}
+                        >
+                          {user.status === "active" ? "Active" : "Inactive"}
+                        </Badge>
+                      </button>
                     </TableCell>
                     <TableCell className="text-right pr-6">
                       <div>

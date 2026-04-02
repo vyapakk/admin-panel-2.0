@@ -31,7 +31,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
-import { UserPlus, Trash2, Shield } from "lucide-react";
+import { UserPlus, Trash2, Shield, ToggleLeft, ToggleRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 // BACKEND INTEGRATION POINT: GET /api/admin/admins
@@ -40,10 +40,11 @@ interface AdminEntry {
   name: string;
   email: string;
   addedDate: string;
+  status: "active" | "inactive";
 }
 
 const initialAdmins: AdminEntry[] = [
-  { id: 1, name: "Admin", email: "admin@stratviewresearch.com", addedDate: "2026-01-01" },
+  { id: 1, name: "Admin", email: "admin@stratviewresearch.com", addedDate: "2026-01-01", status: "active" },
 ];
 
 const AdminManagement = () => {
@@ -66,6 +67,7 @@ const AdminManagement = () => {
       name: newName.trim(),
       email: newEmail.trim(),
       addedDate: new Date().toISOString().split("T")[0],
+      status: "active",
     };
     setAdmins((prev) => [...prev, newAdmin]);
     setNewName("");
@@ -86,6 +88,15 @@ const AdminManagement = () => {
     setAdmins((prev) => prev.filter((a) => a.id !== deleteTarget.id));
     toast({ title: `Admin "${deleteTarget.name}" removed` });
     setDeleteTarget(null);
+  };
+
+  // BACKEND INTEGRATION POINT: PUT /api/admin/admins/{id}/status
+  const handleToggleStatus = (id: number) => {
+    setAdmins((prev) =>
+      prev.map((a) =>
+        a.id === id ? { ...a, status: a.status === "active" ? "inactive" as const : "active" as const } : a
+      )
+    );
   };
 
   return (
@@ -150,6 +161,7 @@ const AdminManagement = () => {
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Added</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead className="text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -159,6 +171,26 @@ const AdminManagement = () => {
                   <TableCell className="font-medium">{admin.name}</TableCell>
                   <TableCell>{admin.email}</TableCell>
                   <TableCell>{admin.addedDate}</TableCell>
+                  <TableCell>
+                    <button
+                      onClick={() => handleToggleStatus(admin.id)}
+                      className="flex items-center gap-1.5"
+                      title={`Click to ${admin.status === "active" ? "deactivate" : "activate"}`}
+                    >
+                      {admin.status === "active" ? (
+                        <ToggleRight className="h-5 w-5" style={{ color: "#0d9488" }} />
+                      ) : (
+                        <ToggleLeft className="h-5 w-5 text-muted-foreground" />
+                      )}
+                      <Badge
+                        variant={admin.status === "active" ? "default" : "secondary"}
+                        className="text-[10px]"
+                        style={admin.status === "active" ? { backgroundColor: "#0d948820", color: "#0d9488" } : {}}
+                      >
+                        {admin.status === "active" ? "Active" : "Inactive"}
+                      </Badge>
+                    </button>
+                  </TableCell>
                   <TableCell className="text-right">
                     {admins.length > 1 ? (
                       <Button

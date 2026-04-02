@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -13,7 +14,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
   AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Plus, Trash2, Search, BarChart3 } from "lucide-react";
+import { Plus, Trash2, Search, BarChart3, ToggleLeft, ToggleRight } from "lucide-react";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
@@ -82,6 +83,7 @@ const AdminDashboards = () => {
         datasetId: formDatasetId,
         datasetName: ds?.name || "Unknown",
         createdDate: new Date().toISOString().split("T")[0],
+        status: "active" as const,
       },
     ]);
     toast.success(`Dashboard "${formName}" created`);
@@ -92,6 +94,15 @@ const AdminDashboards = () => {
   const handleDelete = (id: string) => {
     setDashboards((prev) => prev.filter((d) => d.id !== id));
     toast.success("Dashboard deleted");
+  };
+
+  // BACKEND INTEGRATION POINT: PUT /api/admin/dashboards/{id}/status
+  const handleToggleStatus = (id: string) => {
+    setDashboards((prev) =>
+      prev.map((d) =>
+        d.id === id ? { ...d, status: d.status === "active" ? "inactive" as const : "active" as const } : d
+      )
+    );
   };
 
   const selectedDataset = datasets.find((d) => d.id === formDatasetId);
@@ -149,13 +160,14 @@ const AdminDashboards = () => {
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Slug</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Dataset</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Created</TableHead>
+              <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Status</TableHead>
               <TableHead className="font-semibold text-right" style={{ color: "#1b4263" }}>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
+                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
                   No dashboards found
                 </TableCell>
               </TableRow>
@@ -169,6 +181,26 @@ const AdminDashboards = () => {
                   <TableCell className="text-sm text-muted-foreground">{db.slug}</TableCell>
                   <TableCell className="text-sm">{db.datasetName}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{db.createdDate}</TableCell>
+                  <TableCell>
+                    <button
+                      onClick={() => handleToggleStatus(db.id)}
+                      className="flex items-center gap-1.5"
+                      title={`Click to ${db.status === "active" ? "deactivate" : "activate"}`}
+                    >
+                      {db.status === "active" ? (
+                        <ToggleRight className="h-5 w-5" style={{ color: "#0d9488" }} />
+                      ) : (
+                        <ToggleLeft className="h-5 w-5 text-muted-foreground" />
+                      )}
+                      <Badge
+                        variant={db.status === "active" ? "default" : "secondary"}
+                        className="text-[10px]"
+                        style={db.status === "active" ? { backgroundColor: "#0d948820", color: "#0d9488" } : {}}
+                      >
+                        {db.status === "active" ? "Active" : "Inactive"}
+                      </Badge>
+                    </button>
+                  </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end">
                       <AlertDialog>
