@@ -82,6 +82,7 @@ const AdminDashboards = () => {
         datasetId: formDatasetId,
         datasetName: ds?.name || "Unknown",
         createdDate: new Date().toISOString().split("T")[0],
+        status: "active" as const,
       },
     ]);
     toast.success(`Dashboard "${formName}" created`);

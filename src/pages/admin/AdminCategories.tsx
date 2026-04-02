@@ -113,7 +113,7 @@ const AdminCategories = () => {
       setCategories((prev) =>
         prev.map((c) =>
           c.id === editingCategory.id
-            ? { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor }
+            ? { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor, status: c.status }
             : c
         )
       );
@@ -125,7 +125,7 @@ const AdminCategories = () => {
       }
       setCategories((prev) => [
         ...prev,
-        { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor },
+        { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor, status: "active" as const },
       ]);
       toast.success(`Category "${formName}" created`);
     }

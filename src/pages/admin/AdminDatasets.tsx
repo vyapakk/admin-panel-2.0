@@ -72,6 +72,7 @@ const AdminDatasets = () => {
         categoryId: formCategoryId,
         categoryName: cat?.name || "Unknown",
         createdDate: new Date().toISOString().split("T")[0],
+        status: "active" as const,
       },
     ]);
     toast.success(`Dataset "${formName}" created`);
