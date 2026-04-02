@@ -574,12 +574,14 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
                         <Badge variant="secondary" className={`text-[10px] capitalize ${statusColors[access.status]}`}>
                           {access.status}
                         </Badge>
-                        <span className="text-xs text-muted-foreground">
-                          {access.categoryName}
-                        </span>
+                        {access.type !== "master" && (
+                          <span className="text-xs text-muted-foreground">
+                            {access.categoryName}
+                          </span>
+                        )}
                       </div>
                       <p className="text-sm font-medium mt-1">
-                        {access.type === "dashboard" ? access.dashboardName : access.datasetName}
+                        {access.type === "master" ? "All Datasets & Dashboards" : access.type === "dashboard" ? access.dashboardName : access.datasetName}
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">
                         Was valid until {access.validUntil}
