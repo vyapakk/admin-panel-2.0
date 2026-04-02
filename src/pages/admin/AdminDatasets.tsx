@@ -16,7 +16,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
   AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Plus, Trash2, Search, Database } from "lucide-react";
+import { Plus, Trash2, Search, Database, ToggleLeft, ToggleRight } from "lucide-react";
 import { toast } from "sonner";
 import { type AdminDataset, mockDatasets } from "@/lib/admin-datasets-mock";
 import { mockCategories } from "@/lib/admin-categories-mock";
