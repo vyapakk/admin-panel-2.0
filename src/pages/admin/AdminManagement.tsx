@@ -171,6 +171,26 @@ const AdminManagement = () => {
                   <TableCell className="font-medium">{admin.name}</TableCell>
                   <TableCell>{admin.email}</TableCell>
                   <TableCell>{admin.addedDate}</TableCell>
+                  <TableCell>
+                    <button
+                      onClick={() => handleToggleStatus(admin.id)}
+                      className="flex items-center gap-1.5"
+                      title={`Click to ${admin.status === "active" ? "deactivate" : "activate"}`}
+                    >
+                      {admin.status === "active" ? (
+                        <ToggleRight className="h-5 w-5" style={{ color: "#0d9488" }} />
+                      ) : (
+                        <ToggleLeft className="h-5 w-5 text-muted-foreground" />
+                      )}
+                      <Badge
+                        variant={admin.status === "active" ? "default" : "secondary"}
+                        className="text-[10px]"
+                        style={admin.status === "active" ? { backgroundColor: "#0d948820", color: "#0d9488" } : {}}
+                      >
+                        {admin.status === "active" ? "Active" : "Inactive"}
+                      </Badge>
+                    </button>
+                  </TableCell>
                   <TableCell className="text-right">
                     {admins.length > 1 ? (
                       <Button
