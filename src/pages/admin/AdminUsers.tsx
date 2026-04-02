@@ -96,7 +96,7 @@ const AdminUsers = () => {
     setCurrentPage(1);
   };
 
-  const activeFiltersCount = industryFilter !== "all" ? 1 : 0;
+  const activeFiltersCount = (industryFilter !== "all" ? 1 : 0) + (statusFilter !== "all" ? 1 : 0);
 
   const handleExportCSV = () => {
     // BACKEND INTEGRATION POINT: GET /api/admin/users/export?format=csv
