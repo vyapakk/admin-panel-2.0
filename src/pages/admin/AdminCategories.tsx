@@ -46,6 +46,7 @@ import {
   availableIcons,
 } from "@/lib/admin-categories-mock";
 import CategoryIconPreview from "@/components/admin/CategoryIconPreview";
+import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
 const generateSlug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
