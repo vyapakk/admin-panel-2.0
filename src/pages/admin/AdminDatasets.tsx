@@ -260,6 +260,7 @@ const AdminDatasets = () => {
         </div>
       )}
 
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle style={{ color: "#1b4263", fontFamily: "'Poppins', sans-serif" }}>
