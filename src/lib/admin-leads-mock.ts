@@ -11,6 +11,7 @@ export interface AdminLead {
   company: string;
   designation: string;
   resolved: boolean;
+  resolvedBy?: string; // Admin name who resolved this lead
   // Access Request specific
   datasetName?: string;
   // Subscription Inquiry specific

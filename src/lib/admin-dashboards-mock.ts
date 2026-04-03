@@ -13,7 +13,7 @@ export interface AdminDashboard {
 
 // BACKEND INTEGRATION POINT: GET /api/admin/dashboards
 export const mockDashboards: AdminDashboard[] = [
-  { id: "1", name: "Carbon Fiber Overview", slug: "carbon-fiber-overview", datasetId: "1", datasetName: "Carbon Fiber Market", createdDate: "2025-12-01", status: "active" },
-  { id: "2", name: "EV Battery Trends", slug: "ev-battery-trends", datasetId: "4", datasetName: "EV Battery Market", createdDate: "2026-01-20", status: "active" },
-  { id: "3", name: "Defense Composites Analysis", slug: "defense-composites-analysis", datasetId: "5", datasetName: "Defense Composites Market", createdDate: "2026-03-10", status: "inactive" },
+  { id: "1", name: "Carbon Fiber Overview", slug: "carbon-fiber-overview", datasetId: "1", datasetName: "Carbon Fiber Market", createdDate: "2025-12-01", status: "active", createdBy: "Admin" },
+  { id: "2", name: "EV Battery Trends", slug: "ev-battery-trends", datasetId: "4", datasetName: "EV Battery Market", createdDate: "2026-01-20", status: "active", createdBy: "Admin" },
+  { id: "3", name: "Defense Composites Analysis", slug: "defense-composites-analysis", datasetId: "5", datasetName: "Defense Composites Market", createdDate: "2026-03-10", status: "inactive", createdBy: "Admin" },
 ];
