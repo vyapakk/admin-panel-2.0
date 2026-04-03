@@ -76,6 +76,8 @@ const AdminManagement = () => {
   const [newRole, setNewRole] = useState<AdminRole>("content_admin");
   const [toggleTarget, setToggleTarget] = useState<AdminEntry | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [editTarget, setEditTarget] = useState<AdminEntry | null>(null);
+  const [editRole, setEditRole] = useState<AdminRole>("content_admin");
 
   const totalPages = Math.ceil(admins.length / ITEMS_PER_PAGE);
   const paginated = admins.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
