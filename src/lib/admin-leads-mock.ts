@@ -99,6 +99,7 @@ export const mockLeads: AdminLead[] = [
     designation: "Procurement Manager",
     datasetName: "Wind Energy Composites Market",
     resolved: true,
+    resolvedBy: "Admin",
     submittedAt: "2025-03-23T13:10:00Z",
   },
   {
