@@ -227,7 +227,7 @@ const AdminCategories = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              filtered.map((cat) => (
+              paginated.map((cat) => (
                 <TableRow key={cat.id} className="group hover:bg-muted/20 transition-colors">
                   <TableCell>
                     <div
