@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Bell, Plus, Send, Users, User, Building2, FolderTree, Globe, Eye, Database } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Bell, Plus, Send, Users, User, Building2, FolderTree, Globe, Eye, Database, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -73,10 +73,19 @@ const audienceIcons: Record<TargetAudience, React.ReactNode> = {
   dataset: <Database className="h-3.5 w-3.5" />,
 };
 
+const PAGE_SIZE = 10;
+
 const AdminNotifications = () => {
   const [notifications, setNotifications] = useState<AdminNotification[]>(mockNotifications);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [detailNotif, setDetailNotif] = useState<AdminNotification | null>(null);
+
+  // Filter & pagination state
+  const [search, setSearch] = useState("");
+  const [filterType, setFilterType] = useState<string>("all");
+  const [filterAudience, setFilterAudience] = useState<string>("all");
+  const [filterSentBy, setFilterSentBy] = useState<string>("all");
+  const [page, setPage] = useState(1);
 
   // Form state
   const [title, setTitle] = useState("");
@@ -183,7 +192,41 @@ const AdminNotifications = () => {
     setter((prev) => (prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]));
   };
 
-  const displayedNotifications = notifications.slice(0, 20);
+  // Filtered & paginated notifications
+  const uniqueSentBy = useMemo(() => [...new Set(notifications.map((n) => n.sentBy))], [notifications]);
+
+  const filtered = useMemo(() => {
+    return notifications.filter((n) => {
+      const q = search.toLowerCase();
+      const matchesSearch = !search ||
+        n.title.toLowerCase().includes(q) ||
+        n.message.toLowerCase().includes(q) ||
+        n.targetDetails.toLowerCase().includes(q) ||
+        n.sentBy.toLowerCase().includes(q) ||
+        n.sentDate.includes(q);
+      const matchesType = filterType === "all" || n.type === filterType;
+      const matchesAudience = filterAudience === "all" || n.targetAudience === filterAudience;
+      const matchesSentBy = filterSentBy === "all" || n.sentBy === filterSentBy;
+      return matchesSearch && matchesType && matchesAudience && matchesSentBy;
+    });
+  }, [notifications, search, filterType, filterAudience, filterSentBy]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const displayedNotifications = filtered.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setPage(1);
+  };
+
+  const handleFilterChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (val: string) => {
+    setter(val);
+    setPage(1);
+  };
 
   return (
     <div className="space-y-6">
@@ -378,14 +421,64 @@ const AdminNotifications = () => {
         </Dialog>
       </div>
 
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search by title, message, target, admin..."
+            value={search}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+        <Select value={filterType} onValueChange={handleFilterChange(setFilterType)}>
+          <SelectTrigger className="w-[140px]">
+            <SelectValue placeholder="Type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Types</SelectItem>
+            <SelectItem value="info">Info</SelectItem>
+            <SelectItem value="update">Update</SelectItem>
+            <SelectItem value="alert">Alert</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={filterAudience} onValueChange={handleFilterChange(setFilterAudience)}>
+          <SelectTrigger className="w-[170px]">
+            <SelectValue placeholder="Audience" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Audiences</SelectItem>
+            <SelectItem value="all_users">All Users</SelectItem>
+            <SelectItem value="individual">Individual</SelectItem>
+            <SelectItem value="industry">By Industry</SelectItem>
+            <SelectItem value="company">By Company</SelectItem>
+            <SelectItem value="access">By Category</SelectItem>
+            <SelectItem value="dataset">By Dataset</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={filterSentBy} onValueChange={handleFilterChange(setFilterSentBy)}>
+          <SelectTrigger className="w-[150px]">
+            <SelectValue placeholder="Sent By" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Admins</SelectItem>
+            {uniqueSentBy.map((name) => (
+              <SelectItem key={name} value={name}>{name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* History */}
       <div className="bg-white rounded-xl border shadow-sm">
         <div className="px-5 py-4 border-b flex items-center justify-between">
           <h2 className="font-semibold" style={{ color: "#1b4263" }}>
-            Recent Notifications
+            Notification History
           </h2>
           <span className="text-xs text-muted-foreground">
-            Showing last {displayedNotifications.length} notifications
+            {filtered.length} notification{filtered.length !== 1 ? "s" : ""}
+            {filtered.length !== notifications.length && ` (of ${notifications.length})`}
           </span>
         </div>
         <Table>
@@ -396,15 +489,18 @@ const AdminNotifications = () => {
               <TableHead>Audience</TableHead>
               <TableHead>Recipients</TableHead>
               <TableHead>Date</TableHead>
+              <TableHead>Sent By</TableHead>
               <TableHead className="w-[60px]"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {displayedNotifications.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
+                <TableCell colSpan={7} className="text-center py-10 text-muted-foreground">
                   <Bell className="h-8 w-8 mx-auto mb-2 opacity-40" />
-                  No notifications sent yet.
+                  {search || filterType !== "all" || filterAudience !== "all" || filterSentBy !== "all"
+                    ? "No notifications match your filters."
+                    : "No notifications sent yet."}
                 </TableCell>
               </TableRow>
             ) : (
@@ -424,6 +520,7 @@ const AdminNotifications = () => {
                   </TableCell>
                   <TableCell>{notif.recipientCount}</TableCell>
                   <TableCell className="text-muted-foreground text-sm">{notif.sentDate}</TableCell>
+                  <TableCell className="text-muted-foreground text-sm">{notif.sentBy}</TableCell>
                   <TableCell>
                     <Button
                       variant="ghost"
@@ -441,7 +538,33 @@ const AdminNotifications = () => {
         </Table>
       </div>
 
-      {/* Detail Sheet */}
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">
+            Page {currentPage} of {totalPages}
+          </span>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="h-4 w-4 mr-1" /> Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+            >
+              Next <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          </div>
+        </div>
+      )}
+
       <Sheet open={!!detailNotif} onOpenChange={(open) => !open && setDetailNotif(null)}>
         <SheetContent>
           <SheetHeader>
