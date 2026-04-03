@@ -208,7 +208,7 @@ export const mockUsers: AdminUser[] = [
     id: 10, name: "Tom Anderson", company: "Peak Industries", designation: "Business Analyst",
     phone: "+1 (503) 555-1010", email: "tanderson@peak.io",
     industries: ["Building & Construction", "Engineering"], signupDate: "2026-03-21", signupTime: "13:00:30",
-    lastLogin: "2026-03-28 12:45", status: "inactive",
+    lastLogin: "2026-03-28 12:45", status: "inactive", adminRole: "sales_admin",
     accessGrants: [
       { id: "a7", type: "dashboard", categoryId: "aerospace-defense", categoryName: "Aerospace & Defense", datasetId: "commercial-aircraft", datasetName: "Commercial Aircraft", dashboardId: "ca-fleet", dashboardName: "Global Fleet Analysis", grantedDate: "2026-03-21", validUntil: "2026-03-21", status: "expired" },
     ],
