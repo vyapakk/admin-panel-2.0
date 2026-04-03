@@ -464,6 +464,9 @@ const AdminLeads = () => {
                   )}
 
                   <DetailRow label="Submitted At" value={formatDateTime(selectedLead.submittedAt)} />
+                  {selectedLead.resolved && selectedLead.resolvedBy && (
+                    <DetailRow label="Resolved By" value={selectedLead.resolvedBy} />
+                  )}
                 </div>
 
                 <div className="flex gap-2 pt-2 border-t">
