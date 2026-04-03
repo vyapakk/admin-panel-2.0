@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Bell, Plus, Send, Users, User, Building2, FolderTree, Globe, Eye, Database } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Bell, Plus, Send, Users, User, Building2, FolderTree, Globe, Eye, Database, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
