@@ -41,7 +41,7 @@ import {
   Trash2,
   Search,
 } from "lucide-react";
-import { type AdminUser, type UserAccess, mockCatalog } from "@/lib/admin-users-mock";
+import { type AdminUser, type UserAccess, mockCatalog, adminRoleLabels } from "@/lib/admin-users-mock";
 import { toast } from "sonner";
 
 interface UserDetailSheetProps {
