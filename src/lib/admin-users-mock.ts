@@ -193,7 +193,7 @@ export const mockUsers: AdminUser[] = [
     id: 8, name: "Raj Patel", company: "DataDriven", designation: "Consultant",
     phone: "+91 91234 56789", email: "raj.patel@datadriven.in",
     industries: ["Mining, Metals & Minerals", "Energy & Power"], signupDate: "2026-03-23", signupTime: "07:45:10",
-    lastLogin: "2026-03-29 17:30", status: "active", accessGrants: [],
+    lastLogin: "2026-03-29 17:30", status: "active", adminRole: "super_admin", accessGrants: [],
   },
   {
     id: 9, name: "Lisa Chang", company: "SmartSys", designation: "Research Lead",
