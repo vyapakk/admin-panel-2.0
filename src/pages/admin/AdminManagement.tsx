@@ -22,7 +22,7 @@ import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDia
 // BACKEND INTEGRATION POINT: Role-to-module access mapping
 // Super Admin:   Overview, Users, Admin Mgmt, Categories, Datasets, Dashboards, Leads, Notifications
 // Content Admin: Overview, Categories, Datasets, Dashboards, Notifications
-// Sales Admin:   Overview, Notifications
+// Sales Admin:   Overview, Leads, Notifications
 
 type AdminRole = "super_admin" | "content_admin" | "sales_admin";
 
@@ -50,7 +50,7 @@ const roleConfig: Record<AdminRole, { label: string; description: string; bgColo
   },
   sales_admin: {
     label: "Sales Admin",
-    description: "Overview, Notifications",
+    description: "Overview, Leads, Notifications",
     bgColor: "#4fc9ab20",
     textColor: "#0a6e55",
   },
