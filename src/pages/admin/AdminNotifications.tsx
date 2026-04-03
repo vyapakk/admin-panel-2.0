@@ -73,10 +73,19 @@ const audienceIcons: Record<TargetAudience, React.ReactNode> = {
   dataset: <Database className="h-3.5 w-3.5" />,
 };
 
+const PAGE_SIZE = 10;
+
 const AdminNotifications = () => {
   const [notifications, setNotifications] = useState<AdminNotification[]>(mockNotifications);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [detailNotif, setDetailNotif] = useState<AdminNotification | null>(null);
+
+  // Filter & pagination state
+  const [search, setSearch] = useState("");
+  const [filterType, setFilterType] = useState<string>("all");
+  const [filterAudience, setFilterAudience] = useState<string>("all");
+  const [filterSentBy, setFilterSentBy] = useState<string>("all");
+  const [page, setPage] = useState(1);
 
   // Form state
   const [title, setTitle] = useState("");
