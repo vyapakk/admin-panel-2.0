@@ -208,7 +208,7 @@ const AdminCategories = () => {
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
                   No categories found
                 </TableCell>
               </TableRow>
