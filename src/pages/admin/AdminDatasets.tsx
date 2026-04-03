@@ -38,12 +38,17 @@ const AdminDatasets = () => {
   const [toggleTarget, setToggleTarget] = useState<AdminDataset | null>(null);
 
   const filtered = search
-    ? datasets.filter(
-        (d) =>
-          d.name.toLowerCase().includes(search.toLowerCase()) ||
-          d.slug.toLowerCase().includes(search.toLowerCase()) ||
-          d.categoryName.toLowerCase().includes(search.toLowerCase())
-      )
+    ? datasets.filter((d) => {
+        const q = search.toLowerCase();
+        return (
+          d.name.toLowerCase().includes(q) ||
+          d.slug.toLowerCase().includes(q) ||
+          d.categoryName.toLowerCase().includes(q) ||
+          d.createdBy.toLowerCase().includes(q) ||
+          d.createdDate.includes(q) ||
+          d.status.toLowerCase().includes(q)
+        );
+      })
     : datasets;
 
   const openCreateDialog = () => {
@@ -123,7 +128,7 @@ const AdminDatasets = () => {
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search datasets..."
+          placeholder="Search by name, slug, category, admin..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="pl-10"

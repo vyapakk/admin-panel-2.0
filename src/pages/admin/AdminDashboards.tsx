@@ -40,10 +40,14 @@ const AdminDashboards = () => {
   const [toggleTarget, setToggleTarget] = useState<AdminDashboard | null>(null);
 
   const filtered = dashboards.filter((d) => {
+    const q = search.toLowerCase();
     const matchesSearch = !search ||
-      d.name.toLowerCase().includes(search.toLowerCase()) ||
-      d.slug.toLowerCase().includes(search.toLowerCase()) ||
-      d.datasetName.toLowerCase().includes(search.toLowerCase());
+      d.name.toLowerCase().includes(q) ||
+      d.slug.toLowerCase().includes(q) ||
+      d.datasetName.toLowerCase().includes(q) ||
+      d.createdBy.toLowerCase().includes(q) ||
+      d.createdDate.includes(q) ||
+      d.status.toLowerCase().includes(q);
     const matchesDataset = datasetFilter === "all" || d.datasetId === datasetFilter;
     return matchesSearch && matchesDataset;
   });
@@ -136,7 +140,7 @@ const AdminDashboards = () => {
         <div className="relative max-w-sm flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search dashboards..."
+            placeholder="Search by name, slug, dataset, admin..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-10"
