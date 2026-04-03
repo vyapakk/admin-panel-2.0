@@ -223,6 +223,6 @@ export const mockUsers: AdminUser[] = [
     id: 12, name: "Carlos Mendez", company: "LatAm Tech", designation: "Regional Director",
     phone: "+52 55 1234 5678", email: "cmendez@latamtech.co",
     industries: ["Automotive & Transportation", "Consumer Goods & Services"], signupDate: "2026-03-19", signupTime: "18:30:00",
-    lastLogin: "2026-03-27 11:00", status: "active", accessGrants: [],
+    lastLogin: "2026-03-27 11:00", status: "active", adminRole: "content_admin", accessGrants: [],
   },
 ];
