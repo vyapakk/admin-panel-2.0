@@ -184,7 +184,7 @@ export const mockUsers: AdminUser[] = [
     id: 7, name: "Amanda Foster", company: "BlueWave Analytics", designation: "Data Scientist",
     phone: "+1 (617) 555-0707", email: "a.foster@bluewave.com",
     industries: ["Healthcare", "Chemical & Materials"], signupDate: "2026-03-24", signupTime: "11:30:45",
-    lastLogin: "2026-04-01 08:00", status: "active",
+    lastLogin: "2026-04-01 08:00", status: "active", adminRole: "content_admin",
     accessGrants: [
       { id: "a5", type: "dataset", categoryId: "composites", categoryName: "Composites", datasetId: "polymer-matrix", datasetName: "Polymer Matrix Composites", grantedDate: "2026-03-25", validUntil: "2027-03-25", status: "active" },
     ],
