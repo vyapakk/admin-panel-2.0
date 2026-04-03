@@ -192,7 +192,41 @@ const AdminNotifications = () => {
     setter((prev) => (prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]));
   };
 
-  const displayedNotifications = notifications.slice(0, 20);
+  // Filtered & paginated notifications
+  const uniqueSentBy = useMemo(() => [...new Set(notifications.map((n) => n.sentBy))], [notifications]);
+
+  const filtered = useMemo(() => {
+    return notifications.filter((n) => {
+      const q = search.toLowerCase();
+      const matchesSearch = !search ||
+        n.title.toLowerCase().includes(q) ||
+        n.message.toLowerCase().includes(q) ||
+        n.targetDetails.toLowerCase().includes(q) ||
+        n.sentBy.toLowerCase().includes(q) ||
+        n.sentDate.includes(q);
+      const matchesType = filterType === "all" || n.type === filterType;
+      const matchesAudience = filterAudience === "all" || n.targetAudience === filterAudience;
+      const matchesSentBy = filterSentBy === "all" || n.sentBy === filterSentBy;
+      return matchesSearch && matchesType && matchesAudience && matchesSentBy;
+    });
+  }, [notifications, search, filterType, filterAudience, filterSentBy]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const displayedNotifications = filtered.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setPage(1);
+  };
+
+  const handleFilterChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (val: string) => {
+    setter(val);
+    setPage(1);
+  };
 
   return (
     <div className="space-y-6">
