@@ -178,7 +178,7 @@ export const mockUsers: AdminUser[] = [
     id: 6, name: "David Kim", company: "NexGen Solutions", designation: "Product Manager",
     phone: "+82 10 1234 5678", email: "dkim@nexgen.co",
     industries: ["Electrical & Electronics", "Automotive & Transportation"], signupDate: "2026-03-25", signupTime: "09:15:22",
-    lastLogin: null, status: "inactive", accessGrants: [],
+    lastLogin: null, status: "inactive", adminRole: "sales_admin", accessGrants: [],
   },
   {
     id: 7, name: "Amanda Foster", company: "BlueWave Analytics", designation: "Data Scientist",
