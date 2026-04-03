@@ -17,6 +17,24 @@ export interface UserAccess {
   status: "active" | "expired" | "revoked";
 }
 
+// BACKEND INTEGRATION POINT: Admin roles control sidebar/module visibility
+// super_admin  → Full access to all modules
+// content_admin → Overview, Categories, Datasets, Dashboards, Notifications
+// sales_admin   → Overview, Leads
+export type AdminRole = "super_admin" | "content_admin" | "sales_admin";
+
+export const adminRoleLabels: Record<AdminRole, string> = {
+  super_admin: "Super Admin",
+  content_admin: "Content Admin",
+  sales_admin: "Sales Admin",
+};
+
+export const adminRoleDescriptions: Record<AdminRole, string> = {
+  super_admin: "Full access to all modules",
+  content_admin: "Overview, Categories, Datasets, Dashboards, Notifications",
+  sales_admin: "Overview, Leads",
+};
+
 export interface AdminUser {
   id: number;
   name: string;
@@ -29,6 +47,7 @@ export interface AdminUser {
   signupTime: string;
   lastLogin: string | null;
   status: "active" | "inactive";
+  adminRole: AdminRole;
   accessGrants: UserAccess[];
 }
 
