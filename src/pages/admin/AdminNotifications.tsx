@@ -421,14 +421,64 @@ const AdminNotifications = () => {
         </Dialog>
       </div>
 
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search by title, message, target, admin..."
+            value={search}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+        <Select value={filterType} onValueChange={handleFilterChange(setFilterType)}>
+          <SelectTrigger className="w-[140px]">
+            <SelectValue placeholder="Type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Types</SelectItem>
+            <SelectItem value="info">Info</SelectItem>
+            <SelectItem value="update">Update</SelectItem>
+            <SelectItem value="alert">Alert</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={filterAudience} onValueChange={handleFilterChange(setFilterAudience)}>
+          <SelectTrigger className="w-[170px]">
+            <SelectValue placeholder="Audience" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Audiences</SelectItem>
+            <SelectItem value="all_users">All Users</SelectItem>
+            <SelectItem value="individual">Individual</SelectItem>
+            <SelectItem value="industry">By Industry</SelectItem>
+            <SelectItem value="company">By Company</SelectItem>
+            <SelectItem value="access">By Category</SelectItem>
+            <SelectItem value="dataset">By Dataset</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={filterSentBy} onValueChange={handleFilterChange(setFilterSentBy)}>
+          <SelectTrigger className="w-[150px]">
+            <SelectValue placeholder="Sent By" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Admins</SelectItem>
+            {uniqueSentBy.map((name) => (
+              <SelectItem key={name} value={name}>{name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* History */}
       <div className="bg-white rounded-xl border shadow-sm">
         <div className="px-5 py-4 border-b flex items-center justify-between">
           <h2 className="font-semibold" style={{ color: "#1b4263" }}>
-            Recent Notifications
+            Notification History
           </h2>
           <span className="text-xs text-muted-foreground">
-            Showing last {displayedNotifications.length} notifications
+            {filtered.length} notification{filtered.length !== 1 ? "s" : ""}
+            {filtered.length !== notifications.length && ` (of ${notifications.length})`}
           </span>
         </div>
         <Table>
@@ -439,15 +489,18 @@ const AdminNotifications = () => {
               <TableHead>Audience</TableHead>
               <TableHead>Recipients</TableHead>
               <TableHead>Date</TableHead>
+              <TableHead>Sent By</TableHead>
               <TableHead className="w-[60px]"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {displayedNotifications.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
+                <TableCell colSpan={7} className="text-center py-10 text-muted-foreground">
                   <Bell className="h-8 w-8 mx-auto mb-2 opacity-40" />
-                  No notifications sent yet.
+                  {search || filterType !== "all" || filterAudience !== "all" || filterSentBy !== "all"
+                    ? "No notifications match your filters."
+                    : "No notifications sent yet."}
                 </TableCell>
               </TableRow>
             ) : (
@@ -467,6 +520,7 @@ const AdminNotifications = () => {
                   </TableCell>
                   <TableCell>{notif.recipientCount}</TableCell>
                   <TableCell className="text-muted-foreground text-sm">{notif.sentDate}</TableCell>
+                  <TableCell className="text-muted-foreground text-sm">{notif.sentBy}</TableCell>
                   <TableCell>
                     <Button
                       variant="ghost"
