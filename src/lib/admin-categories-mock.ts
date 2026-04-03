@@ -8,17 +8,18 @@ export interface AdminCategory {
   icon: string; // Lucide icon name (kebab-case)
   color: string; // matches availableColors values
   status: "active" | "inactive";
+  createdBy: string; // Admin name who created this category
 }
 
 // BACKEND INTEGRATION POINT: GET /api/admin/categories
 // Synced with base platform categories (project: Admin Panel - Base Version)
 export const mockCategories: AdminCategory[] = [
-  { id: "1", name: "Composites", slug: "composites", icon: "layers", color: "teal", status: "active" },
-  { id: "2", name: "Aerospace & Defense", slug: "aerospace-defense", icon: "plane", color: "navy", status: "active" },
-  { id: "3", name: "Automotive & Transport", slug: "automotive-transport", icon: "car", color: "mint", status: "active" },
-  { id: "4", name: "Building & Construction", slug: "building-construction", icon: "building-2", color: "teal-dark", status: "active" },
-  { id: "5", name: "Prepregs", slug: "prepregs", icon: "layers", color: "teal", status: "active" },
-  { id: "6", name: "Others", slug: "others", icon: "more-horizontal", color: "teal", status: "active" },
+  { id: "1", name: "Composites", slug: "composites", icon: "layers", color: "teal", status: "active", createdBy: "Admin" },
+  { id: "2", name: "Aerospace & Defense", slug: "aerospace-defense", icon: "plane", color: "navy", status: "active", createdBy: "Admin" },
+  { id: "3", name: "Automotive & Transport", slug: "automotive-transport", icon: "car", color: "mint", status: "active", createdBy: "Admin" },
+  { id: "4", name: "Building & Construction", slug: "building-construction", icon: "building-2", color: "teal-dark", status: "active", createdBy: "Admin" },
+  { id: "5", name: "Prepregs", slug: "prepregs", icon: "layers", color: "teal", status: "active", createdBy: "Admin" },
+  { id: "6", name: "Others", slug: "others", icon: "more-horizontal", color: "teal", status: "active", createdBy: "Admin" },
 ];
 
 // Colors matching the base platform color tokens + extended palette

@@ -76,6 +76,7 @@ const AdminDatasets = () => {
         categoryName: cat?.name || "Unknown",
         createdDate: new Date().toISOString().split("T")[0],
         status: "active" as const,
+        createdBy: "Admin",
       },
     ]);
     toast.success(`Dataset "${formName}" created`);
@@ -138,6 +139,7 @@ const AdminDatasets = () => {
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Slug</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Category</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Created</TableHead>
+              <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Created By</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Status</TableHead>
               <TableHead className="font-semibold text-right" style={{ color: "#1b4263" }}>Actions</TableHead>
             </TableRow>
@@ -145,7 +147,7 @@ const AdminDatasets = () => {
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
                   No datasets found
                 </TableCell>
               </TableRow>
@@ -161,6 +163,7 @@ const AdminDatasets = () => {
                     <span className="text-sm">{ds.categoryName}</span>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">{ds.createdDate}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{ds.createdBy}</TableCell>
                   <TableCell>
                     <button
                       onClick={() => setToggleTarget(ds)}

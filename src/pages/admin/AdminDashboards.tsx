@@ -86,6 +86,7 @@ const AdminDashboards = () => {
         datasetName: ds?.name || "Unknown",
         createdDate: new Date().toISOString().split("T")[0],
         status: "active" as const,
+        createdBy: "Admin",
       },
     ]);
     toast.success(`Dashboard "${formName}" created`);
@@ -164,6 +165,7 @@ const AdminDashboards = () => {
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Slug</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Dataset</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Created</TableHead>
+              <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Created By</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Status</TableHead>
               <TableHead className="font-semibold text-right" style={{ color: "#1b4263" }}>Actions</TableHead>
             </TableRow>
@@ -171,7 +173,7 @@ const AdminDashboards = () => {
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
                   No dashboards found
                 </TableCell>
               </TableRow>
@@ -185,6 +187,7 @@ const AdminDashboards = () => {
                   <TableCell className="text-sm text-muted-foreground">{db.slug}</TableCell>
                   <TableCell className="text-sm">{db.datasetName}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{db.createdDate}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{db.createdBy}</TableCell>
                   <TableCell>
                     <button
                       onClick={() => setToggleTarget(db)}

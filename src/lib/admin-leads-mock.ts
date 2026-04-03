@@ -11,6 +11,7 @@ export interface AdminLead {
   company: string;
   designation: string;
   resolved: boolean;
+  resolvedBy?: string; // Admin name who resolved this lead
   // Access Request specific
   datasetName?: string;
   // Subscription Inquiry specific
@@ -47,6 +48,7 @@ export const mockLeads: AdminLead[] = [
     dashboardName: "Aerospace & Defense Dashboard",
     message: "Looking for 5-user license for 12 months. Need access to full dataset + quarterly updates.",
     resolved: true,
+    resolvedBy: "Admin",
     submittedAt: "2025-03-27T09:15:00Z",
   },
   {
@@ -72,6 +74,7 @@ export const mockLeads: AdminLead[] = [
     dashboardName: "Automotive Composites Dashboard",
     message: "Interested in a trial subscription for the automotive composites module.",
     resolved: true,
+    resolvedBy: "Admin",
     submittedAt: "2025-03-25T11:20:00Z",
   },
   {
@@ -96,6 +99,7 @@ export const mockLeads: AdminLead[] = [
     designation: "Procurement Manager",
     datasetName: "Wind Energy Composites Market",
     resolved: true,
+    resolvedBy: "Admin",
     submittedAt: "2025-03-23T13:10:00Z",
   },
   {
@@ -147,6 +151,7 @@ export const mockLeads: AdminLead[] = [
     queryDashboard: "Composites Market Overview",
     queryText: "Looking for data on thermoplastic composites adoption rate in aerospace. Is this covered in the current dataset?",
     resolved: true,
+    resolvedBy: "Admin",
     submittedAt: "2025-03-19T09:30:00Z",
   },
 ];

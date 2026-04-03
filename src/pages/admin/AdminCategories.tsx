@@ -115,7 +115,7 @@ const AdminCategories = () => {
       setCategories((prev) =>
         prev.map((c) =>
           c.id === editingCategory.id
-            ? { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor, status: c.status }
+            ? { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor, status: c.status, createdBy: c.createdBy }
             : c
         )
       );
@@ -127,7 +127,7 @@ const AdminCategories = () => {
       }
       setCategories((prev) => [
         ...prev,
-        { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor, status: "active" as const },
+        { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor, status: "active" as const, createdBy: "Admin" },
       ]);
       toast.success(`Category "${formName}" created`);
     }
@@ -200,6 +200,7 @@ const AdminCategories = () => {
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Category Name</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Slug</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Color</TableHead>
+              <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Created By</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Status</TableHead>
               <TableHead className="font-semibold text-right" style={{ color: "#1b4263" }}>Actions</TableHead>
             </TableRow>
@@ -207,7 +208,7 @@ const AdminCategories = () => {
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
                   No categories found
                 </TableCell>
               </TableRow>
@@ -233,6 +234,7 @@ const AdminCategories = () => {
                       <span className="text-sm capitalize">{cat.color}</span>
                     </div>
                   </TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{cat.createdBy}</TableCell>
                   <TableCell>
                     <button
                       onClick={() => setToggleTarget(cat)}

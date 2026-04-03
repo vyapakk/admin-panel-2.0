@@ -118,14 +118,14 @@ const AdminLeads = () => {
 
   const handleToggleResolved = (id: string) => {
     setLeads((prev) =>
-      prev.map((l) => (l.id === id ? { ...l, resolved: !l.resolved } : l))
+      prev.map((l) => (l.id === id ? { ...l, resolved: !l.resolved, resolvedBy: !l.resolved ? "Admin" : undefined } : l))
     );
     const lead = leads.find((l) => l.id === id);
     if (lead) {
       toast.success(lead.resolved ? "Marked as unresolved" : "Marked as resolved");
     }
     // Update selected lead if open
-    setSelectedLead((prev) => (prev?.id === id ? { ...prev, resolved: !prev.resolved } : prev));
+    setSelectedLead((prev) => (prev?.id === id ? { ...prev, resolved: !prev.resolved, resolvedBy: !prev.resolved ? "Admin" : undefined } : prev));
   };
 
   const confirmDelete = () => {
@@ -464,6 +464,9 @@ const AdminLeads = () => {
                   )}
 
                   <DetailRow label="Submitted At" value={formatDateTime(selectedLead.submittedAt)} />
+                  {selectedLead.resolved && selectedLead.resolvedBy && (
+                    <DetailRow label="Resolved By" value={selectedLead.resolvedBy} />
+                  )}
                 </div>
 
                 <div className="flex gap-2 pt-2 border-t">
