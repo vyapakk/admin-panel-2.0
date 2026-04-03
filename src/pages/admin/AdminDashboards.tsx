@@ -195,7 +195,7 @@ const AdminDashboards = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              filtered.map((db) => (
+              paginated.map((db) => (
                 <TableRow key={db.id} className="group hover:bg-muted/20 transition-colors">
                   <TableCell className="font-medium flex items-center gap-2">
                     <BarChart3 className="h-4 w-4 text-muted-foreground" />
