@@ -115,7 +115,7 @@ const AdminCategories = () => {
       setCategories((prev) =>
         prev.map((c) =>
           c.id === editingCategory.id
-            ? { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor, status: c.status }
+            ? { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor, status: c.status, createdBy: c.createdBy }
             : c
         )
       );
