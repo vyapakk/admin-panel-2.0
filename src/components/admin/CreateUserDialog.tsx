@@ -11,8 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2, Eye, EyeOff, Check, X } from "lucide-react";
-import { type AdminUser } from "@/lib/admin-users-mock";
+import { type AdminUser, type AdminRole, adminRoleLabels, adminRoleDescriptions } from "@/lib/admin-users-mock";
 import { toast } from "sonner";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const industries = [
   "Aerospace & Defense",
