@@ -163,6 +163,7 @@ const AdminDatasets = () => {
                     <span className="text-sm">{ds.categoryName}</span>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">{ds.createdDate}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{ds.createdBy}</TableCell>
                   <TableCell>
                     <button
                       onClick={() => setToggleTarget(ds)}

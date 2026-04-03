@@ -187,6 +187,7 @@ const AdminDashboards = () => {
                   <TableCell className="text-sm text-muted-foreground">{db.slug}</TableCell>
                   <TableCell className="text-sm">{db.datasetName}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{db.createdDate}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{db.createdBy}</TableCell>
                   <TableCell>
                     <button
                       onClick={() => setToggleTarget(db)}

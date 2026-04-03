@@ -234,6 +234,7 @@ const AdminCategories = () => {
                       <span className="text-sm capitalize">{cat.color}</span>
                     </div>
                   </TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{cat.createdBy}</TableCell>
                   <TableCell>
                     <button
                       onClick={() => setToggleTarget(cat)}
