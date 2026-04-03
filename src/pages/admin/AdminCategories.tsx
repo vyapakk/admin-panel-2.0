@@ -55,6 +55,7 @@ const generateSlug = (name: string) =>
 const AdminCategories = () => {
   const [categories, setCategories] = useState<AdminCategory[]>(mockCategories);
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<AdminCategory | null>(null);
 
