@@ -25,7 +25,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { mockUsers, type AdminUser } from "@/lib/admin-users-mock";
+import { mockUsers, type AdminUser, adminRoleLabels } from "@/lib/admin-users-mock";
 import UserDetailSheet from "@/components/admin/UserDetailSheet";
 import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
