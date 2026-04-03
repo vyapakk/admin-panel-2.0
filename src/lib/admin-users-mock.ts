@@ -217,7 +217,7 @@ export const mockUsers: AdminUser[] = [
     id: 11, name: "Nina Petrova", company: "Quantum Research", designation: "Principal Analyst",
     phone: "+7 495 123 4567", email: "nina.p@quantumres.com",
     industries: ["Aerospace & Defense", "Disruptive Technology"], signupDate: "2026-03-20", signupTime: "10:10:10",
-    lastLogin: "2026-04-01 07:30", status: "active", accessGrants: [],
+    lastLogin: "2026-04-01 07:30", status: "active", adminRole: "super_admin", accessGrants: [],
   },
   {
     id: 12, name: "Carlos Mendez", company: "LatAm Tech", designation: "Regional Director",
