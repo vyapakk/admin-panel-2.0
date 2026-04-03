@@ -207,7 +207,7 @@ const AdminManagement = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {admins.map((admin) => (
+              {paginated.map((admin) => (
                 <TableRow key={admin.id}>
                   <TableCell className="font-medium">{admin.name}</TableCell>
                   <TableCell>{admin.email}</TableCell>
