@@ -140,7 +140,7 @@ const AdminDatasets = () => {
         <Input
           placeholder="Search by name, slug, category, admin..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => handleSearchChange(e.target.value)}
           className="pl-10"
         />
       </div>
