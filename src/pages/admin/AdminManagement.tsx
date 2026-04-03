@@ -126,6 +126,21 @@ const AdminManagement = () => {
     setToggleTarget(null);
   };
 
+  const openEditRole = (admin: AdminEntry) => {
+    setEditTarget(admin);
+    setEditRole(admin.role);
+  };
+
+  const handleEditRole = () => {
+    if (!editTarget) return;
+    // BACKEND INTEGRATION POINT: PUT /api/admin/admins/{id}/role
+    setAdmins((prev) =>
+      prev.map((a) => (a.id === editTarget.id ? { ...a, role: editRole } : a))
+    );
+    toast({ title: `Role updated to ${roleConfig[editRole].label}` });
+    setEditTarget(null);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
