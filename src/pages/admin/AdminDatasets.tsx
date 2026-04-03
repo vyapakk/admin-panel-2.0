@@ -32,6 +32,7 @@ const AdminDatasets = () => {
   const [datasets, setDatasets] = useState<AdminDataset[]>(mockDatasets);
   const [categories] = useState(mockCategories);
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const [formName, setFormName] = useState("");
