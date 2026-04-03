@@ -148,7 +148,7 @@ export const mockUsers: AdminUser[] = [
     id: 2, name: "Michael Brooks", company: "Global Industries", designation: "VP Strategy",
     phone: "+1 (212) 555-0202", email: "m.brooks@globalind.com",
     industries: ["Automotive & Transportation", "Energy & Power"], signupDate: "2026-03-29", signupTime: "10:05:12",
-    lastLogin: "2026-03-31 16:42", status: "active",
+    lastLogin: "2026-03-31 16:42", status: "active", adminRole: "content_admin",
     accessGrants: [
       { id: "a3", type: "dataset", categoryId: "automotive", categoryName: "Automotive & Transportation", datasetId: "ev-market", datasetName: "Electric Vehicle Market", grantedDate: "2026-03-29", validUntil: "2027-03-29", status: "active" },
     ],
