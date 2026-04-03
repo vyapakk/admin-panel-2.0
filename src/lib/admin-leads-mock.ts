@@ -151,6 +151,7 @@ export const mockLeads: AdminLead[] = [
     queryDashboard: "Composites Market Overview",
     queryText: "Looking for data on thermoplastic composites adoption rate in aerospace. Is this covered in the current dataset?",
     resolved: true,
+    resolvedBy: "Admin",
     submittedAt: "2025-03-19T09:30:00Z",
   },
 ];
