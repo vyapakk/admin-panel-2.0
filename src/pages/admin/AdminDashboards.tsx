@@ -23,6 +23,8 @@ import { type AdminDashboard, mockDashboards } from "@/lib/admin-dashboards-mock
 import { mockDatasets } from "@/lib/admin-datasets-mock";
 import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
+const ITEMS_PER_PAGE = 10;
+
 const generateSlug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
