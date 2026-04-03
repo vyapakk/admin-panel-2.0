@@ -4,48 +4,60 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-  DialogClose,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose,
 } from "@/components/ui/dialog";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { UserPlus, Trash2, Shield, ToggleLeft, ToggleRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
-// BACKEND INTEGRATION POINT: GET /api/admin/admins
+// BACKEND INTEGRATION POINT: Role-to-module access mapping
+// Super Admin:   Overview, Users, Admin Mgmt, Categories, Datasets, Dashboards, Leads, Notifications
+// Content Admin: Overview, Categories, Datasets, Dashboards, Notifications
+// Sales Admin:   Overview, Notifications
+
+type AdminRole = "super_admin" | "content_admin" | "sales_admin";
+
 interface AdminEntry {
   id: number;
   name: string;
   email: string;
+  role: AdminRole;
   addedDate: string;
   status: "active" | "inactive";
 }
 
+const roleConfig: Record<AdminRole, { label: string; description: string; bgColor: string; textColor: string }> = {
+  super_admin: {
+    label: "Super Admin",
+    description: "Access to all modules of admin panel",
+    bgColor: "#1b426320",
+    textColor: "#1b4263",
+  },
+  content_admin: {
+    label: "Content Admin",
+    description: "Overview, Categories, Datasets, Dashboards, Notifications",
+    bgColor: "#0d5a5a20",
+    textColor: "#0d5a5a",
+  },
+  sales_admin: {
+    label: "Sales Admin",
+    description: "Overview, Notifications",
+    bgColor: "#4fc9ab20",
+    textColor: "#0a6e55",
+  },
+};
+
 const initialAdmins: AdminEntry[] = [
-  { id: 1, name: "Admin", email: "admin@stratviewresearch.com", addedDate: "2026-01-01", status: "active" },
+  { id: 1, name: "Admin", email: "admin@stratviewresearch.com", role: "super_admin", addedDate: "2026-01-01", status: "active" },
 ];
 
 const AdminManagement = () => {
@@ -56,6 +68,7 @@ const AdminManagement = () => {
   const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [newRole, setNewRole] = useState<AdminRole>("content_admin");
   const [toggleTarget, setToggleTarget] = useState<AdminEntry | null>(null);
 
   const handleAdd = () => {
@@ -63,11 +76,11 @@ const AdminManagement = () => {
       toast({ title: "All fields are required", variant: "destructive" });
       return;
     }
-    // BACKEND INTEGRATION POINT: POST /api/admin/admins
     const newAdmin: AdminEntry = {
       id: Date.now(),
       name: newName.trim(),
       email: newEmail.trim(),
+      role: newRole,
       addedDate: new Date().toISOString().split("T")[0],
       status: "active",
     };
@@ -75,6 +88,7 @@ const AdminManagement = () => {
     setNewName("");
     setNewEmail("");
     setNewPassword("");
+    setNewRole("content_admin");
     setAddOpen(false);
     toast({ title: "Admin added successfully" });
   };
@@ -86,13 +100,11 @@ const AdminManagement = () => {
       setDeleteTarget(null);
       return;
     }
-    // BACKEND INTEGRATION POINT: DELETE /api/admin/admins/:id
     setAdmins((prev) => prev.filter((a) => a.id !== deleteTarget.id));
     toast({ title: `Admin "${deleteTarget.name}" removed` });
     setDeleteTarget(null);
   };
 
-  // BACKEND INTEGRATION POINT: PUT /api/admin/admins/{id}/status
   const handleToggleStatus = () => {
     if (!toggleTarget) return;
     setAdmins((prev) =>
@@ -138,6 +150,24 @@ const AdminManagement = () => {
                 <Label>Password</Label>
                 <Input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Set a password" />
               </div>
+              <div>
+                <Label className="mb-2 block">Role</Label>
+                <RadioGroup value={newRole} onValueChange={(v) => setNewRole(v as AdminRole)} className="space-y-2">
+                  {(Object.keys(roleConfig) as AdminRole[]).map((role) => (
+                    <label
+                      key={role}
+                      className="flex items-start gap-3 rounded-lg border p-3 cursor-pointer hover:bg-muted/50 transition-colors"
+                      style={newRole === role ? { borderColor: roleConfig[role].textColor, backgroundColor: roleConfig[role].bgColor } : {}}
+                    >
+                      <RadioGroupItem value={role} className="mt-0.5" />
+                      <div>
+                        <p className="font-medium text-sm">{roleConfig[role].label}</p>
+                        <p className="text-xs text-muted-foreground">{roleConfig[role].description}</p>
+                      </div>
+                    </label>
+                  ))}
+                </RadioGroup>
+              </div>
             </div>
             <DialogFooter>
               <DialogClose asChild>
@@ -164,6 +194,7 @@ const AdminManagement = () => {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
+                <TableHead>Role</TableHead>
                 <TableHead>Added</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Action</TableHead>
@@ -174,6 +205,18 @@ const AdminManagement = () => {
                 <TableRow key={admin.id}>
                   <TableCell className="font-medium">{admin.name}</TableCell>
                   <TableCell>{admin.email}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant="secondary"
+                      className="text-[11px] font-medium"
+                      style={{
+                        backgroundColor: roleConfig[admin.role].bgColor,
+                        color: roleConfig[admin.role].textColor,
+                      }}
+                    >
+                      {roleConfig[admin.role].label}
+                    </Badge>
+                  </TableCell>
                   <TableCell>{admin.addedDate}</TableCell>
                   <TableCell>
                     <button
@@ -216,7 +259,6 @@ const AdminManagement = () => {
         </CardContent>
       </Card>
 
-      {/* Delete confirmation */}
       <AlertDialog open={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
