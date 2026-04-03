@@ -8,6 +8,7 @@ import {
   Bell,
   Database,
   BarChart3,
+  Link2,
   LogOut,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
