@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { UserPlus, Trash2, Shield, ToggleLeft, ToggleRight } from "lucide-react";
+import { UserPlus, Trash2, Shield, ToggleLeft, ToggleRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
