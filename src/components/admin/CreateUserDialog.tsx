@@ -80,7 +80,7 @@ const CreateUserDialog = ({ open, onClose, onUserCreated }: CreateUserDialogProp
   const resetForm = () => {
     setFormData({ name: "", company: "", designation: "", phone: "", email: "", password: "", confirmPassword: "" });
     setSelectedIndustries([]);
-    setError("");
+    setSelectedRole("content_admin");
     setShowPassword(false);
     setShowConfirmPassword(false);
   };
