@@ -68,14 +68,25 @@ const AdminCategories = () => {
   const [toggleTarget, setToggleTarget] = useState<AdminCategory | null>(null);
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
-  const filtered = search
-    ? categories.filter(
-        (c) =>
-          c.name.toLowerCase().includes(search.toLowerCase()) ||
-          c.id.toLowerCase().includes(search.toLowerCase()) ||
-          c.slug.toLowerCase().includes(search.toLowerCase())
-      )
-    : categories;
+  const filtered = useMemo(() => {
+    if (!search) return categories;
+    return categories.filter(
+      (c) =>
+        c.name.toLowerCase().includes(search.toLowerCase()) ||
+        c.id.toLowerCase().includes(search.toLowerCase()) ||
+        c.slug.toLowerCase().includes(search.toLowerCase()) ||
+        c.createdBy.toLowerCase().includes(search.toLowerCase()) ||
+        c.status.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [categories, search]);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setCurrentPage(1);
+  };
 
   const openCreateDialog = () => {
     setEditingCategory(null);
