@@ -48,6 +48,7 @@ export const mockLeads: AdminLead[] = [
     dashboardName: "Aerospace & Defense Dashboard",
     message: "Looking for 5-user license for 12 months. Need access to full dataset + quarterly updates.",
     resolved: true,
+    resolvedBy: "Admin",
     submittedAt: "2025-03-27T09:15:00Z",
   },
   {
