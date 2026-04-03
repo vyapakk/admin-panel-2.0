@@ -347,6 +347,48 @@ const AdminManagement = () => {
         currentStatus={toggleTarget?.status || "active"}
         onConfirm={handleToggleStatus}
       />
+
+      {/* Edit Role Dialog */}
+      <Dialog open={!!editTarget} onOpenChange={(o) => !o && setEditTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Change Role — {editTarget?.name}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div>
+              <Label className="mb-2 block">Select New Role</Label>
+              <RadioGroup value={editRole} onValueChange={(v) => setEditRole(v as AdminRole)} className="space-y-2">
+                {(Object.keys(roleConfig) as AdminRole[]).map((role) => (
+                  <label
+                    key={role}
+                    className="flex items-start gap-3 rounded-lg border p-3 cursor-pointer hover:bg-muted/50 transition-colors"
+                    style={editRole === role ? { borderColor: roleConfig[role].textColor, backgroundColor: roleConfig[role].bgColor } : {}}
+                  >
+                    <RadioGroupItem value={role} className="mt-0.5" />
+                    <div>
+                      <p className="font-medium text-sm">{roleConfig[role].label}</p>
+                      <p className="text-xs text-muted-foreground">{roleConfig[role].description}</p>
+                    </div>
+                  </label>
+                ))}
+              </RadioGroup>
+            </div>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button
+              onClick={handleEditRole}
+              disabled={editTarget?.role === editRole}
+              style={{ backgroundColor: "#0d5a5a" }}
+              className="text-white hover:opacity-90"
+            >
+              Update Role
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
