@@ -181,6 +181,30 @@ const CreateUserDialog = ({ open, onClose, onUserCreated }: CreateUserDialogProp
             <Input id="cu-email" name="email" type="email" placeholder="name@company.com" value={formData.email} onChange={handleInputChange} required />
           </div>
 
+          {/* Admin Role */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Admin Role</Label>
+            <RadioGroup
+              value={selectedRole}
+              onValueChange={(v) => setSelectedRole(v as AdminRole)}
+              className="space-y-2"
+            >
+              {(Object.keys(adminRoleLabels) as AdminRole[]).map((role) => (
+                <div key={role} className="flex items-start space-x-3 rounded-lg border p-3 hover:bg-muted/50 transition-colors">
+                  <RadioGroupItem value={role} id={`role-${role}`} className="mt-0.5" />
+                  <div className="flex-1">
+                    <Label htmlFor={`role-${role}`} className="text-sm font-medium cursor-pointer">
+                      {adminRoleLabels[role]}
+                    </Label>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {adminRoleDescriptions[role]}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+
           {/* Password */}
           <div className="space-y-1.5">
             <Label htmlFor="cu-password" className="text-sm font-medium">Password</Label>
