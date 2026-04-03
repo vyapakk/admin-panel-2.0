@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,7 +36,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Search, ToggleLeft, ToggleRight } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, ToggleLeft, ToggleRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import {
   type AdminCategory,
@@ -47,12 +47,15 @@ import CategoryIconPreview from "@/components/admin/CategoryIconPreview";
 import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 import IconPickerDialog from "@/components/admin/IconPickerDialog";
 
+const ITEMS_PER_PAGE = 10;
+
 const generateSlug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
 const AdminCategories = () => {
   const [categories, setCategories] = useState<AdminCategory[]>(mockCategories);
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<AdminCategory | null>(null);
 
@@ -65,14 +68,25 @@ const AdminCategories = () => {
   const [toggleTarget, setToggleTarget] = useState<AdminCategory | null>(null);
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
-  const filtered = search
-    ? categories.filter(
-        (c) =>
-          c.name.toLowerCase().includes(search.toLowerCase()) ||
-          c.id.toLowerCase().includes(search.toLowerCase()) ||
-          c.slug.toLowerCase().includes(search.toLowerCase())
-      )
-    : categories;
+  const filtered = useMemo(() => {
+    if (!search) return categories;
+    return categories.filter(
+      (c) =>
+        c.name.toLowerCase().includes(search.toLowerCase()) ||
+        c.id.toLowerCase().includes(search.toLowerCase()) ||
+        c.slug.toLowerCase().includes(search.toLowerCase()) ||
+        c.createdBy.toLowerCase().includes(search.toLowerCase()) ||
+        c.status.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [categories, search]);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setCurrentPage(1);
+  };
 
   const openCreateDialog = () => {
     setEditingCategory(null);
@@ -184,9 +198,9 @@ const AdminCategories = () => {
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search categories..."
+          placeholder="Search by name, slug, admin, status..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => handleSearchChange(e.target.value)}
           className="pl-10"
         />
       </div>
@@ -213,7 +227,7 @@ const AdminCategories = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              filtered.map((cat) => (
+              paginated.map((cat) => (
                 <TableRow key={cat.id} className="group hover:bg-muted/20 transition-colors">
                   <TableCell>
                     <div
@@ -293,7 +307,32 @@ const AdminCategories = () => {
         </Table>
       </div>
 
-      {/* Create/Edit Dialog */}
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filtered.length)} of {filtered.length}
+          </p>
+          <div className="flex items-center gap-1">
+            <Button variant="outline" size="sm" disabled={currentPage === 1} onClick={() => setCurrentPage((p) => p - 1)}>
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <Button key={page} variant={page === currentPage ? "default" : "outline"} size="sm"
+                className="w-8 h-8 p-0"
+                style={page === currentPage ? { backgroundColor: "#1b4263" } : {}}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </Button>
+            ))}
+            <Button variant="outline" size="sm" disabled={currentPage === totalPages} onClick={() => setCurrentPage((p) => p + 1)}>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
+
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>

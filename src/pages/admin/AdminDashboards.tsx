@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
   AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Plus, Trash2, Search, BarChart3, ToggleLeft, ToggleRight } from "lucide-react";
+import { Plus, Trash2, Search, BarChart3, ToggleLeft, ToggleRight, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
@@ -23,6 +23,8 @@ import { type AdminDashboard, mockDashboards } from "@/lib/admin-dashboards-mock
 import { mockDatasets } from "@/lib/admin-datasets-mock";
 import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
+const ITEMS_PER_PAGE = 10;
+
 const generateSlug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
@@ -30,6 +32,7 @@ const AdminDashboards = () => {
   const [dashboards, setDashboards] = useState<AdminDashboard[]>(mockDashboards);
   const [datasets] = useState(mockDatasets);
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [datasetFilter, setDatasetFilter] = useState("all");
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -39,18 +42,28 @@ const AdminDashboards = () => {
   const [datasetSearch, setDatasetSearch] = useState("");
   const [toggleTarget, setToggleTarget] = useState<AdminDashboard | null>(null);
 
-  const filtered = dashboards.filter((d) => {
-    const q = search.toLowerCase();
-    const matchesSearch = !search ||
-      d.name.toLowerCase().includes(q) ||
-      d.slug.toLowerCase().includes(q) ||
-      d.datasetName.toLowerCase().includes(q) ||
-      d.createdBy.toLowerCase().includes(q) ||
-      d.createdDate.includes(q) ||
-      d.status.toLowerCase().includes(q);
-    const matchesDataset = datasetFilter === "all" || d.datasetId === datasetFilter;
-    return matchesSearch && matchesDataset;
-  });
+  const filtered = useMemo(() => {
+    return dashboards.filter((d) => {
+      const q = search.toLowerCase();
+      const matchesSearch = !search ||
+        d.name.toLowerCase().includes(q) ||
+        d.slug.toLowerCase().includes(q) ||
+        d.datasetName.toLowerCase().includes(q) ||
+        d.createdBy.toLowerCase().includes(q) ||
+        d.createdDate.includes(q) ||
+        d.status.toLowerCase().includes(q);
+      const matchesDataset = datasetFilter === "all" || d.datasetId === datasetFilter;
+      return matchesSearch && matchesDataset;
+    });
+  }, [dashboards, search, datasetFilter]);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setCurrentPage(1);
+  };
 
   const filteredDatasets = datasetSearch
     ? datasets.filter((ds) =>
@@ -142,7 +155,7 @@ const AdminDashboards = () => {
           <Input
             placeholder="Search by name, slug, dataset, admin..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             className="pl-10"
           />
         </div>
@@ -182,7 +195,7 @@ const AdminDashboards = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              filtered.map((db) => (
+              paginated.map((db) => (
                 <TableRow key={db.id} className="group hover:bg-muted/20 transition-colors">
                   <TableCell className="font-medium flex items-center gap-2">
                     <BarChart3 className="h-4 w-4 text-muted-foreground" />
@@ -246,6 +259,32 @@ const AdminDashboards = () => {
           </TableBody>
         </Table>
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filtered.length)} of {filtered.length}
+          </p>
+          <div className="flex items-center gap-1">
+            <Button variant="outline" size="sm" disabled={currentPage === 1} onClick={() => setCurrentPage((p) => p - 1)}>
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <Button key={page} variant={page === currentPage ? "default" : "outline"} size="sm"
+                className="w-8 h-8 p-0"
+                style={page === currentPage ? { backgroundColor: "#1b4263" } : {}}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </Button>
+            ))}
+            <Button variant="outline" size="sm" disabled={currentPage === totalPages} onClick={() => setCurrentPage((p) => p + 1)}>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-md">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { UserPlus, Trash2, Shield, ToggleLeft, ToggleRight } from "lucide-react";
+import { UserPlus, Trash2, Shield, ToggleLeft, ToggleRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
@@ -60,6 +60,8 @@ const initialAdmins: AdminEntry[] = [
   { id: 1, name: "Admin", email: "admin@stratviewresearch.com", role: "super_admin", addedDate: "2026-01-01", status: "active" },
 ];
 
+const ITEMS_PER_PAGE = 10;
+
 const AdminManagement = () => {
   const { toast } = useToast();
   const [admins, setAdmins] = useState<AdminEntry[]>(initialAdmins);
@@ -70,6 +72,10 @@ const AdminManagement = () => {
   const [newPassword, setNewPassword] = useState("");
   const [newRole, setNewRole] = useState<AdminRole>("content_admin");
   const [toggleTarget, setToggleTarget] = useState<AdminEntry | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(admins.length / ITEMS_PER_PAGE);
+  const paginated = admins.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   const handleAdd = () => {
     if (!newName.trim() || !newEmail.trim() || !newPassword.trim()) {
@@ -201,7 +207,7 @@ const AdminManagement = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {admins.map((admin) => (
+              {paginated.map((admin) => (
                 <TableRow key={admin.id}>
                   <TableCell className="font-medium">{admin.name}</TableCell>
                   <TableCell>{admin.email}</TableCell>
@@ -258,6 +264,32 @@ const AdminManagement = () => {
           </Table>
         </CardContent>
       </Card>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, admins.length)} of {admins.length}
+          </p>
+          <div className="flex items-center gap-1">
+            <Button variant="outline" size="sm" disabled={currentPage === 1} onClick={() => setCurrentPage((p) => p - 1)}>
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <Button key={page} variant={page === currentPage ? "default" : "outline"} size="sm"
+                className="w-8 h-8 p-0"
+                style={page === currentPage ? { backgroundColor: "#1b4263" } : {}}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </Button>
+            ))}
+            <Button variant="outline" size="sm" disabled={currentPage === totalPages} onClick={() => setCurrentPage((p) => p + 1)}>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)}>
         <AlertDialogContent>
