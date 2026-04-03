@@ -13,6 +13,7 @@ import AdminManagement from "./pages/admin/AdminManagement.tsx";
 import AdminNotifications from "./pages/admin/AdminNotifications.tsx";
 import AdminDatasets from "./pages/admin/AdminDatasets.tsx";
 import AdminDashboards from "./pages/admin/AdminDashboards.tsx";
+import AdminLinkShield from "./pages/admin/AdminLinkShield.tsx";
 import AdminLayout from "./components/admin/AdminLayout.tsx";
 import AdminAuthGuard from "./components/admin/AdminAuthGuard.tsx";
 
