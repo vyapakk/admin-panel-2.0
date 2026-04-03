@@ -74,6 +74,7 @@ export const mockLeads: AdminLead[] = [
     dashboardName: "Automotive Composites Dashboard",
     message: "Interested in a trial subscription for the automotive composites module.",
     resolved: true,
+    resolvedBy: "Admin",
     submittedAt: "2025-03-25T11:20:00Z",
   },
   {
