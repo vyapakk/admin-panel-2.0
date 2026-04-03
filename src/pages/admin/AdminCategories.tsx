@@ -200,6 +200,7 @@ const AdminCategories = () => {
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Category Name</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Slug</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Color</TableHead>
+              <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Created By</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Status</TableHead>
               <TableHead className="font-semibold text-right" style={{ color: "#1b4263" }}>Actions</TableHead>
             </TableRow>
