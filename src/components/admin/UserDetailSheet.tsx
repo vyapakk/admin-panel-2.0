@@ -215,6 +215,9 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
                   {user.designation} at {user.company}
                 </SheetDescription>
               </SheetHeader>
+              <Badge className="mt-2 text-xs" style={{ backgroundColor: "rgba(255,255,255,0.2)", color: "#fff" }}>
+                {adminRoleLabels[user.adminRole]}
+              </Badge>
             </div>
           </div>
           <div className="flex justify-end mt-3">
