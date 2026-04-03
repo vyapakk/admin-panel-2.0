@@ -167,7 +167,7 @@ const AdminDatasets = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              filtered.map((ds) => (
+              paginated.map((ds) => (
                 <TableRow key={ds.id} className="group hover:bg-muted/20 transition-colors">
                   <TableCell className="font-medium flex items-center gap-2">
                     <Database className="h-4 w-4 text-muted-foreground" />
