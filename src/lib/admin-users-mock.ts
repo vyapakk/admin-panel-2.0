@@ -157,7 +157,7 @@ export const mockUsers: AdminUser[] = [
     id: 3, name: "Priya Sharma", company: "InnovaLabs", designation: "Market Analyst",
     phone: "+91 98765 43210", email: "priya@innovalabs.io",
     industries: ["Chemical & Materials", "Composites"], signupDate: "2026-03-28", signupTime: "08:30:00",
-    lastLogin: "2026-04-01 11:20", status: "active", accessGrants: [],
+    lastLogin: "2026-04-01 11:20", status: "active", adminRole: "sales_admin", accessGrants: [],
   },
   {
     id: 4, name: "James Wilson", company: "Acme Corp", designation: "Senior Analyst",
