@@ -8,6 +8,7 @@ export interface AdminCategory {
   icon: string; // Lucide icon name (kebab-case)
   color: string; // matches availableColors values
   status: "active" | "inactive";
+  createdBy: string; // Admin name who created this category
 }
 
 // BACKEND INTEGRATION POINT: GET /api/admin/categories
