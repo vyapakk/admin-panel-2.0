@@ -40,19 +40,26 @@ const AdminDatasets = () => {
   const [formCategoryId, setFormCategoryId] = useState("");
   const [toggleTarget, setToggleTarget] = useState<AdminDataset | null>(null);
 
-  const filtered = search
-    ? datasets.filter((d) => {
-        const q = search.toLowerCase();
-        return (
-          d.name.toLowerCase().includes(q) ||
-          d.slug.toLowerCase().includes(q) ||
-          d.categoryName.toLowerCase().includes(q) ||
-          d.createdBy.toLowerCase().includes(q) ||
-          d.createdDate.includes(q) ||
-          d.status.toLowerCase().includes(q)
-        );
-      })
-    : datasets;
+  const filtered = useMemo(() => {
+    if (!search) return datasets;
+    const q = search.toLowerCase();
+    return datasets.filter((d) =>
+      d.name.toLowerCase().includes(q) ||
+      d.slug.toLowerCase().includes(q) ||
+      d.categoryName.toLowerCase().includes(q) ||
+      d.createdBy.toLowerCase().includes(q) ||
+      d.createdDate.includes(q) ||
+      d.status.toLowerCase().includes(q)
+    );
+  }, [datasets, search]);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setCurrentPage(1);
+  };
 
   const openCreateDialog = () => {
     setFormName("");
