@@ -20,8 +20,8 @@ import { useToast } from "@/hooks/use-toast";
 import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
 // BACKEND INTEGRATION POINT: Role-to-module access mapping
-// Super Admin:   Overview, Users, Admin Mgmt, Categories, Datasets, Dashboards, Leads, Notifications
-// Content Admin: Overview, Categories, Datasets, Dashboards, Notifications
+// Super Admin:   Overview, Users, Admin Mgmt, Categories, Datasets, Dashboards, Link Shield, Leads, Notifications
+// Content Admin: Overview, Categories, Datasets, Dashboards, Link Shield, Notifications
 // Sales Admin:   Overview, Leads, Notifications
 
 type AdminRole = "super_admin" | "content_admin" | "sales_admin";
@@ -44,7 +44,7 @@ const roleConfig: Record<AdminRole, { label: string; description: string; bgColo
   },
   content_admin: {
     label: "Content Admin",
-    description: "Overview, Categories, Datasets, Dashboards, Notifications",
+    description: "Overview, Categories, Datasets, Dashboards, Link Shield, Notifications",
     bgColor: "#0d5a5a20",
     textColor: "#0d5a5a",
   },
