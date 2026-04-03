@@ -60,6 +60,8 @@ const initialAdmins: AdminEntry[] = [
   { id: 1, name: "Admin", email: "admin@stratviewresearch.com", role: "super_admin", addedDate: "2026-01-01", status: "active" },
 ];
 
+const ITEMS_PER_PAGE = 10;
+
 const AdminManagement = () => {
   const { toast } = useToast();
   const [admins, setAdmins] = useState<AdminEntry[]>(initialAdmins);
@@ -70,6 +72,10 @@ const AdminManagement = () => {
   const [newPassword, setNewPassword] = useState("");
   const [newRole, setNewRole] = useState<AdminRole>("content_admin");
   const [toggleTarget, setToggleTarget] = useState<AdminEntry | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(admins.length / ITEMS_PER_PAGE);
+  const paginated = admins.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   const handleAdd = () => {
     if (!newName.trim() || !newEmail.trim() || !newPassword.trim()) {
