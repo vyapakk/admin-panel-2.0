@@ -199,7 +199,7 @@ export const mockUsers: AdminUser[] = [
     id: 9, name: "Lisa Chang", company: "SmartSys", designation: "Research Lead",
     phone: "+886 912 345 678", email: "lchang@smartsys.com",
     industries: ["Electrical & Electronics", "Packaging"], signupDate: "2026-03-22", signupTime: "15:20:00",
-    lastLogin: "2026-03-31 10:15", status: "active",
+    lastLogin: "2026-03-31 10:15", status: "active", adminRole: "content_admin",
     accessGrants: [
       { id: "a6", type: "dashboard", categoryId: "composites", categoryName: "Composites", datasetId: "glass-fiber", datasetName: "Glass Fiber Composites", dashboardId: "gf-market", dashboardName: "Glass Fiber Market Analysis", grantedDate: "2026-03-22", validUntil: "2026-09-22", status: "active" },
     ],
