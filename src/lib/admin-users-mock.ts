@@ -138,7 +138,7 @@ export const mockUsers: AdminUser[] = [
     id: 1, name: "Sarah Chen", company: "TechCorp Inc.", designation: "Research Director",
     phone: "+1 (415) 555-0101", email: "sarah.chen@techcorp.com",
     industries: ["Aerospace & Defense", "Composites"], signupDate: "2026-03-30", signupTime: "14:23:45",
-    lastLogin: "2026-04-01 09:15", status: "active",
+    lastLogin: "2026-04-01 09:15", status: "active", adminRole: "super_admin" as const,
     accessGrants: [
       { id: "a1", type: "dashboard", categoryId: "composites", categoryName: "Composites", datasetId: "carbon-fiber", datasetName: "Carbon Fiber Market", dashboardId: "cf-global", dashboardName: "Global Carbon Fiber Market Overview", grantedDate: "2026-03-30", validUntil: "2027-03-30", status: "active" },
       { id: "a2", type: "dataset", categoryId: "aerospace-defense", categoryName: "Aerospace & Defense", datasetId: "commercial-aircraft", datasetName: "Commercial Aircraft", grantedDate: "2026-03-30", validUntil: "2027-03-30", status: "active" },
