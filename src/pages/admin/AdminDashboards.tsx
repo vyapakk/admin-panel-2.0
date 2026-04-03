@@ -40,10 +40,14 @@ const AdminDashboards = () => {
   const [toggleTarget, setToggleTarget] = useState<AdminDashboard | null>(null);
 
   const filtered = dashboards.filter((d) => {
+    const q = search.toLowerCase();
     const matchesSearch = !search ||
-      d.name.toLowerCase().includes(search.toLowerCase()) ||
-      d.slug.toLowerCase().includes(search.toLowerCase()) ||
-      d.datasetName.toLowerCase().includes(search.toLowerCase());
+      d.name.toLowerCase().includes(q) ||
+      d.slug.toLowerCase().includes(q) ||
+      d.datasetName.toLowerCase().includes(q) ||
+      d.createdBy.toLowerCase().includes(q) ||
+      d.createdDate.includes(q) ||
+      d.status.toLowerCase().includes(q);
     const matchesDataset = datasetFilter === "all" || d.datasetId === datasetFilter;
     return matchesSearch && matchesDataset;
   });

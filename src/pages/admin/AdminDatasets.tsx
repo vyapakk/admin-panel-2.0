@@ -38,12 +38,17 @@ const AdminDatasets = () => {
   const [toggleTarget, setToggleTarget] = useState<AdminDataset | null>(null);
 
   const filtered = search
-    ? datasets.filter(
-        (d) =>
-          d.name.toLowerCase().includes(search.toLowerCase()) ||
-          d.slug.toLowerCase().includes(search.toLowerCase()) ||
-          d.categoryName.toLowerCase().includes(search.toLowerCase())
-      )
+    ? datasets.filter((d) => {
+        const q = search.toLowerCase();
+        return (
+          d.name.toLowerCase().includes(q) ||
+          d.slug.toLowerCase().includes(q) ||
+          d.categoryName.toLowerCase().includes(q) ||
+          d.createdBy.toLowerCase().includes(q) ||
+          d.createdDate.includes(q) ||
+          d.status.toLowerCase().includes(q)
+        );
+      })
     : datasets;
 
   const openCreateDialog = () => {
