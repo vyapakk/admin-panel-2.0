@@ -11,8 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2, Eye, EyeOff, Check, X } from "lucide-react";
-import { type AdminUser } from "@/lib/admin-users-mock";
+import { type AdminUser, type AdminRole, adminRoleLabels, adminRoleDescriptions } from "@/lib/admin-users-mock";
 import { toast } from "sonner";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const industries = [
   "Aerospace & Defense",
@@ -48,6 +49,7 @@ const CreateUserDialog = ({ open, onClose, onUserCreated }: CreateUserDialogProp
     confirmPassword: "",
   });
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const [selectedRole, setSelectedRole] = useState<AdminRole>("content_admin");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -79,7 +81,7 @@ const CreateUserDialog = ({ open, onClose, onUserCreated }: CreateUserDialogProp
   const resetForm = () => {
     setFormData({ name: "", company: "", designation: "", phone: "", email: "", password: "", confirmPassword: "" });
     setSelectedIndustries([]);
-    setError("");
+    setSelectedRole("content_admin");
     setShowPassword(false);
     setShowConfirmPassword(false);
   };
@@ -116,9 +118,9 @@ const CreateUserDialog = ({ open, onClose, onUserCreated }: CreateUserDialogProp
         industries: selectedIndustries,
         signupDate: now.toISOString().slice(0, 10),
         signupTime: now.toTimeString().slice(0, 8),
-        
         lastLogin: null,
         status: "active",
+        adminRole: selectedRole,
         accessGrants: [],
       };
 
@@ -177,6 +179,30 @@ const CreateUserDialog = ({ open, onClose, onUserCreated }: CreateUserDialogProp
           <div className="space-y-1.5">
             <Label htmlFor="cu-email" className="text-sm font-medium">Email Address</Label>
             <Input id="cu-email" name="email" type="email" placeholder="name@company.com" value={formData.email} onChange={handleInputChange} required />
+          </div>
+
+          {/* Admin Role */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Admin Role</Label>
+            <RadioGroup
+              value={selectedRole}
+              onValueChange={(v) => setSelectedRole(v as AdminRole)}
+              className="space-y-2"
+            >
+              {(Object.keys(adminRoleLabels) as AdminRole[]).map((role) => (
+                <div key={role} className="flex items-start space-x-3 rounded-lg border p-3 hover:bg-muted/50 transition-colors">
+                  <RadioGroupItem value={role} id={`role-${role}`} className="mt-0.5" />
+                  <div className="flex-1">
+                    <Label htmlFor={`role-${role}`} className="text-sm font-medium cursor-pointer">
+                      {adminRoleLabels[role]}
+                    </Label>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {adminRoleDescriptions[role]}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </RadioGroup>
           </div>
 
           {/* Password */}

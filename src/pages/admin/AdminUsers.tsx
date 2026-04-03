@@ -25,7 +25,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { mockUsers, type AdminUser } from "@/lib/admin-users-mock";
+import { mockUsers, type AdminUser, adminRoleLabels } from "@/lib/admin-users-mock";
 import UserDetailSheet from "@/components/admin/UserDetailSheet";
 import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
@@ -289,6 +289,7 @@ const AdminUsers = () => {
                 <TableHead className="hidden lg:table-cell">Designation</TableHead>
                 <TableHead className="hidden md:table-cell">Phone</TableHead>
                 <TableHead className="hidden xl:table-cell">Industries</TableHead>
+                <TableHead>Role</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right pr-6">Signup Date</TableHead>
               </TableRow>
@@ -296,7 +297,7 @@ const AdminUsers = () => {
             <TableBody>
               {paginatedUsers.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center py-12 text-muted-foreground">
+                  <TableCell colSpan={9} className="text-center py-12 text-muted-foreground">
                     No users found matching your criteria.
                   </TableCell>
                 </TableRow>
@@ -344,6 +345,21 @@ const AdminUsers = () => {
                           </Badge>
                         )}
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant="outline"
+                        className="text-[10px] font-medium whitespace-nowrap"
+                        style={
+                          user.adminRole === "super_admin"
+                            ? { borderColor: "#1b4263", color: "#1b4263" }
+                            : user.adminRole === "content_admin"
+                            ? { borderColor: "#0d5a5a", color: "#0d5a5a" }
+                            : { borderColor: "#1f7a7a", color: "#1f7a7a" }
+                        }
+                      >
+                        {adminRoleLabels[user.adminRole]}
+                      </Badge>
                     </TableCell>
                     <TableCell>
                       <button
