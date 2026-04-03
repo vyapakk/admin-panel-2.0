@@ -50,7 +50,7 @@ const roleConfig: Record<AdminRole, { label: string; description: string; bgColo
   },
   sales_admin: {
     label: "Sales Admin",
-    description: "Overview, Notifications",
+    description: "Overview, Leads, Notifications",
     bgColor: "#4fc9ab20",
     textColor: "#0a6e55",
   },
