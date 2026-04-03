@@ -265,18 +265,29 @@ const AdminManagement = () => {
                     </button>
                   </TableCell>
                   <TableCell className="text-right">
-                    {admins.length > 1 ? (
+                    <div className="flex items-center justify-end gap-1">
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                        onClick={() => setDeleteTarget(admin)}
+                        className="hover:bg-muted"
+                        onClick={() => openEditRole(admin)}
+                        title="Edit role"
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Pencil className="h-4 w-4" />
                       </Button>
-                    ) : (
-                      <Badge variant="secondary" className="text-xs">Primary</Badge>
-                    )}
+                      {admins.length > 1 ? (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                          onClick={() => setDeleteTarget(admin)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      ) : (
+                        <Badge variant="secondary" className="text-xs">Primary</Badge>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
