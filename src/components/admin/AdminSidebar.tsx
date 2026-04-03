@@ -35,6 +35,7 @@ const contentNav = [
   { title: "Categories", url: "/admin/categories", icon: FolderTree },
   { title: "Datasets", url: "/admin/datasets", icon: Database },
   { title: "Dashboards", url: "/admin/dashboards", icon: BarChart3 },
+  { title: "Link Shield", url: "/admin/link-shield", icon: Link2 },
 ];
 
 const engagementNav = [

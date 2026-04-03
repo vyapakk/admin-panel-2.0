@@ -44,6 +44,7 @@ const App = () => (
             <Route path="notifications" element={<AdminNotifications />} />
             <Route path="datasets" element={<AdminDatasets />} />
             <Route path="dashboards" element={<AdminDashboards />} />
+            <Route path="link-shield" element={<AdminLinkShield />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

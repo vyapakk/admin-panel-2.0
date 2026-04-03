@@ -44,7 +44,7 @@ const roleConfig: Record<AdminRole, { label: string; description: string; bgColo
   },
   content_admin: {
     label: "Content Admin",
-    description: "Overview, Categories, Datasets, Dashboards, Notifications",
+    description: "Overview, Categories, Datasets, Dashboards, Link Shield, Notifications",
     bgColor: "#0d5a5a20",
     textColor: "#0d5a5a",
   },
