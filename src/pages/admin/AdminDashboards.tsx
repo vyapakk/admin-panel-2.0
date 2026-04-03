@@ -32,6 +32,7 @@ const AdminDashboards = () => {
   const [dashboards, setDashboards] = useState<AdminDashboard[]>(mockDashboards);
   const [datasets] = useState(mockDatasets);
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [datasetFilter, setDatasetFilter] = useState("all");
   const [dialogOpen, setDialogOpen] = useState(false);
 
