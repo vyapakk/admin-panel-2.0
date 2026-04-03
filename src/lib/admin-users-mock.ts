@@ -172,7 +172,7 @@ export const mockUsers: AdminUser[] = [
     id: 5, name: "Elena Rodriguez", company: "FutureTech", designation: "CEO",
     phone: "+34 612 345 678", email: "elena.r@futuretech.com",
     industries: ["Disruptive Technology", "Information & Communications Technology"], signupDate: "2026-03-26", signupTime: "12:00:00",
-    lastLogin: "2026-03-30 14:55", status: "active", accessGrants: [],
+    lastLogin: "2026-03-30 14:55", status: "active", adminRole: "super_admin", accessGrants: [],
   },
   {
     id: 6, name: "David Kim", company: "NexGen Solutions", designation: "Product Manager",
