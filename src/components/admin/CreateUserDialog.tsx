@@ -50,6 +50,7 @@ const CreateUserDialog = ({ open, onClose, onUserCreated }: CreateUserDialogProp
   });
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
   const [selectedRole, setSelectedRole] = useState<AdminRole>("content_admin");
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
