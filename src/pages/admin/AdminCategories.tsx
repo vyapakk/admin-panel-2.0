@@ -127,7 +127,7 @@ const AdminCategories = () => {
       }
       setCategories((prev) => [
         ...prev,
-        { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor, status: "active" as const },
+        { id: formId, name: formName, slug: formSlug, icon: formIcon, color: formColor, status: "active" as const, createdBy: "Admin" },
       ]);
       toast.success(`Category "${formName}" created`);
     }
