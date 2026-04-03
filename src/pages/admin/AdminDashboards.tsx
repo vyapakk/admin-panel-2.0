@@ -165,6 +165,7 @@ const AdminDashboards = () => {
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Slug</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Dataset</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Created</TableHead>
+              <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Created By</TableHead>
               <TableHead className="font-semibold" style={{ color: "#1b4263" }}>Status</TableHead>
               <TableHead className="font-semibold text-right" style={{ color: "#1b4263" }}>Actions</TableHead>
             </TableRow>
