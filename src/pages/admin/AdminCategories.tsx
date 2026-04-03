@@ -47,6 +47,8 @@ import CategoryIconPreview from "@/components/admin/CategoryIconPreview";
 import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 import IconPickerDialog from "@/components/admin/IconPickerDialog";
 
+const ITEMS_PER_PAGE = 10;
+
 const generateSlug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
