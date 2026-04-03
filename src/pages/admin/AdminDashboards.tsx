@@ -42,18 +42,28 @@ const AdminDashboards = () => {
   const [datasetSearch, setDatasetSearch] = useState("");
   const [toggleTarget, setToggleTarget] = useState<AdminDashboard | null>(null);
 
-  const filtered = dashboards.filter((d) => {
-    const q = search.toLowerCase();
-    const matchesSearch = !search ||
-      d.name.toLowerCase().includes(q) ||
-      d.slug.toLowerCase().includes(q) ||
-      d.datasetName.toLowerCase().includes(q) ||
-      d.createdBy.toLowerCase().includes(q) ||
-      d.createdDate.includes(q) ||
-      d.status.toLowerCase().includes(q);
-    const matchesDataset = datasetFilter === "all" || d.datasetId === datasetFilter;
-    return matchesSearch && matchesDataset;
-  });
+  const filtered = useMemo(() => {
+    return dashboards.filter((d) => {
+      const q = search.toLowerCase();
+      const matchesSearch = !search ||
+        d.name.toLowerCase().includes(q) ||
+        d.slug.toLowerCase().includes(q) ||
+        d.datasetName.toLowerCase().includes(q) ||
+        d.createdBy.toLowerCase().includes(q) ||
+        d.createdDate.includes(q) ||
+        d.status.toLowerCase().includes(q);
+      const matchesDataset = datasetFilter === "all" || d.datasetId === datasetFilter;
+      return matchesSearch && matchesDataset;
+    });
+  }, [dashboards, search, datasetFilter]);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setCurrentPage(1);
+  };
 
   const filteredDatasets = datasetSearch
     ? datasets.filter((ds) =>
