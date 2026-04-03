@@ -15,7 +15,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { UserPlus, Trash2, Shield, ToggleLeft, ToggleRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { UserPlus, Trash2, Shield, ToggleLeft, ToggleRight, ChevronLeft, ChevronRight, Pencil } from "lucide-react";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import StatusToggleConfirmDialog from "@/components/admin/StatusToggleConfirmDialog";
 
@@ -73,6 +76,8 @@ const AdminManagement = () => {
   const [newRole, setNewRole] = useState<AdminRole>("content_admin");
   const [toggleTarget, setToggleTarget] = useState<AdminEntry | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [editTarget, setEditTarget] = useState<AdminEntry | null>(null);
+  const [editRole, setEditRole] = useState<AdminRole>("content_admin");
 
   const totalPages = Math.ceil(admins.length / ITEMS_PER_PAGE);
   const paginated = admins.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
@@ -119,6 +124,21 @@ const AdminManagement = () => {
       )
     );
     setToggleTarget(null);
+  };
+
+  const openEditRole = (admin: AdminEntry) => {
+    setEditTarget(admin);
+    setEditRole(admin.role);
+  };
+
+  const handleEditRole = () => {
+    if (!editTarget) return;
+    // BACKEND INTEGRATION POINT: PUT /api/admin/admins/{id}/role
+    setAdmins((prev) =>
+      prev.map((a) => (a.id === editTarget.id ? { ...a, role: editRole } : a))
+    );
+    toast({ title: `Role updated to ${roleConfig[editRole].label}` });
+    setEditTarget(null);
   };
 
   return (
@@ -245,18 +265,29 @@ const AdminManagement = () => {
                     </button>
                   </TableCell>
                   <TableCell className="text-right">
-                    {admins.length > 1 ? (
+                    <div className="flex items-center justify-end gap-1">
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                        onClick={() => setDeleteTarget(admin)}
+                        className="hover:bg-muted"
+                        onClick={() => openEditRole(admin)}
+                        title="Edit role"
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Pencil className="h-4 w-4" />
                       </Button>
-                    ) : (
-                      <Badge variant="secondary" className="text-xs">Primary</Badge>
-                    )}
+                      {admins.length > 1 ? (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                          onClick={() => setDeleteTarget(admin)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      ) : (
+                        <Badge variant="secondary" className="text-xs">Primary</Badge>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -316,6 +347,48 @@ const AdminManagement = () => {
         currentStatus={toggleTarget?.status || "active"}
         onConfirm={handleToggleStatus}
       />
+
+      {/* Edit Role Dialog */}
+      <Dialog open={!!editTarget} onOpenChange={(o) => !o && setEditTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Change Role — {editTarget?.name}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div>
+              <Label className="mb-2 block">Select New Role</Label>
+              <RadioGroup value={editRole} onValueChange={(v) => setEditRole(v as AdminRole)} className="space-y-2">
+                {(Object.keys(roleConfig) as AdminRole[]).map((role) => (
+                  <label
+                    key={role}
+                    className="flex items-start gap-3 rounded-lg border p-3 cursor-pointer hover:bg-muted/50 transition-colors"
+                    style={editRole === role ? { borderColor: roleConfig[role].textColor, backgroundColor: roleConfig[role].bgColor } : {}}
+                  >
+                    <RadioGroupItem value={role} className="mt-0.5" />
+                    <div>
+                      <p className="font-medium text-sm">{roleConfig[role].label}</p>
+                      <p className="text-xs text-muted-foreground">{roleConfig[role].description}</p>
+                    </div>
+                  </label>
+                ))}
+              </RadioGroup>
+            </div>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button
+              onClick={handleEditRole}
+              disabled={editTarget?.role === editRole}
+              style={{ backgroundColor: "#0d5a5a" }}
+              className="text-white hover:opacity-90"
+            >
+              Update Role
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
