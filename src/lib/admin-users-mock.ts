@@ -163,7 +163,7 @@ export const mockUsers: AdminUser[] = [
     id: 4, name: "James Wilson", company: "Acme Corp", designation: "Senior Analyst",
     phone: "+1 (312) 555-0404", email: "jwilson@acmecorp.com",
     industries: ["Aerospace & Defense"], signupDate: "2026-03-27", signupTime: "16:45:33",
-    lastLogin: "2026-03-28 09:00", status: "active",
+    lastLogin: "2026-03-28 09:00", status: "active", adminRole: "content_admin",
     accessGrants: [
       { id: "a4", type: "dashboard", categoryId: "aerospace-defense", categoryName: "Aerospace & Defense", datasetId: "defense-systems", datasetName: "Defense Systems", dashboardId: "ds-spending", dashboardName: "Global Defense Spending", grantedDate: "2026-03-27", validUntil: "2026-06-27", status: "active" },
     ],
