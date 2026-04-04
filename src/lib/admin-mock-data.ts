@@ -44,6 +44,22 @@ export const mockPopularDashboards = [
   { id: 5, name: "Renewable Energy Market Forecast", subscribers: 76 },
 ];
 
+// BACKEND INTEGRATION POINT: GET /api/admin/user-growth?months=12
+export const mockUserGrowth = [
+  { month: "Apr 25", users: 680 },
+  { month: "May 25", users: 720 },
+  { month: "Jun 25", users: 785 },
+  { month: "Jul 25", users: 830 },
+  { month: "Aug 25", users: 870 },
+  { month: "Sep 25", users: 920 },
+  { month: "Oct 25", users: 975 },
+  { month: "Nov 25", users: 1020 },
+  { month: "Dec 25", users: 1065 },
+  { month: "Jan 26", users: 1120 },
+  { month: "Feb 26", users: 1185 },
+  { month: "Mar 26", users: 1247 },
+];
+
 // BACKEND INTEGRATION POINT: POST /api/admin/login
 // Request: { email: string, password: string }
 // Response: { token: string, admin: { name: string, email: string } }

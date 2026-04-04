@@ -1,9 +1,9 @@
 import { Users, CreditCard, BarChart3, TrendingUp, Database, FileText, UserCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import StatCard from "@/components/admin/StatCard";
-import { mockStats, mockRecentSignups, mockPopularDashboards } from "@/lib/admin-mock-data";
+import { mockStats, mockRecentSignups, mockPopularDashboards, mockUserGrowth } from "@/lib/admin-mock-data";
 
 const AdminOverview = () => {
   const adminName = localStorage.getItem("stratview_admin_name") || "Admin";
@@ -67,6 +67,51 @@ const AdminOverview = () => {
           trend="Live"
         />
       </div>
+
+      {/* User Growth Chart */}
+      {/* BACKEND INTEGRATION POINT: GET /api/admin/user-growth?months=12 */}
+      <Card className="border-none shadow-md rounded-2xl overflow-hidden">
+        <CardHeader className="pb-2 pt-5 px-6">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base font-semibold" style={{ color: "#1b4263" }}>
+              User Growth
+            </CardTitle>
+            <Badge variant="secondary" className="text-xs font-normal">Last 12 months</Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="px-2 pb-4">
+          <div className="h-[260px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={mockUserGrowth} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="userGrowthGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#4fc9ab" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#4fc9ab" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
+                <YAxis tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "hsl(var(--background))",
+                    border: "1px solid hsl(var(--border))",
+                    borderRadius: "8px",
+                    fontSize: "13px",
+                  }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="users"
+                  stroke="#1f7a7a"
+                  strokeWidth={2}
+                  fill="url(#userGrowthGrad)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Content Grid */}
       <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
