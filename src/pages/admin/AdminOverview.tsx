@@ -1,9 +1,9 @@
 import { Users, CreditCard, BarChart3, TrendingUp, Database, FileText, UserCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import StatCard from "@/components/admin/StatCard";
-import { mockStats, mockRecentSignups, mockPopularDashboards } from "@/lib/admin-mock-data";
+import { mockStats, mockRecentSignups, mockPopularDashboards, mockUserGrowth } from "@/lib/admin-mock-data";
 
 const AdminOverview = () => {
   const adminName = localStorage.getItem("stratview_admin_name") || "Admin";
