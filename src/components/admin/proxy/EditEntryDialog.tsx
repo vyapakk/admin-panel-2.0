@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Plus, X } from "lucide-react";
 import { ProxyEntry } from "@/types/proxy";
+import { GoogleSheetsDetector } from "./GoogleSheetsDetector";
 
 interface Props {
   entry: ProxyEntry;
