@@ -416,6 +416,14 @@ const AdminCategories = () => {
         currentStatus={toggleTarget?.status || "active"}
         onConfirm={handleToggleStatus}
       />
+      <ConfirmDeleteDialog
+        open={!!deleteTarget}
+        onOpenChange={(v) => !v && setDeleteTarget(null)}
+        title="Delete Category"
+        description={<span>Are you sure you want to delete <strong>{deleteTarget?.name}</strong>? This may affect datasets and dashboards linked to this category.</span>}
+        onConfirm={() => { if (deleteTarget) handleDelete(deleteTarget.id); setDeleteTarget(null); }}
+        confirmLabel="Delete Category"
+      />
     </div>
   );
 };

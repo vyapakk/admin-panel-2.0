@@ -554,6 +554,22 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
           </div>
         </div>
       </SheetContent>
+      <ConfirmDeleteDialog
+        open={deleteUserOpen}
+        onOpenChange={setDeleteUserOpen}
+        title="Delete User"
+        description={<span>Are you sure you want to delete <strong>{user.name}</strong>? This action cannot be undone. All access grants will also be removed.</span>}
+        onConfirm={handleDeleteUser}
+        confirmLabel="Delete User"
+      />
+      <ConfirmDeleteDialog
+        open={!!revokeTarget}
+        onOpenChange={(v) => !v && setRevokeTarget(null)}
+        title="Revoke Access"
+        description={<span>Are you sure you want to revoke this access? The user will lose access immediately.</span>}
+        onConfirm={() => { if (revokeTarget) handleRevokeAccess(revokeTarget); setRevokeTarget(null); }}
+        confirmLabel="Revoke Access"
+      />
     </Sheet>
   );
 };

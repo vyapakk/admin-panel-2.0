@@ -347,6 +347,14 @@ const AdminDashboards = () => {
         currentStatus={toggleTarget?.status || "active"}
         onConfirm={handleToggleStatus}
       />
+      <ConfirmDeleteDialog
+        open={!!deleteTarget}
+        onOpenChange={(v) => !v && setDeleteTarget(null)}
+        title="Delete Dashboard"
+        description={<span>Are you sure you want to delete <strong>{deleteTarget?.name}</strong>? This action cannot be undone.</span>}
+        onConfirm={() => { if (deleteTarget) handleDelete(deleteTarget.id); setDeleteTarget(null); }}
+        confirmLabel="Delete Dashboard"
+      />
     </div>
   );
 };
