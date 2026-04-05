@@ -19,7 +19,6 @@ export function GoogleSheetsDetector({ url, onConvert }: Props) {
     if (result) {
       onConvert(result);
       setConverted(format.toUpperCase());
-      setTimeout(() => setConverted(null), 2000);
     }
   };
 
