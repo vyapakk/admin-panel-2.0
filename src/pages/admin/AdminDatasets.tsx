@@ -35,6 +35,7 @@ const AdminDatasets = () => {
   const [formSlug, setFormSlug] = useState("");
   const [formCategoryId, setFormCategoryId] = useState("");
   const [toggleTarget, setToggleTarget] = useState<AdminDataset | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<AdminDataset | null>(null);
 
   const filtered = useMemo(() => {
     if (!search) return datasets;
