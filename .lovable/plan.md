@@ -1,19 +1,39 @@
 
 
-## Fix Dialog Rounded Corners with Scroll
+## Embed Google Sheets URL Converter in Proxy Dialogs
 
-### Problem
-Adding `overflow-y-auto` directly on the `DialogPrimitive.Content` element clips the `sm:rounded-lg` border-radius — the scrollbar sits flush against the edges, hiding the rounded corners on the right side (top and bottom).
-
-### Solution
-Move the scroll behavior to an inner wrapper `<div>` so the outer container keeps `overflow: hidden` (preserving rounded corners) while the content inside scrolls.
+### What It Does
+When pasting a Google Sheets link into the "Source File URL" field while creating or editing a proxy, the system detects it and shows a format picker (CSV, XLSX, TSV, PDF) inline. Selecting a format auto-converts the URL to a direct export link — no more manual conversion via ChatGPT.
 
 ### Changes
 
-**File: `src/components/ui/dialog.tsx`**
-- Remove `max-h-[90vh] overflow-y-auto` from the `DialogPrimitive.Content` className
-- Keep `max-h-[90vh]` on the outer element but change overflow to `overflow: hidden` to clip corners properly
-- Wrap `{children}` in a `<div className="overflow-y-auto max-h-[calc(90vh-2rem)] p-6">` inner scroll container
-- Remove `p-6` from the outer element (padding moves to inner wrapper so scrollbar sits at the edge)
-- The close button stays `absolute` on the outer container so it doesn't scroll away
+**1. New file: `src/lib/google-sheets-utils.ts`**
+- `isGoogleSheetsUrl(url)` — regex check for `docs.google.com/spreadsheets/d/`
+- `extractSheetId(url)` — pulls spreadsheet ID and optional `gid` from the URL
+- `buildExportUrl(id, gid, format)` — returns `https://docs.google.com/spreadsheets/d/{id}/export?format={format}&gid={gid}`
+- Supported formats: `csv`, `xlsx`, `tsv`, `pdf`
+
+**2. Update `src/components/admin/proxy/CreateEntryDialog.tsx`**
+- Import the utility functions
+- On URL input change, run `isGoogleSheetsUrl()` check
+- When detected, render a small inline bar below the input:
+  - "Google Sheets detected" label with a sheets icon
+  - Four format buttons (CSV, XLSX, TSV, PDF) styled as small outlined pills
+  - Clicking a format replaces the URL field value with the converted export URL
+  - After conversion, show a subtle "Converted to CSV export link" confirmation
+
+**3. Update `src/components/admin/proxy/EditEntryDialog.tsx`**
+- Same detection and inline conversion UI as the create dialog
+
+### Technical Details
+
+Conversion example:
+```
+Input:  https://docs.google.com/spreadsheets/d/ABC123/edit#gid=456
+Output: https://docs.google.com/spreadsheets/d/ABC123/export?format=csv&gid=456
+```
+
+Regex pattern: `/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/` for ID extraction, `/[#&?]gid=(\d+)/` for gid.
+
+The inline bar uses the existing brand teal color for the format buttons, matching the dialog's style.
 
