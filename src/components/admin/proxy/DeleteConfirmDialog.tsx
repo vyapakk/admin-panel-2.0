@@ -22,7 +22,7 @@ export function DeleteConfirmDialog({ entryName, onConfirm }: Props) {
   const [open, setOpen] = useState(false);
   const [typed, setTyped] = useState("");
 
-  const canDelete = typed === entryName;
+  const canDelete = typed === "CONFIRM";
 
   const handleConfirm = () => {
     if (canDelete) {
@@ -45,27 +45,29 @@ export function DeleteConfirmDialog({ entryName, onConfirm }: Props) {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Delete this proxy?</AlertDialogTitle>
-          <AlertDialogDescription className="space-y-2">
-            <span className="block">
-              This proxy link may be in use across live environments. Deleting it is
-              <strong className="text-destructive"> irreversible</strong> and will break
-              all integrations using it.
-            </span>
-            <span className="block">
-              To confirm, type the proxy name exactly:
-            </span>
-            <span className="block rounded bg-muted px-2 py-1 font-mono text-sm font-semibold text-foreground">
-              {entryName}
-            </span>
+          <AlertDialogDescription asChild>
+            <div className="space-y-2">
+              <span className="block">
+                This proxy link may be in use across live environments. Deleting it is
+                <strong className="text-destructive"> irreversible</strong> and will break
+                all integrations using it.
+              </span>
+              <span className="block">
+                Proxy: <span className="font-mono font-semibold text-foreground rounded bg-muted px-1.5 py-0.5">{entryName}</span>
+              </span>
+              <span className="block">
+                To confirm, type <span className="font-mono font-semibold text-foreground rounded bg-muted px-1.5 py-0.5">CONFIRM</span> below:
+              </span>
+            </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="space-y-2">
-          <Label htmlFor="confirm-delete">Type proxy name to confirm</Label>
+          <Label htmlFor="confirm-delete">Type CONFIRM to proceed</Label>
           <Input
             id="confirm-delete"
             value={typed}
             onChange={(e) => setTyped(e.target.value)}
-            placeholder={entryName}
+            placeholder="CONFIRM"
             autoComplete="off"
           />
         </div>
