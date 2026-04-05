@@ -18,17 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import ConfirmDeleteDialog from "@/components/admin/ConfirmDeleteDialog";
 import {
   Mail,
   Phone,
@@ -61,6 +51,8 @@ const statusColors: Record<string, string> = {
 
 const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDetailSheetProps) => {
   const [showGrantForm, setShowGrantForm] = useState(false);
+  const [deleteUserOpen, setDeleteUserOpen] = useState(false);
+  const [revokeTarget, setRevokeTarget] = useState<string | null>(null);
   const [grantType, setGrantType] = useState<"dashboard" | "dataset" | "master">("dashboard");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedDataset, setSelectedDataset] = useState("");
@@ -218,28 +210,10 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
             </div>
           </div>
           <div className="flex justify-end mt-3">
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-white/60 hover:text-white hover:bg-white/10 gap-1.5 text-xs">
-                  <Trash2 className="h-3.5 w-3.5" />
-                  Delete User
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Delete User</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Are you sure you want to delete <strong>{user.name}</strong>? This action cannot be undone. All access grants will also be removed.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDeleteUser} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                    Delete User
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+            <Button variant="ghost" size="sm" className="text-white/60 hover:text-white hover:bg-white/10 gap-1.5 text-xs" onClick={() => setDeleteUserOpen(true)}>
+              <Trash2 className="h-3.5 w-3.5" />
+              Delete User
+            </Button>
           </div>
         </div>
 
@@ -527,31 +501,14 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
                         Valid until {access.validUntil}
                       </p>
                     </div>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive shrink-0"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Revoke Access</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to revoke access to <strong>{access.type === "master" ? "all datasets & dashboards" : access.type === "dashboard" ? access.dashboardName : access.datasetName}</strong>? The user will lose access immediately.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleRevokeAccess(access.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                            Revoke Access
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive shrink-0"
+                      onClick={() => setRevokeTarget(access.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -597,6 +554,22 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
           </div>
         </div>
       </SheetContent>
+      <ConfirmDeleteDialog
+        open={deleteUserOpen}
+        onOpenChange={setDeleteUserOpen}
+        title="Delete User"
+        description={<span>Are you sure you want to delete <strong>{user.name}</strong>? This action cannot be undone. All access grants will also be removed.</span>}
+        onConfirm={handleDeleteUser}
+        confirmLabel="Delete User"
+      />
+      <ConfirmDeleteDialog
+        open={!!revokeTarget}
+        onOpenChange={(v) => !v && setRevokeTarget(null)}
+        title="Revoke Access"
+        description={<span>Are you sure you want to revoke this access? The user will lose access immediately.</span>}
+        onConfirm={() => { if (revokeTarget) handleRevokeAccess(revokeTarget); setRevokeTarget(null); }}
+        confirmLabel="Revoke Access"
+      />
     </Sheet>
   );
 };

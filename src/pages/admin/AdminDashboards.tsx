@@ -9,11 +9,7 @@ import {
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
-  AlertDialogTitle, AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import ConfirmDeleteDialog from "@/components/admin/ConfirmDeleteDialog";
 import { Plus, Trash2, Search, BarChart3, ToggleLeft, ToggleRight, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
@@ -41,6 +37,7 @@ const AdminDashboards = () => {
   const [formDatasetId, setFormDatasetId] = useState("");
   const [datasetSearch, setDatasetSearch] = useState("");
   const [toggleTarget, setToggleTarget] = useState<AdminDashboard | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<AdminDashboard | null>(null);
 
   const filtered = useMemo(() => {
     return dashboards.filter((d) => {
@@ -227,30 +224,9 @@ const AdminDashboards = () => {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end">
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Dashboard</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Are you sure you want to delete <strong>{db.name}</strong>?
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleDelete(db.id)}
-                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                            >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                      <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget(db)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -365,6 +341,14 @@ const AdminDashboards = () => {
         entityType="Dashboard"
         currentStatus={toggleTarget?.status || "active"}
         onConfirm={handleToggleStatus}
+      />
+      <ConfirmDeleteDialog
+        open={!!deleteTarget}
+        onOpenChange={(v) => !v && setDeleteTarget(null)}
+        title="Delete Dashboard"
+        description={<span>Are you sure you want to delete <strong>{deleteTarget?.name}</strong>? This action cannot be undone.</span>}
+        onConfirm={() => { if (deleteTarget) handleDelete(deleteTarget.id); setDeleteTarget(null); }}
+        confirmLabel="Delete Dashboard"
       />
     </div>
   );

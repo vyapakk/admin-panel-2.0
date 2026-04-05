@@ -12,11 +12,7 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
-  AlertDialogTitle, AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import ConfirmDeleteDialog from "@/components/admin/ConfirmDeleteDialog";
 import { Plus, Trash2, Search, Database, ToggleLeft, ToggleRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { type AdminDataset, mockDatasets } from "@/lib/admin-datasets-mock";
@@ -39,6 +35,7 @@ const AdminDatasets = () => {
   const [formSlug, setFormSlug] = useState("");
   const [formCategoryId, setFormCategoryId] = useState("");
   const [toggleTarget, setToggleTarget] = useState<AdminDataset | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<AdminDataset | null>(null);
 
   const filtered = useMemo(() => {
     if (!search) return datasets;
@@ -201,30 +198,9 @@ const AdminDatasets = () => {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end">
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Dataset</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Are you sure you want to delete <strong>{ds.name}</strong>? This may affect users with access to this dataset.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleDelete(ds.id)}
-                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                            >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                      <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget(ds)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -314,6 +290,14 @@ const AdminDatasets = () => {
         entityType="Dataset"
         currentStatus={toggleTarget?.status || "active"}
         onConfirm={handleToggleStatus}
+      />
+      <ConfirmDeleteDialog
+        open={!!deleteTarget}
+        onOpenChange={(v) => !v && setDeleteTarget(null)}
+        title="Delete Dataset"
+        description={<span>Are you sure you want to delete <strong>{deleteTarget?.name}</strong>? This may affect users with access to this dataset.</span>}
+        onConfirm={() => { if (deleteTarget) handleDelete(deleteTarget.id); setDeleteTarget(null); }}
+        confirmLabel="Delete Dataset"
       />
     </div>
   );

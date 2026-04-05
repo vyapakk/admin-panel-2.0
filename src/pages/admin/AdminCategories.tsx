@@ -25,17 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import ConfirmDeleteDialog from "@/components/admin/ConfirmDeleteDialog";
 import { Plus, Pencil, Trash2, Search, ToggleLeft, ToggleRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -66,6 +56,7 @@ const AdminCategories = () => {
   const [formColor, setFormColor] = useState("teal");
   const [formId, setFormId] = useState("");
   const [toggleTarget, setToggleTarget] = useState<AdminCategory | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<AdminCategory | null>(null);
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
   const filtered = useMemo(() => {
@@ -274,30 +265,9 @@ const AdminCategories = () => {
                       <Button variant="ghost" size="sm" onClick={() => openEditDialog(cat)}>
                         <Pencil className="h-4 w-4" />
                       </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Category</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Are you sure you want to delete <strong>{cat.name}</strong>? This may affect datasets and dashboards linked to this category.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleDelete(cat.id)}
-                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                            >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                      <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget(cat)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -440,6 +410,14 @@ const AdminCategories = () => {
         entityType="Category"
         currentStatus={toggleTarget?.status || "active"}
         onConfirm={handleToggleStatus}
+      />
+      <ConfirmDeleteDialog
+        open={!!deleteTarget}
+        onOpenChange={(v) => !v && setDeleteTarget(null)}
+        title="Delete Category"
+        description={<span>Are you sure you want to delete <strong>{deleteTarget?.name}</strong>? This may affect datasets and dashboards linked to this category.</span>}
+        onConfirm={() => { if (deleteTarget) handleDelete(deleteTarget.id); setDeleteTarget(null); }}
+        confirmLabel="Delete Category"
       />
     </div>
   );
