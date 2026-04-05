@@ -61,6 +61,7 @@ const AdminCategories = () => {
   const [formColor, setFormColor] = useState("teal");
   const [formId, setFormId] = useState("");
   const [toggleTarget, setToggleTarget] = useState<AdminCategory | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<AdminCategory | null>(null);
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
   const filtered = useMemo(() => {
