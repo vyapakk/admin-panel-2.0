@@ -65,6 +65,7 @@ export function CreateEntryDialog({ onSubmit, loading }: Props) {
           <div className="space-y-2">
             <Label htmlFor="csvUrl">Source File URL</Label>
             <Input id="csvUrl" placeholder="https://example.com/data.csv or .xlsx or any file" value={csvUrl} onChange={(e) => setCsvUrl(e.target.value)} />
+            <GoogleSheetsDetector url={csvUrl} onConvert={(u) => setCsvUrl(u)} />
           </div>
           <div className="space-y-2">
             <Label>Allowed Domains</Label>
