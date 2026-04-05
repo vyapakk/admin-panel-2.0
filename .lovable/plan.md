@@ -1,17 +1,15 @@
 
 
-## Fix Close Button Visibility on Blue Background
+## Fix Dialog Overflow Issue
 
 ### Problem
-The Sheet close button (X icon) inherits dark text color, making it invisible against the blue gradient header in the User Detail Sheet.
+The "Add New Admin" dialog has enough content (Name, Email, Password, Role with 3 radio options, and footer buttons) that it overflows the viewport vertically. The dialog uses `top-[50%] translate-y-[-50%]` centering, so tall content extends beyond the screen.
 
 ### Solution
-Add a custom class to the `SheetContent` in `UserDetailSheet.tsx` that styles the close button to be white with proper hover/focus states.
+Add `max-h-[90vh] overflow-y-auto` to the `DialogContent` component so all dialogs become scrollable when they exceed the viewport height. This is a single-line change in the shared UI component that fixes the issue globally.
 
 ### Changes
 
-**File: `src/components/admin/UserDetailSheet.tsx`**
-- Add a class like `[&>button]:text-white [&>button]:hover:opacity-80` to the `SheetContent` component's `className` prop. This targets the close button (direct child button) and makes it white so it's visible on the blue gradient header.
-
-Single file, single line change.
+**File: `src/components/ui/dialog.tsx`**
+- Add `max-h-[90vh] overflow-y-auto` to the `DialogPrimitive.Content` className (line 39), ensuring the dialog never exceeds 90% of viewport height and scrolls internally when content is too tall.
 
