@@ -42,6 +42,7 @@ const AdminDashboards = () => {
   const [formDatasetId, setFormDatasetId] = useState("");
   const [datasetSearch, setDatasetSearch] = useState("");
   const [toggleTarget, setToggleTarget] = useState<AdminDashboard | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<AdminDashboard | null>(null);
 
   const filtered = useMemo(() => {
     return dashboards.filter((d) => {
