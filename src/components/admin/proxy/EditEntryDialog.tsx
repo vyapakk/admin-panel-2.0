@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Plus, X } from "lucide-react";
 import { ProxyEntry } from "@/types/proxy";
+import { GoogleSheetsDetector } from "./GoogleSheetsDetector";
 
 interface Props {
   entry: ProxyEntry;
@@ -60,6 +61,7 @@ export function EditEntryDialog({ entry, open, onOpenChange, onSubmit, loading }
           <div className="space-y-2">
             <Label htmlFor="edit-csvUrl">Source File URL</Label>
             <Input id="edit-csvUrl" value={csvUrl} onChange={(e) => setCsvUrl(e.target.value)} />
+            <GoogleSheetsDetector url={csvUrl} onConvert={(u) => setCsvUrl(u)} />
           </div>
           <div className="space-y-2">
             <Label>Allowed Domains</Label>
