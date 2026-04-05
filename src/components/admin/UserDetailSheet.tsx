@@ -181,7 +181,7 @@ const UserDetailSheet = ({ user, onClose, onUserUpdate, onUserDelete }: UserDeta
     <Sheet open={!!user} onOpenChange={(open) => !open && onClose()}>
       <SheetContent
         side="right"
-        className="w-full sm:max-w-xl overflow-y-auto p-0"
+        className="w-full sm:max-w-xl overflow-y-auto p-0 [&>button]:text-white [&>button]:hover:opacity-80"
         style={{ fontFamily: "'Poppins', sans-serif" }}
       >
         {/* Header */}
